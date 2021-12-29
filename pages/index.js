@@ -181,13 +181,13 @@ export default function Songs() {
                         <div className="pt-6"></div>
 
                         {schedules.length > 0 ?
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 {schedules.map((schedule, index) => {
                                     if (index > 11) {
                                         return;
                                     }
 
-                                    return <button key={`schedule-${index}`} className="hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 shadow-2xl rounded-xl duration-300 transition">
+                                    return <button key={`schedule-${index}`} className="hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-xl duration-300 transition">
                                         <h3 className="py-2 px-5">
                                             <div className="flex items-center justify-between">
                                                 <div className="font-bold text-sm text-teal-400">{format(new Date(schedule.date), 'eee dd MMM yyyy')}</div>
@@ -217,6 +217,10 @@ export default function Songs() {
                     </div>
 
                     <div id="songs" className="pt-36"></div>
+
+                    <h2 className="text-white text-2xl text-center font-bold">Song Groups</h2>
+
+                    <div id="songs" className="pt-12"></div>
 
                     <div className="grid grid-cols-1 gap-12">
                         <div className="bg-gray-900 border border-teal-100 border-opacity-10 rounded-2xl">
@@ -265,7 +269,7 @@ export default function Songs() {
                                     <div className="w-full flex items-center justify-between py-2 px-6 border-b border-gray-800">
                                         <div>
                                             <div className="pt-2"></div>
-                                            <h1 className="text-white text-2xl font-semibold">{popup.song['Name']}</h1>
+                                            <h1 className="text-teal-400 text-lg font-bold">{popup.song['Name']}</h1>
 
                                             <div className="pt-1"></div>
                                             <div className="flex flex-wrap items-center">
@@ -285,7 +289,11 @@ export default function Songs() {
                                             <div className="pt-2"></div>
                                         </div>
                                         <div className="text-right">
-                                            <button className="inline-block text-white text-center" onClick={closePopup}>Close</button>
+                                            <button className="inline-block text-white text-center" onClick={closePopup}>
+                                                <div className="text-white fill-current w-8 h-8 bg-gray-800 rounded-md p-2">
+                                                    <svg id="lnr-cross" viewBox="0 0 1024 1024"><title>cross</title><path class="path1" d="M548.203 537.6l289.099-289.098c9.998-9.998 9.998-26.206 0-36.205-9.997-9.997-26.206-9.997-36.203 0l-289.099 289.099-289.098-289.099c-9.998-9.997-26.206-9.997-36.205 0-9.997 9.998-9.997 26.206 0 36.205l289.099 289.098-289.099 289.099c-9.997 9.997-9.997 26.206 0 36.203 5 4.998 11.55 7.498 18.102 7.498s13.102-2.499 18.102-7.499l289.098-289.098 289.099 289.099c4.998 4.998 11.549 7.498 18.101 7.498s13.102-2.499 18.101-7.499c9.998-9.997 9.998-26.206 0-36.203l-289.098-289.098z"></path></svg>
+                                                </div>
+                                            </button>
                                         </div>
                                     </div>
                                     <div style={{ height: "calc(100vh - 80px)" }}>
@@ -303,33 +311,29 @@ export default function Songs() {
 function SongList({ songs, openPopup }) {
     if (!songs) return <></>
 
-    return <div className="grid grid-cols-3 gap-4 px-6">
-        {songs?.map((song, index) => (
-            <button key={`song-${song.id}`}
-                onClick={openPopup(song)}
-                className="text-left py-4 px-6 hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-xl duration-300 transition cursor-pointer">
-                <h4 className="font-semibold text-gray-200">{song['Name']}</h4>
-                <div className="mt-1 text-sm font-light text-white">
-                    {song['Key'] ?
-                        <span className="mr-4">
-                            <span className="">
-                                Key:
+    return <div className="grid grid-cols-1 md:grid-cols-3 gap-1 mg:gap-4 px-2 md:px-6">
+        {songs?.map((song, index) => {
+            if (index < 12) {
+                return <button key={`song-${song.id}`}
+                    onClick={openPopup(song)}
+                    className="text-left py-1 px-4 md:px-6 hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-xl duration-300 transition cursor-pointer">
+                    <h3 className="font-bold text-teal-400 text-sm">{song['Name']}</h3>
+                    <div className="font-light flex items-center">
+                        {song['Author/Singer'] ?
+                            <span className="mr-2">
+                                <span className="text-gray-400 text-sm">{song['Author/Singer']}</span>
+                            </span> : <></>}
+                        {song['Key'] ?
+                            <span className="mr-2">
+                                <span className="text-xs text-white bg-gray-800 px-2 rounded-md">
+                                    {song['Key']}
+                                </span>
                             </span>
-                            <span className="ml-2 text-teal-400 text-sm bg-teal-900 bg-opacity-30 p-1 px-2 rounded-md">
-                                {song['Key']}
-                            </span>
-                        </span>
-                        : <></>}
-                    {song['BPM'] ?
-                        <span>
-                            <span className="">
-                                BPM:
-                            </span>
-                            <span className="ml-2 text-gray-400 text-sm">{song['BPM']}</span>
-                        </span> : <></>}
-                </div>
-            </button>
-        ))}</div>
+                            : <></>}
+                    </div>
+                </button>
+            }
+        })}</div>
 }
 
 function SongDetails({ song, onSongUpdateSuccess }) {
