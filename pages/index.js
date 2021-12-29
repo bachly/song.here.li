@@ -262,37 +262,34 @@ export default function Songs() {
                             </button>
                             <div className="w-full h-screen flex items-center justify-center">
                                 <div className="w-full max-w-7xl z-50 realtive bg-gray-800 bg-opacity-80 border border-gray-700 border-opacity-30" style={{ height: '95vh', width: '95vw' }}>
-                                    <div className="w-full flex items-center justify-between py-2 px-6 bg-gray-800 border-b-2 border-teal-700 border-opacity-30">
+                                    <div className="w-full flex items-center justify-between py-2 pl-6 pr-2 bg-gray-800 border-b-2 border-teal-700 border-opacity-30">
                                         <div>
                                             <div className="pt-2"></div>
                                             <h1 className="text-teal-400 text-lg font-bold leading-tight">{popup.song['Name']}</h1>
-
                                             <div className="pt-2"></div>
-                                            <div className="flex flex-wrap items-center">
-                                                <div className="text-sm mr-4">
-                                                    <span className="text-gray-400 text-sm mr-2">Key:</span>
-                                                    <span className="text-white text-sm">{popup.song['Key']}</span>
-                                                </div>
-                                                <div className="text-sm mr-4">
-                                                    <span className="text-gray-400 text-sm mr-2">BPM:</span>
-                                                    <span className="text-white text-sm">{popup.song['BPM']}</span>
-                                                </div>
-                                                <div className="text-sm mr-4">
-                                                    <span className="text-gray-400 text-sm mr-2">Author/Singer:</span>
-                                                    <span className="text-white text-sm">{popup.song['Author/Singer']}</span>
-                                                </div>
+                                        </div>
+                                        <button className="inline-block text-white text-center" onClick={closePopup}>
+                                            <div className="text-white fill-current w-8 h-8 bg-gray-800 rounded-md p-2">
+                                                <svg id="lnr-cross" viewBox="0 0 1024 1024"><title>cross</title><path className="path1" d="M548.203 537.6l289.099-289.098c9.998-9.998 9.998-26.206 0-36.205-9.997-9.997-26.206-9.997-36.203 0l-289.099 289.099-289.098-289.099c-9.998-9.997-26.206-9.997-36.205 0-9.997 9.998-9.997 26.206 0 36.205l289.099 289.098-289.099 289.099c-9.997 9.997-9.997 26.206 0 36.203 5 4.998 11.55 7.498 18.102 7.498s13.102-2.499 18.102-7.499l289.098-289.098 289.099 289.099c4.998 4.998 11.549 7.498 18.101 7.498s13.102-2.499 18.101-7.499c9.998-9.997 9.998-26.206 0-36.203l-289.098-289.098z"></path></svg>
                                             </div>
-                                            <div className="pt-2"></div>
-                                        </div>
-                                        <div className="text-right">
-                                            <button className="inline-block text-white text-center" onClick={closePopup}>
-                                                <div className="text-white fill-current w-8 h-8 bg-gray-800 rounded-md p-2">
-                                                    <svg id="lnr-cross" viewBox="0 0 1024 1024"><title>cross</title><path className="path1" d="M548.203 537.6l289.099-289.098c9.998-9.998 9.998-26.206 0-36.205-9.997-9.997-26.206-9.997-36.203 0l-289.099 289.099-289.098-289.099c-9.998-9.997-26.206-9.997-36.205 0-9.997 9.998-9.997 26.206 0 36.205l289.099 289.098-289.099 289.099c-9.997 9.997-9.997 26.206 0 36.203 5 4.998 11.55 7.498 18.102 7.498s13.102-2.499 18.102-7.499l289.098-289.098 289.099 289.099c4.998 4.998 11.549 7.498 18.101 7.498s13.102-2.499 18.101-7.499c9.998-9.997 9.998-26.206 0-36.203l-289.098-289.098z"></path></svg>
-                                                </div>
-                                            </button>
-                                        </div>
+                                        </button>
                                     </div>
-                                    <div style={{ height: "calc(95vh - 8rem)" }}>
+                                    <div style={{ height: "calc(95vh - 4rem)" }}>
+                                        {/* <div className="pt-2"></div>
+                                        <div className="flex flex-wrap items-center">
+                                            <div className="text-sm mr-4">
+                                                <span className="text-gray-400 text-sm mr-2">Key:</span>
+                                                <span className="text-white text-sm">{popup.song['Key']}</span>
+                                            </div>
+                                            <div className="text-sm mr-4">
+                                                <span className="text-gray-400 text-sm mr-2">BPM:</span>
+                                                <span className="text-white text-sm">{popup.song['BPM']}</span>
+                                            </div>
+                                            <div className="text-sm mr-4">
+                                                <span className="text-gray-400 text-sm mr-2">Author/Singer:</span>
+                                                <span className="text-white text-sm">{popup.song['Author/Singer']}</span>
+                                            </div>
+                                        </div> */}
                                         <SongDetails song={popup.song} onSongUpdateSuccess={onSongUpdateSuccess} />
                                     </div>
                                 </div>
@@ -307,7 +304,7 @@ export default function Songs() {
 function SongList({ songs, openPopup }) {
     if (!songs) return <></>
 
-    return <div className="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-8 px-2 md:px-6">
+    return <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 px-6">
         {songs?.map((song, index) => {
             if (index < 12) {
                 return <button key={`song-${song.id}`}
@@ -401,7 +398,7 @@ function SongDetails({ song, onSongUpdateSuccess }) {
 
     return (
         <div className="w-full h-full overflow-y-scroll">
-            <div className="pt-6"></div>
+            <div className="pt-3"></div>
 
             <style>
                 {ChordSheetJS.HtmlDivFormatter.cssString('.chordSheetViewer')}
@@ -415,8 +412,6 @@ function SongDetails({ song, onSongUpdateSuccess }) {
                     line-height: 1.5;
                 }
                 .chordSheetViewer .paragraph:not(:last-child) {
-                    margin-bottom: 2rem;
-                    padding-bottom: 2rem;
                     border-bottom: 1px dashed #333;
                 }
                 `}
@@ -447,7 +442,7 @@ function SongDetails({ song, onSongUpdateSuccess }) {
                         </div>
 
                         <div className="pt-3"></div>
-                        
+
                         {editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ?
                             <div className="text-gray-200 bg-gray-900 bg-opacity-80 font-mono leading-loose text-sm sm:text-base md:text-xl py-4 px-6 shadow-inner">
                                 <div className="chordSheetViewer"
