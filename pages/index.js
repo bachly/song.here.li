@@ -11,7 +11,7 @@ var base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID);
 
 export default function Songs() {
     const [allSongs, setAllSongs] = React.useState({});
-    const [songsNotReady, setSongs] = React.useState([]);
+    const [songGroups, setSongGroups] = React.useState([]);
     const [schedules, setSchedules] = React.useState([]);
 
     const [popup, setPopup] = React.useState({
@@ -72,6 +72,8 @@ export default function Songs() {
             view: "All Songs",
             fields: ['Name', 'Ready', 'Group', 'BPM', 'Key', 'YouTube Link', 'Chord Sheet', 'Author/Singer']
         }).all().then(function (records) {
+            const groups = [];
+
             records.forEach(function (record) {
                 const song = {
                     id: record.id,
@@ -87,8 +89,14 @@ export default function Songs() {
                 }
 
                 allSongs[record.id] = song;
-                setAllSongs(allSongs);
+
+                if (song['Group'] !== null && groups.indexOf(song['Group']) === -1) {
+                    groups.push(song['Group']);
+                }
             });
+
+            setAllSongs(allSongs);
+            setSongGroups(groups);
 
             /** Get Schedules */
             base('Schedule').select({
@@ -158,7 +166,7 @@ export default function Songs() {
                     </div>
                 </header>
 
-                <div id="schedule" className="relative" style={{ top: "-200px" }}></div>
+                <div id="schedule" className="relative" style={{ top: "-400px" }}></div>
 
                 <div style={{ marginTop: "-300px" }}></div>
 
@@ -187,7 +195,7 @@ export default function Songs() {
                                         return;
                                     }
 
-                                    return <button key={`schedule-${index}`} className="hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-xl duration-300 transition">
+                                    return <button key={`schedule-${index}`} className="hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-xl duration-100 transition">
                                         <h3 className="py-2 px-5">
                                             <div className="flex items-center justify-between">
                                                 <div className="font-bold text-sm text-teal-400">{format(new Date(schedule.date), 'eee dd MMM yyyy')}</div>
@@ -218,40 +226,28 @@ export default function Songs() {
 
                     <div id="songs" className="pt-36"></div>
 
-                    <h2 className="text-white text-2xl text-center font-bold">Song Groups</h2>
+                    <h2 className="text-white text-2xl text-center font-thin">Song Groups</h2>
 
                     <div id="songs" className="pt-12"></div>
 
                     <div className="grid grid-cols-1 gap-12">
-                        <div className="bg-gray-900 border border-teal-100 border-opacity-10 rounded-2xl">
-                            <h2 className="text-white py-6 px-6">
-                                <div className="flex items-center">
-                                    <div className="w-6 h-6 text-white fill-current mr-4">
-                                        <svg id="lnr-music-note" viewBox="0 0 1024 1024"><title>music-note</title><path className="path1" d="M1014.803 57.146c-5.826-4.864-13.509-6.891-20.982-5.533l-563.2 102.4c-12.173 2.213-21.021 12.816-21.021 25.187v583.632c-6.986-4.722-14.629-9.181-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.806 23.902-74.136 57.749-74.136 95.304s26.33 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.806-23.902 74.136-57.749 74.136-95.304v-516.294l512-94.549v426.475c-6.984-4.722-14.629-9.182-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.808 23.902-74.136 57.749-74.136 95.304s26.328 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.808-23.902 74.136-57.749 74.136-95.304v-665.6c0-7.59-3.368-14.79-9.197-19.654zM230.4 921.6c-102.563 0-179.2-40.547-179.2-76.8s76.637-76.8 179.2-76.8 179.2 40.547 179.2 76.8-76.637 76.8-179.2 76.8zM460.8 276.438v-75.874l512-93.091v74.416l-512 94.549zM793.6 819.2c-102.565 0-179.2-40.547-179.2-76.8s76.635-76.8 179.2-76.8c102.566 0 179.2 40.547 179.2 76.8s-76.634 76.8-179.2 76.8z"></path></svg>
+                        {songGroups.map(group => {
+                            return <div className="bg-gray-900 border border-teal-100 border-opacity-10 rounded-2xl">
+                                <h2 className="text-white py-6 px-6">
+                                    <div className="flex items-center">
+                                        <div className="w-6 h-6 text-white fill-current mr-4">
+                                            <svg id="lnr-music-note" viewBox="0 0 1024 1024"><title>music-note</title><path className="path1" d="M1014.803 57.146c-5.826-4.864-13.509-6.891-20.982-5.533l-563.2 102.4c-12.173 2.213-21.021 12.816-21.021 25.187v583.632c-6.986-4.722-14.629-9.181-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.806 23.902-74.136 57.749-74.136 95.304s26.33 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.806-23.902 74.136-57.749 74.136-95.304v-516.294l512-94.549v426.475c-6.984-4.722-14.629-9.182-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.808 23.902-74.136 57.749-74.136 95.304s26.328 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.808-23.902 74.136-57.749 74.136-95.304v-665.6c0-7.59-3.368-14.79-9.197-19.654zM230.4 921.6c-102.563 0-179.2-40.547-179.2-76.8s76.637-76.8 179.2-76.8 179.2 40.547 179.2 76.8-76.637 76.8-179.2 76.8zM460.8 276.438v-75.874l512-93.091v74.416l-512 94.549zM793.6 819.2c-102.565 0-179.2-40.547-179.2-76.8s76.635-76.8 179.2-76.8c102.566 0 179.2 40.547 179.2 76.8s-76.634 76.8-179.2 76.8z"></path></svg>
+                                        </div>
+                                        <div className="font-semibold text-xl">
+                                            {group}
+                                        </div>
                                     </div>
-                                    <div className="font-semibold text-xl">
-                                        Worship Slow
-                                    </div>
-                                </div>
-                            </h2>
-                            <SongList songs={songsByGroup({ group: 'Worship Slow' })} openPopup={openPopup} />
-                            <div className="pt-6"></div>
-                        </div>
+                                </h2>
+                                <SongList songs={songsByGroup({ group: group })} openPopup={openPopup} />
+                                <div className="pt-10"></div>
+                            </div>
+                        })}
 
-                        <div className="bg-gray-900 border border-teal-100 border-opacity-10 rounded-2xl">
-                            <h2 className="text-white py-6 px-6">
-                                <div className="flex items-center">
-                                    <div className="w-6 h-6 text-white fill-current mr-4">
-                                        <svg id="lnr-music-note" viewBox="0 0 1024 1024"><title>music-note</title><path className="path1" d="M1014.803 57.146c-5.826-4.864-13.509-6.891-20.982-5.533l-563.2 102.4c-12.173 2.213-21.021 12.816-21.021 25.187v583.632c-6.986-4.722-14.629-9.181-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.806 23.902-74.136 57.749-74.136 95.304s26.33 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.806-23.902 74.136-57.749 74.136-95.304v-516.294l512-94.549v426.475c-6.984-4.722-14.629-9.182-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.808 23.902-74.136 57.749-74.136 95.304s26.328 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.808-23.902 74.136-57.749 74.136-95.304v-665.6c0-7.59-3.368-14.79-9.197-19.654zM230.4 921.6c-102.563 0-179.2-40.547-179.2-76.8s76.637-76.8 179.2-76.8 179.2 40.547 179.2 76.8-76.637 76.8-179.2 76.8zM460.8 276.438v-75.874l512-93.091v74.416l-512 94.549zM793.6 819.2c-102.565 0-179.2-40.547-179.2-76.8s76.635-76.8 179.2-76.8c102.566 0 179.2 40.547 179.2 76.8s-76.634 76.8-179.2 76.8z"></path></svg>
-                                    </div>
-                                    <div className="font-semibold text-xl">
-                                        Worship Fast
-                                    </div>
-                                </div>
-                            </h2>
-                            <SongList songs={songsByGroup({ group: 'Worship Fast' })} openPopup={openPopup} />
-                            <div className="pt-6"></div>
-                        </div>
                     </div>
                 </div>
 
@@ -266,12 +262,12 @@ export default function Songs() {
                             </button>
                             <div className="w-full h-screen flex items-top justify-center">
                                 <div className="w-full max-w-7xl z-50 realtive bg-black bg-opacity-70" style={{ height: '100vh' }}>
-                                    <div className="w-full flex items-center justify-between py-2 px-6 border-b border-gray-800">
+                                    <div className="w-full flex items-center justify-between py-2 px-6 border-b border-teal-700 border-opacity-50">
                                         <div>
                                             <div className="pt-2"></div>
-                                            <h1 className="text-teal-400 text-lg font-bold">{popup.song['Name']}</h1>
+                                            <h1 className="text-teal-400 text-lg font-bold leading-tight">{popup.song['Name']}</h1>
 
-                                            <div className="pt-1"></div>
+                                            <div className="pt-2"></div>
                                             <div className="flex flex-wrap items-center">
                                                 <div className="text-sm mr-4">
                                                     <span className="text-gray-400 text-sm mr-2">Key:</span>
@@ -311,18 +307,19 @@ export default function Songs() {
 function SongList({ songs, openPopup }) {
     if (!songs) return <></>
 
-    return <div className="grid grid-cols-1 md:grid-cols-3 gap-1 mg:gap-4 px-2 md:px-6">
+    return <div className="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-8 px-2 md:px-6">
         {songs?.map((song, index) => {
             if (index < 12) {
                 return <button key={`song-${song.id}`}
                     onClick={openPopup(song)}
-                    className="text-left py-1 px-4 md:px-6 hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-xl duration-300 transition cursor-pointer">
+                    className="text-left py-1 px-4 md:px-6 hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-md duration-100 transition cursor-pointer">
                     <h3 className="font-bold text-teal-400 text-sm">{song['Name']}</h3>
                     <div className="font-light flex items-center">
-                        {song['Author/Singer'] ?
-                            <span className="mr-2">
+                        <span className="mr-2">
+                            {song['Author/Singer'] ?
                                 <span className="text-gray-400 text-sm">{song['Author/Singer']}</span>
-                            </span> : <></>}
+                                : <span className="text-gray-400 text-sm">Unknown</span>}
+                        </span>
                         {song['Key'] ?
                             <span className="mr-2">
                                 <span className="text-xs text-white bg-gray-800 px-2 rounded-md">
@@ -410,6 +407,13 @@ function SongDetails({ song, onSongUpdateSuccess }) {
                 {ChordSheetJS.HtmlDivFormatter.cssString('.chordSheetViewer')}
                 {`
                 .chord { color: rgb(45, 212, 191) }
+                .chordSheetViewer .column {
+                    margin-bottom: 1rem;
+                }
+                .chordSheetViewer .row {
+                    flex-wrap: wrap;
+                    line-height: 1.5;
+                }
                 .chordSheetViewer .paragraph:not(:last-child) {
                     margin-bottom: 2rem;
                     padding-bottom: 2rem;
@@ -420,49 +424,46 @@ function SongDetails({ song, onSongUpdateSuccess }) {
 
             {song ?
                 <>
-                    <div className="px-6">
-                        <div className="flex flex-wrap items-top justify-between pb-4">
-                            <div className="flex-1 w-full">
-                                <div className="flex items-center">
-                                    <h4 className="text-gray-400 uppercase text-sm mr-2">Chord sheet</h4>
-                                    <div className="flex items-center">
-                                        {editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ?
-                                            <button onClick={startEditing} className="w-8 h-8 text-white fill-current p-2 hover:bg-teal-900 rounded-lg duration-100 transition">
-                                                <svg id="lnr-pencil" viewBox="0 0 1024 1024"><title>pencil</title><path className="path1" d="M978.101 45.898c-28.77-28.768-67.018-44.611-107.701-44.611-40.685 0-78.933 15.843-107.701 44.611l-652.8 652.8c-2.645 2.645-4.678 5.837-5.957 9.354l-102.4 281.6c-3.4 9.347-1.077 19.818 5.957 26.85 4.885 4.888 11.43 7.499 18.104 7.499 2.933 0 5.891-0.502 8.744-1.541l281.6-102.4c3.515-1.28 6.709-3.312 9.354-5.958l652.8-652.8c28.768-28.768 44.613-67.018 44.613-107.702s-15.843-78.933-44.613-107.701zM293.114 873.883l-224.709 81.71 81.712-224.707 566.683-566.683 142.997 142.997-566.683 566.683zM941.899 225.098l-45.899 45.899-142.997-142.997 45.899-45.899c19.098-19.098 44.49-29.614 71.498-29.614s52.4 10.518 71.499 29.616c19.098 19.098 29.616 44.49 29.616 71.498s-10.52 52.4-29.616 71.498z"></path></svg>
-                                            </button>
-                                            : <>
-                                                <button onClick={cancelEditing} className="h-8 text-white text-sm p-1 px-3 rounded-lg bg-gray-700 hover:bg-teal-900 mr-2">Cancel</button>
-                                                <button onClick={saveEditing} className="h-8 text-white text-sm p-1 px-3 rounded-lg bg-gray-700 hover:bg-teal-900">Save</button>
-                                            </>}
-                                        <div className="text-white text-sm">
-                                            {editMode === EDIT_MODE.SUCCESS ?
-                                                <div className="text-teal-500">{editMessage}</div> : <></>}
-
-                                            {editMode === EDIT_MODE.ERROR ?
-                                                <div className="text-red-400">{editMessage}</div> : <></>}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="pt-3"></div>
+                    <div className="">
+                        <div className="flex items-center px-6">
+                            <h4 className="text-gray-400 uppercase text-sm mr-2">Chord sheet</h4>
+                            <div className="flex items-center">
                                 {editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ?
-                                    <div className="text-gray-200 bg-gray-800 bg-opacity-50 font-mono leading-loose text-base py-4 px-6">
-                                        <div className="chordSheetViewer"
-                                            dangerouslySetInnerHTML={{ __html: song['Chord Sheet'] ? formatChordSheet(song['Chord Sheet']) : '' }}>
-                                        </div>
-                                    </div> :
-                                    <div className="">
-                                        <div className="text-gray-200 bg-gray-800 bg opacity-90 font-mono leading-loose text-sm">
-                                            <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet} className="w-full bg-transparent py-4 px-6" style={{ minHeight: "800px" }}>
-                                            </textarea>
-                                        </div>
-                                    </div>}
-                            </div>
+                                    <button onClick={startEditing} className="w-8 h-8 text-white fill-current p-2 hover:bg-teal-900 rounded-lg duration-100 transition">
+                                        <svg id="lnr-pencil" viewBox="0 0 1024 1024"><title>pencil</title><path className="path1" d="M978.101 45.898c-28.77-28.768-67.018-44.611-107.701-44.611-40.685 0-78.933 15.843-107.701 44.611l-652.8 652.8c-2.645 2.645-4.678 5.837-5.957 9.354l-102.4 281.6c-3.4 9.347-1.077 19.818 5.957 26.85 4.885 4.888 11.43 7.499 18.104 7.499 2.933 0 5.891-0.502 8.744-1.541l281.6-102.4c3.515-1.28 6.709-3.312 9.354-5.958l652.8-652.8c28.768-28.768 44.613-67.018 44.613-107.702s-15.843-78.933-44.613-107.701zM293.114 873.883l-224.709 81.71 81.712-224.707 566.683-566.683 142.997 142.997-566.683 566.683zM941.899 225.098l-45.899 45.899-142.997-142.997 45.899-45.899c19.098-19.098 44.49-29.614 71.498-29.614s52.4 10.518 71.499 29.616c19.098 19.098 29.616 44.49 29.616 71.498s-10.52 52.4-29.616 71.498z"></path></svg>
+                                    </button>
+                                    : <>
+                                        <button onClick={cancelEditing} className="h-8 text-white text-sm p-1 px-3 rounded-lg bg-gray-700 hover:bg-teal-900 mr-2">Cancel</button>
+                                        <button onClick={saveEditing} className="h-8 text-white text-sm p-1 px-3 rounded-lg bg-gray-700 hover:bg-teal-900">Save</button>
+                                    </>}
+                                <div className="text-white text-sm">
+                                    {editMode === EDIT_MODE.SUCCESS ?
+                                        <div className="text-teal-500">{editMessage}</div> : <></>}
 
+                                    {editMode === EDIT_MODE.ERROR ?
+                                        <div className="text-red-400">{editMessage}</div> : <></>}
+                                </div>
+                            </div>
                         </div>
+
+                        <div className="pt-3"></div>
+                        
+                        {editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ?
+                            <div className="text-gray-200 bg-gray-800 bg-opacity-40 font-mono leading-loose text-sm sm:text-base md:text-xl py-4 px-6 shadow-inner">
+                                <div className="chordSheetViewer"
+                                    dangerouslySetInnerHTML={{ __html: song['Chord Sheet'] ? formatChordSheet(song['Chord Sheet']) : '' }}>
+                                </div>
+                            </div> :
+                            <div className="">
+                                <div className="text-gray-200 bg-gray-800 bg-opacity-40 font-mono text-sm sm:text-base md:text-xl shadow-inner">
+                                    <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet} className="w-full bg-transparent py-4 px-6 leading-loose" style={{ minHeight: "800px" }}>
+                                    </textarea>
+                                </div>
+                            </div>}
 
                         <div className="pt-12"></div>
 
-                        <div className="flex flex-wrap">
+                        <div className="flex flex-wrap px-6">
                             <div className="w-full lg:w-auto">
                                 <h4 className="text-gray-400 uppercase text-sm mb-2 text-xs">YouTube Video</h4>
                                 {song['YouTube Link'] ?
