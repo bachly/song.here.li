@@ -35,6 +35,9 @@ module.exports = {
       'lg': '1440px', // => @media (min-width: 1440px) { ... }
     },
     extend: {
+      colors: {
+        gray: colors.neutral,
+      },
       gridTemplateRows: {
         '10': 'repeat(10, minmax(0, 1fr))'
       },

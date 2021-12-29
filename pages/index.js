@@ -113,12 +113,12 @@ export default function Songs() {
         <Layout>
             <div className="bg-gray-900 relative overflow-x-hidden">
                 <div className="relative z-0 bg-image bg-no-repeat w-full"
-                    style={{ backgroundImage: "url(/img/green-waves.svg)", height: "500px", transform: "scale(1.5)" }}></div>
+                    style={{ backgroundImage: "url(/img/green-waves.svg)", height: "500px", transform: "scale(1.5)", top: "-200px" }}></div>
 
                 <div style={{
                     position: "absolute",
                     width: "100%",
-                    top: "0",
+                    top: "-200px",
                     height: "500px",
                     clipPath: "url(#clip)",
                     transformOrigin: "left top",
@@ -135,8 +135,9 @@ export default function Songs() {
                 <header className="fixed z-50 top-0 left-0 w-full bg-gray-900 bg-opacity-20 backdrop-blur-sm">
                     <div className="px-6">
                         <div className="flex items-center justify-between">
-                            <div className="text-white font-semibold text-2xl text-center xl:text-left py-3">
-                                Songs
+                            <div className="text-white text-2xl text-center xl:text-left py-3">
+                                <span className="font-bold">Song</span>
+                                <span className="font-light">Here</span>
                             </div>
                             <menu className="flex items-center justify-center">
                                 <a href="#schedule" className="px-3 py-2 hover:bg-teal-900 hover:bg-opacity-70 duration-100 transition rounded-lg">
@@ -159,9 +160,9 @@ export default function Songs() {
 
                 <div id="schedule" className="relative" style={{ top: "-200px" }}></div>
 
-                <div style={{ marginTop: "-100px" }}></div>
+                <div style={{ marginTop: "-300px" }}></div>
 
-                <div className="relative z-10 max-w-7xl mx-auto">
+                <div className="relative z-10 max-w-7xl mx-auto px-4">
                     <div className="px-6 bg-gray-900 bg-opacity-40 backdrop-blur-sm rounded-2xl border border-teal-100 border-opacity-10">
                         <h2 className="text-white pt-6 pb-2">
                             <div className="flex items-center">
@@ -172,7 +173,7 @@ export default function Songs() {
                                     </svg>
                                 </div>
                                 <div className="font-semibold text-xl">
-                                    Schedule
+                                    Performances
                                 </div>
                             </div>
                         </h2>
@@ -217,7 +218,7 @@ export default function Songs() {
 
                     <div id="songs" className="pt-36"></div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-12">
                         <div className="bg-gray-900 border border-teal-100 border-opacity-10 rounded-2xl">
                             <h2 className="text-white py-6 px-6">
                                 <div className="flex items-center">
@@ -225,7 +226,7 @@ export default function Songs() {
                                         <svg id="lnr-music-note" viewBox="0 0 1024 1024"><title>music-note</title><path className="path1" d="M1014.803 57.146c-5.826-4.864-13.509-6.891-20.982-5.533l-563.2 102.4c-12.173 2.213-21.021 12.816-21.021 25.187v583.632c-6.986-4.722-14.629-9.181-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.806 23.902-74.136 57.749-74.136 95.304s26.33 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.806-23.902 74.136-57.749 74.136-95.304v-516.294l512-94.549v426.475c-6.984-4.722-14.629-9.182-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.808 23.902-74.136 57.749-74.136 95.304s26.328 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.808-23.902 74.136-57.749 74.136-95.304v-665.6c0-7.59-3.368-14.79-9.197-19.654zM230.4 921.6c-102.563 0-179.2-40.547-179.2-76.8s76.637-76.8 179.2-76.8 179.2 40.547 179.2 76.8-76.637 76.8-179.2 76.8zM460.8 276.438v-75.874l512-93.091v74.416l-512 94.549zM793.6 819.2c-102.565 0-179.2-40.547-179.2-76.8s76.635-76.8 179.2-76.8c102.566 0 179.2 40.547 179.2 76.8s-76.634 76.8-179.2 76.8z"></path></svg>
                                     </div>
                                     <div className="font-semibold text-xl">
-                                        Slow Songs to Practice
+                                        Worship Slow
                                     </div>
                                 </div>
                             </h2>
@@ -240,7 +241,7 @@ export default function Songs() {
                                         <svg id="lnr-music-note" viewBox="0 0 1024 1024"><title>music-note</title><path className="path1" d="M1014.803 57.146c-5.826-4.864-13.509-6.891-20.982-5.533l-563.2 102.4c-12.173 2.213-21.021 12.816-21.021 25.187v583.632c-6.986-4.722-14.629-9.181-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.806 23.902-74.136 57.749-74.136 95.304s26.33 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.806-23.902 74.136-57.749 74.136-95.304v-516.294l512-94.549v426.475c-6.984-4.722-14.629-9.182-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.808 23.902-74.136 57.749-74.136 95.304s26.328 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.808-23.902 74.136-57.749 74.136-95.304v-665.6c0-7.59-3.368-14.79-9.197-19.654zM230.4 921.6c-102.563 0-179.2-40.547-179.2-76.8s76.637-76.8 179.2-76.8 179.2 40.547 179.2 76.8-76.637 76.8-179.2 76.8zM460.8 276.438v-75.874l512-93.091v74.416l-512 94.549zM793.6 819.2c-102.565 0-179.2-40.547-179.2-76.8s76.635-76.8 179.2-76.8c102.566 0 179.2 40.547 179.2 76.8s-76.634 76.8-179.2 76.8z"></path></svg>
                                     </div>
                                     <div className="font-semibold text-xl">
-                                        Fast Songs to Practice
+                                        Worship Fast
                                     </div>
                                 </div>
                             </h2>
@@ -260,7 +261,7 @@ export default function Songs() {
                                 <span className="sr-only">Close popup</span>
                             </button>
                             <div className="w-full h-screen flex items-top justify-center">
-                                <div className="w-full max-w-6xl z-50 realtive bg-black bg-opacity-70" style={{ height: '100vh' }}>
+                                <div className="w-full max-w-7xl z-50 realtive bg-black bg-opacity-70" style={{ height: '100vh' }}>
                                     <div className="w-full flex items-center justify-between py-2 px-6 border-b border-gray-800">
                                         <div>
                                             <div className="pt-2"></div>
@@ -302,24 +303,33 @@ export default function Songs() {
 function SongList({ songs, openPopup }) {
     if (!songs) return <></>
 
-    return songs?.map((song, index) => (<a key={`song-${song.id}`}
-        onClick={openPopup(song)}
-        className={`block ${index % 2 === 1 ? 'bg-teal-900 bg-opacity-10' : ''} overflow-hidden hover:bg-teal-900 hover:bg-opacity-30 duration-100 transition cursor-pointer`}>
-        <h4 className="py-4 px-6 text-gray-200">
-            <div className="flex items-center">
-                <div className="flex items-center">
-                    <div className="text-base text-gray-400 text-sm">{song['Name']}</div>
-                    <div className="text-sm font-light text-white">
-                        {song['Key'] ? <span className="ml-4 text-teal-400 text-sm bg-teal-900 bg-opacity-30 p-1 px-2 rounded-md">{song['Key']}</span> : <></>}
-                        {song['BPM'] ? <span className="ml-4 text-gray-400 text-sm">{song['BPM']}</span> : <></>}
-                    </div>
+    return <div className="grid grid-cols-3 gap-4 px-6">
+        {songs?.map((song, index) => (
+            <button key={`song-${song.id}`}
+                onClick={openPopup(song)}
+                className="text-left py-4 px-6 hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-xl duration-300 transition cursor-pointer">
+                <h4 className="font-semibold text-gray-200">{song['Name']}</h4>
+                <div className="mt-1 text-sm font-light text-white">
+                    {song['Key'] ?
+                        <span className="mr-4">
+                            <span className="">
+                                Key:
+                            </span>
+                            <span className="ml-2 text-teal-400 text-sm bg-teal-900 bg-opacity-30 p-1 px-2 rounded-md">
+                                {song['Key']}
+                            </span>
+                        </span>
+                        : <></>}
+                    {song['BPM'] ?
+                        <span>
+                            <span className="">
+                                BPM:
+                            </span>
+                            <span className="ml-2 text-gray-400 text-sm">{song['BPM']}</span>
+                        </span> : <></>}
                 </div>
-                <div>
-                </div>
-            </div>
-        </h4>
-    </a>
-    ))
+            </button>
+        ))}</div>
 }
 
 function SongDetails({ song, onSongUpdateSuccess }) {
@@ -384,7 +394,6 @@ function SongDetails({ song, onSongUpdateSuccess }) {
     }
 
     function formatChordSheet(chordProText) {
-        // return parseChordPro(chordProText);
         const song = parser.parse(chordProText);
         return formatter.format(song);
     }
@@ -407,29 +416,8 @@ function SongDetails({ song, onSongUpdateSuccess }) {
 
             {song ?
                 <>
-                    <div className="max-w-7xl mx-auto p-6">
-                        <div className="flex flex-wrap">
-                            <div className="w-full lg:w-auto flex-1">
-                                <h4 className="text-gray-400 uppercase text-sm mb-2 text-xs">Backing Tracks</h4>
-                                <div className="">
-                                    <div className="bg-gray-800 h-16 w-4/5 mb-2"><div class="text-white p-2 text-xs">Lead</div></div>
-                                    <div className="bg-gray-800 h-16 w-4/5 mb-2"><div class="text-white p-2 text-xs">Band</div></div>
-                                    <div className="bg-gray-800 h-16 w-4/5 mb-2"><div class="text-white p-2 text-xs">Cue/Click</div></div>
-                                </div>
-                            </div>
-                            <div className="w-full lg:w-auto">
-                                <h4 className="text-gray-400 uppercase text-sm mb-2 text-xs">YouTube Video</h4>
-                                {song['YouTube Link'] ?
-                                    <div className="bg-gray-800" style={{ width: '400px', height: '225px' }}>
-                                        <iframe width="400px" height="225px"
-                                            src={`https://www.youtube.com/embed/${getYouTubeID(song['YouTube Link'])}?controls=1&enablejsapi=1`} frameBorder="0"
-                                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                                    </div>
-                                    : <></>}
-                            </div>
-                        </div>
-
-                        <div className="flex flex-wrap items-top justify-between pt-8 pb-4">
+                    <div className="px-6">
+                        <div className="flex flex-wrap items-top justify-between pb-4">
                             <div className="flex-1 w-full">
                                 <div className="flex items-center">
                                     <h4 className="text-gray-400 uppercase text-sm mr-2">Chord sheet</h4>
@@ -467,6 +455,23 @@ function SongDetails({ song, onSongUpdateSuccess }) {
                             </div>
 
                         </div>
+
+                        <div className="pt-12"></div>
+
+                        <div className="flex flex-wrap">
+                            <div className="w-full lg:w-auto">
+                                <h4 className="text-gray-400 uppercase text-sm mb-2 text-xs">YouTube Video</h4>
+                                {song['YouTube Link'] ?
+                                    <div className="bg-gray-800" style={{ width: '400px', height: '225px' }}>
+                                        <iframe width="400px" height="225px"
+                                            src={`https://www.youtube.com/embed/${getYouTubeID(song['YouTube Link'])}?controls=1&enablejsapi=1`} frameBorder="0"
+                                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                    </div>
+                                    : <></>}
+                            </div>
+                        </div>
+
+                        <div className="pt-12"></div>
                     </div>
                 </> : <div className="text-gray-300 h-screen flex items-center justify-center">Loading...</div>}
         </div>

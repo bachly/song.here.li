@@ -36,12 +36,12 @@ module.exports = {
         }
         return cfg;
     },
-    async exportPathMap(defaultPathMap) {
-        return {
-            ...defaultPathMap,
-            ...getPathsForPosts(),
-        };
-    },
+    // async exportPathMap(defaultPathMap) {
+    //     return {
+    //         ...defaultPathMap,
+    //         ...getPathsForPosts(),
+    //     };
+    // },
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')],
     },

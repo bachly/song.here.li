@@ -35,13 +35,8 @@ export default function Layout({ children }) {
         <link rel="icon" type="image/png" sizes="32x32" href={`${basePath}/favicon_io/favicon-32x32.png`} />
         <link rel="icon" type="image/png" sizes="16x16" href={`${basePath}/favicon_io/favicon-16x16.png`} />
         <link rel="manifest" href={`${basePath}/favicon_io/site.webmanifest`} />
-
-        {/* Head Javascript */}
-        <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
       </Head>
-      <main>
-        {children}
-      </main>
+      {children}
     </>
   );
 };
