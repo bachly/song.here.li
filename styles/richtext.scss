@@ -1,0 +1,155 @@
+/**** Rich text editor's content ****/
+.rte {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0 0 1em 0;
+    line-height: 1.4;
+
+    &:first-child {
+      margin-top: 0 !important;
+    }
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  h1 {
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+  }
+
+  h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+  }
+
+  h3 {
+    display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+  }
+
+  h4 {
+    display: block;
+    margin-block-start: 1.33em;
+    margin-block-end: 1.33em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+  }
+
+  h5 {
+    display: block;
+    font-size: 0.83em;
+    margin-block-start: 1.67em;
+    margin-block-end: 1.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+  }
+
+  h6 {
+    display: block;
+    font-size: 0.67em;
+    margin-block-start: 2.33em;
+    margin-block-end: 2.33em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+  }
+
+  // table
+
+  figure.table {
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 1px solid #e4e7eb; // gray-200
+    background: white;
+
+    thead {
+      background-color: #0000000d;
+      color: #444;
+      text-align: left;
+      vertical-align: bottom;
+    }
+
+    td,
+    th {
+      min-width: 2em;
+      padding: 0.4em;
+      border: 1px solid #e4e7eb; // gray-200
+      font-size: inherit;
+      margin: 0;
+      overflow: visible;
+    }
+
+    th {
+      font-weight: 700;
+    }
+
+    td {
+      background-color: transparent;
+    }
+
+    &.style-1 {
+      border: none;
+
+      td,
+      th {
+        padding: 0.4em 0;
+        border-bottom: 1px solid #e4e7eb; // gray-200
+        border-right-width: 0;
+        border-top-width: 0;
+        border-left-width: 0;
+      }
+    }
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  a {
+    color: var(--color-primary-500) !important;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    list-style-type: square;
+    margin: 0 0 1rem 1.5rem;
+  }
+
+  ol {
+    list-style-type: decimal;
+    margin: 0 0 1rem 1.5rem;
+  }
+}
