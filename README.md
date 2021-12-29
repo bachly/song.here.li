@@ -1,7 +1,7 @@
 # SongHere
 A BYOD (Bring-Your-Own-Data) web app to manage songs, chords &amp; performances. Linked with AirTable.
 
-## What is BYOD?
+## What is a BYOD web app?
 
 * BYOD web app means that you can bring in your own datasource. 
 * The web app is only responsible to display the data in a User Interface that you can interact with.
