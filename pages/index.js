@@ -121,8 +121,8 @@ export default function Home() {
         <Layout>
             <div className="bg-gray-900 relative overflow-x-hidden">
                 <header className="relative" style={{ height: "100vh" }}>
-                    <div className="relative top-0 left-0 w-full z-0 bg-image bg-no-repeat bg-cover bg-blend-multiply"
-                        style={{ backgroundImage: "url(/img/green-waves.svg)", height: "40vh" }}>
+                    <div className="relative top-0 left-0 w-full z-0 bg-image bg-no-repeat bg-cover"
+                        style={{ backgroundImage: "url(/img/green-waves.svg)", height: "50vh" }}>
 
                         {/* <div style={{
                             position: "absolute",
@@ -141,7 +141,7 @@ export default function Home() {
                             </svg>
                         </div> */}
 
-                        <div className="pt-32"></div>
+                        <div className="pt-56"></div>
 
                         <h1 className="relative z-10 px-4">
                             <div className="text-center text-gray-100 text-sm sm:text-base md:text-lg uppercase tracking-wider font-semibold">Welcome To</div>
