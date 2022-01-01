@@ -4,6 +4,9 @@ import Airtable from 'airtable';
 import { format } from 'date-fns';
 import ChordSheetJS from 'chordsheetjs';
 import Layout from '../page-components/Layout';
+import SongList from '../page-components/SongList';
+import HeaderForHome from '../page-components/HeaderForHome';
+import { Container, H2, Page } from '../page-components/Common';
 
 const AIRTABLE_API_KEY = 'keyjmQKQsWuyPGqct';
 const AIRTABLE_BASE_ID = 'app8970gPuPsnHk2l';
@@ -13,56 +16,6 @@ export default function Home() {
     const [allSongs, setAllSongs] = React.useState({});
     const [songGroups, setSongGroups] = React.useState([]);
     const [schedules, setSchedules] = React.useState([]);
-
-    const [popup, setPopup] = React.useState({
-        visible: false,
-        song: null
-    })
-
-    function closePopup(event) {
-        event && event.preventDefault();
-
-        document.getElementsByTagName('body')[0].classList = ""
-
-        setPopup({
-            visible: false
-        })
-    }
-
-    function openPopup(song) {
-        return (event) => {
-            event && event.preventDefault();
-
-            document.getElementsByTagName('body')[0].classList = "overflow-hidden"
-
-            setPopup({
-                visible: true,
-                song
-            })
-        }
-    }
-
-    function onSongUpdateSuccess({ song }) {
-        setAllSongs({
-            ...allSongs,
-            [song.id]: song
-        })
-
-        setPopup({
-            ...popup,
-            song
-        })
-
-        console.log("Updated song:", song);
-    }
-
-    function songsByGroup({ group }) {
-        return _.compact(Object.keys(allSongs).map(id => {
-            if (allSongs[id]['Group'] === group) {
-                return allSongs[id]
-            }
-        }))
-    }
 
     React.useEffect(function onLoad() {
         const allSongs = {}
@@ -119,41 +72,73 @@ export default function Home() {
 
     return (
         <Layout>
-            <div className="bg-gray-900 relative overflow-x-hidden">
-                <header className="relative" style={{ height: "100vh" }}>
-                    <div className="relative top-0 left-0 w-full z-0 bg-image bg-no-repeat bg-cover"
-                        style={{ backgroundImage: "url(/img/green-waves.svg)", height: "50vh" }}>
+            <Page>
+                <HeaderForHome title1="Worship" title2="Here" />
 
-                        {/* <div style={{
-                            position: "absolute",
-                            width: "100%",
-                            bottom: "60px",
-                            height: "100px",
-                            clipPath: "url(#clip)",
-                            transformOrigin: "left top",
-                            transform: "scale(3)",
-                            background: "linear-gradient(rgb(12 48 62) 41%, rgb(23 23 23 / 100%) 75%)"
-                        }}>
-                            <svg>
-                                <clipPath id="clip">
-                                    <path d="M2.27373675e-13,48.3123102 C47.2526058,39.8757818 86.9623358,35.6575176 119.12919,35.6575176 C178.250668,35.6575176 206.827687,48.0370982 280.432303,48.0370982 C367.079105,48.0370982 376.540461,35.6575176 458.684986,41.2972131 C506.645747,44.5899961 571.277749,53.0948639 660.91839,53.0948639 C710.843933,53.0948639 849.202679,35.6575176 913.373388,35.6575176 C1071.11616,35.6575176 1092.85843,33.5132008 1277.6238,53.0948639 C1314.26691,56.9783463 1427.93201,43.4008155 1534.45719,41.2972131 C1555.56953,40.8802979 1577.41713,43.1269263 1600,48.0370982 L1600,150 L2.27373675e-13,150 L2.27373675e-13,48.3123102 Z" id="Path" stroke="#000000"></path>
-                                </clipPath>
-                            </svg>
-                        </div> */}
+                <Container>
+                    <H2 icon="music">Songs</H2>
 
-                        <div className="pt-36 lg:pt-48 xl:pt-56"></div>
+                    <div className="pt-6"></div>
 
-                        <h1 className="relative z-10 px-4">
-                            <div className="text-center text-gray-100 text-sm sm:text-base md:text-lg uppercase tracking-wider font-semibold">Welcome To</div>
-                            <div className="text-white text-center text-4xl sm:text-5xl md:text-7xl">
-                                <span className="font-bold">Worship</span>
-                                <span className="font-light">Here</span>
-                            </div>
-                            <div className="mt-1 sm:mt-2 md:mt-3 text-center text-gray-100 text-sm md:text-xl font-regular">Personal Worship Song Books linked with AirTable</div>
-                        </h1>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
+                        {songGroups.map(group => {
+                            return <a key={group} href={`/list?group=${encodeURIComponent(group)}`} className="bg-gray-800 bg-opacity-50 hover:bg-opacity-90 duration-200 transition rounded-lg backdrop-blur-sm">
+                                <h2 className="text-white py-6 px-6">
+                                    <div className="flex items-center justify-center">
+                                        <div className="font-semibold text-base sm:text-lg md:text-xl">
+                                            {group}
+                                        </div>
+                                    </div>
+                                </h2>
+                            </a>
+                        })}
                     </div>
-                </header>
-            </div>
+
+                    <div className="py-12"></div>
+
+                    <div className="bg-gray-900 bg-opacity-40 backdrop-blur-sm rounded-2xl">
+                        <H2 icon="calendar">Schedules</H2>
+
+                        <div className="pt-6"></div>
+
+                        {schedules.length > 0 ?
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-6">
+                                {schedules.map((schedule, index) => {
+                                    if (index > 5) {
+                                        return;
+                                    }
+
+                                    return <button key={`schedule-${index}`} className="bg-gray-800 bg-opacity-50 hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-xl duration-100 transition">
+                                        <h3 className="py-2 px-5">
+                                            <div className="flex items-center justify-between">
+                                                <div className="font-bold text-sm text-teal-400">{format(new Date(schedule.date), 'eee dd MMM yyyy')}</div>
+                                                <div className="text-xs text-white bg-gray-800 px-2 rounded-md">{schedule.service}</div>
+                                            </div>
+                                        </h3>
+                                        <div className="text-left pb-1">
+                                            <div className="py-1 px-5">
+                                                <div className="text-gray-400 text-sm">{schedule.song1 && schedule.song1['Name']}</div>
+                                            </div>
+                                            <div className="py-1 px-5">
+                                                <div className="text-gray-400 text-sm">{schedule.song2 && schedule.song2['Name']}</div>
+                                            </div>
+                                            <div className="py-1 px-5">
+                                                <div className="text-gray-400 text-sm">{schedule.song3 && schedule.song3['Name']}</div>
+                                            </div>
+                                        </div>
+                                    </button>
+                                })}
+                            </div> : <>
+                                <div className="text-white text-center">
+                                    Loading...
+                                </div>
+                            </>}
+                        <div className="pt-6"></div>
+                    </div>
+
+                    <div className="pt-24"></div>
+                </Container>
+            </Page>
         </Layout>
     );
 }
