@@ -121,7 +121,7 @@ export default function Home() {
         <Layout>
             <div className="bg-gray-900 relative overflow-x-hidden">
                 <header className="relative" style={{ height: "100vh" }}>
-                    <div className="relative top-0 left-0 w-full z-0 bg-image bg-no-repeat bg-cover bg-contain xl:bg-cover"
+                    <div className="relative top-0 left-0 w-full z-0 bg-image bg-no-repeat bg-cover"
                         style={{ backgroundImage: "url(/img/green-waves.svg)", height: "50vh" }}>
 
                         {/* <div style={{
