@@ -43,6 +43,7 @@ export default function Home() {
     }
 
     function onSongUpdateSuccess({ song }) {
+        console.log(song, popup);
         setAllSongs({
             ...allSongs,
             [song.id]: song

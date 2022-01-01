@@ -24,7 +24,7 @@ export function H2({ children, icon }) {
 }
 
 export function Container({ children }) {
-    return <div className="relative z-10 max-w-5xl mx-auto px-4">{children}</div>
+    return <div className="relative z-10 md:max-w-4xl lg:max-w-5xl mx-auto px-4">{children}</div>
 }
 
 export function Page({ children }) {

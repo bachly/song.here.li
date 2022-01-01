@@ -1,4 +1,4 @@
-export default function SongList({ songs, openPopup }) {
+export default function SongList({ songs = {}, openPopup }) {
     if (!songs) return <></>
 
     return <>
@@ -11,7 +11,8 @@ export default function SongList({ songs, openPopup }) {
             </div>
         </div>
         <div className="py-2 px-6">
-            {songs?.map((song, index) => {
+            {Object.keys(songs).map((id, index) => {
+                const song = songs[id];
                 return <button key={`song-${song.id}`}
                     onClick={openPopup && openPopup(song)}
                     className="w-full block text-left hover:bg-gray-800 hover:bg-opacity-50 border border-transparent rounded-md duration-100 transition cursor-pointer">

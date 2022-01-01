@@ -61,6 +61,7 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                 id: records[0].id,
                 ...records[0].fields
             });
+            console.log(records);
             onSongUpdateSuccess({
                 song: {
                     id: song.id,
@@ -104,19 +105,19 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                         </div>
                     </div>
 
-                    <div className="absolute top-0 left-0 w-full z-10 bg-gray-900 bg-opacity-70 backdrop-blur-sm">
+                    <div className="absolute top-0 left-0 w-full z-10 bg-gray-900 bg-opacity-10 backdrop-blur-sm">
 
                         <div className="pt-6"></div>
 
-                        <div className="text-center text-gray-100 text-xs sm:text-base uppercase tracking-wider font-regular opacity-50">
+                        <div className="text-center text-gray-100 text-xs sm:text-sm uppercase tracking-wider font-regular">
                             Chord Sheet
                         </div>
 
-                        <h1 className="mt-2 relative z-10 px-4 max-w-5xl mx-auto">
+                        <h1 className="relative z-10 px-4 max-w-5xl mx-auto">
                             <div className="text-white text-center text-lg sm:text-2xl md:text-3xl">
                                 <span className="font-bold">{song['Name']}</span>
                             </div>
-                            <div className="mt-1 sm:mt-2 text-center text-gray-100 text-sm md:text-base font-regular opacity-80">
+                            <div className="mt-1 text-center text-gray-100 text-sm md:text-base font-regular opacity-60">
                                 {song['Author/Singer']}
                             </div>
                         </h1>
@@ -125,7 +126,7 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                     </div>
 
                     <div className="absolute z-0 left-0 w-full">
-                        <div className="overflow-y-scroll" style={{ height: "calc(90vh)" }}>
+                        <div className="overflow-y-scroll" style={{ height: "calc(100vh)" }}>
                             <div className="pt-36"></div>
 
                             <style>
@@ -147,37 +148,28 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
 
                             <div className="max-w-2xl mx-auto">
                                 {editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ?
-                                    <div className="text-gray-200 leading-loose text-sm sm:text-base md:text-xl py-4 px-6 shadow-inner">
-                                        <div className="chordSheetViewer"
-                                            dangerouslySetInnerHTML={{ __html: song['Chord Sheet'] ? formatChordSheet(song['Chord Sheet']) : '' }}>
+                                    <>
+                                        <div className="text-gray-200 leading-loose text-sm sm:text-base md:text-xl py-4">
+                                            <div className="chordSheetViewer"
+                                                dangerouslySetInnerHTML={{ __html: song['Chord Sheet'] ? formatChordSheet(song['Chord Sheet']) : '' }}>
+                                            </div>
                                         </div>
-                                    </div> :
+                                        <div className="pt-12"></div>
+                                        <div className="bg-gray-800 w-full h-full" style={{ maxWidth: '400px', maxHeight: '225px' }}>
+                                            <iframe width="100%" height="225px"
+                                                src={`https://www.youtube.com/embed/${getYouTubeID(song['YouTube Link'])}?controls=1&enablejsapi=1`} frameBorder="0"
+                                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                        </div>
+                                        <div className="pt-48"></div>
+                                    </>
+                                    :
                                     <div className="">
                                         <div className="text-gray-200 bg-gray-800 bg-opacity-40  text-sm sm:text-base md:text-xl shadow-inner">
-                                            <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet} className="w-full bg-transparent py-4 px-6 leading-loose" style={{ minHeight: "800px" }}>
+                                            <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet} className="w-full bg-transparent py-4 px-6 leading-loose shadow-inner" style={{ minHeight: "calc(100vh - 300px)" }}>
                                             </textarea>
                                         </div>
                                     </div>}
                             </div>
-
-                            <div className="pt-12"></div>
-
-                            <div className="max-w-2xl mx-auto">
-                                <div className="flex flex-wrap px-6">
-                                    <div className="w-full lg:w-auto">
-                                        <h4 className="text-gray-400 uppercase text-sm mb-2 text-xs">YouTube Video</h4>
-                                        {song['YouTube Link'] ?
-                                            <div className="bg-gray-800 w-full h-full" style={{ maxWidth: '400px', maxHeight: '225px' }}>
-                                                <iframe width="100%" height="225px"
-                                                    src={`https://www.youtube.com/embed/${getYouTubeID(song['YouTube Link'])}?controls=1&enablejsapi=1`} frameBorder="0"
-                                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                                            </div>
-                                            : <></>}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="pt-12"></div>
                         </div>
                     </div>
                 </div> : <div className="text-gray-300 h-screen flex items-center justify-center">Loading...</div>}

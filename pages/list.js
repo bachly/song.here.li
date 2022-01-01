@@ -7,6 +7,7 @@ import Layout from '../page-components/Layout';
 import SongList from '../page-components/SongList';
 import HeaderForPage from '../page-components/HeaderForPage';
 import SongDetails from '../page-components/SongDetails';
+import { Container } from '../page-components/Common';
 
 const AIRTABLE_API_KEY = 'keyjmQKQsWuyPGqct';
 const AIRTABLE_BASE_ID = 'app8970gPuPsnHk2l';
@@ -46,10 +47,10 @@ export default function List({ tableName = 'Song List' }) {
     }
 
     function onSongUpdateSuccess({ song }) {
-        setAllSongs({
-            ...allSongs,
+        setItems({
+            ...items,
             [song.id]: {
-                ...allSongs[song.id],
+                ...items[song.id],
                 ...song
             }
         })
@@ -57,7 +58,7 @@ export default function List({ tableName = 'Song List' }) {
         setPopup({
             ...popup,
             song: {
-                ...allSongs[song.id],
+                ...items[song.id],
                 ...song
             }
         })
@@ -65,17 +66,9 @@ export default function List({ tableName = 'Song List' }) {
         console.log("Updated song:", song);
     }
 
-    function songsByGroup({ group }) {
-        return _.compact(Object.keys(allSongs).map(id => {
-            if (allSongs[id]['Group'] === group) {
-                return allSongs[id]
-            }
-        }))
-    }
-
     React.useEffect(function onLoad() {
         if (router) {
-            const allItems = []
+            const allItems = {};
 
             if (group) {
 
@@ -101,7 +94,7 @@ export default function List({ tableName = 'Song List' }) {
                             'Author/Singer': record.get('Author/Singer') || null,
                         }
 
-                        allItems.push(song);
+                        allItems[song.id] = song;
                     });
 
                     setItems(allItems);
@@ -116,9 +109,9 @@ export default function List({ tableName = 'Song List' }) {
                 <div className="bg-gray-900 relative overflow-x-hidden">
                     <HeaderForPage tag="Song List" title={group} />
 
-                    <div className="relative z-10 max-w-6xl mx-auto">
+                    <Container>
                         <SongList songs={items} openPopup={openPopup} />
-                    </div>
+                    </Container>
 
                     {/* Popup */}
                     {
@@ -127,9 +120,9 @@ export default function List({ tableName = 'Song List' }) {
                                 <button className="fixed z-50 w-full h-full bg-gray-900 bg-opacity-30 backdrop-blur-sm cursor-zoom-out" onClick={closePopup}>
                                     <span className="sr-only">Close popup</span>
                                 </button>
-                                <div className="w-full h-screen flex items-end justify-center">
-                                    <div id="popupBody" className="w-full max-w-6xl z-50 realtive bg-gray-900 bg-opacity-90 border border-gray-700 border-opacity-30 rounded-2xl overflow-hidden" style={{ height: '90vh' }}>
-                                        <div style={{ height: "calc(95vh - 4rem)" }}>
+                                <div className="w-full h-screen flex items-center justify-center">
+                                    <div id="popupBody" className="w-full sm:max-w-2xl md:max-w-4xl lg:max-w-6xl z-50 realtive bg-gray-900 bg-opacity-90 border border-gray-700 border-opacity-30 rounded-2xl shadow-2xl overflow-hidden">
+                                        <div style={{ height: "calc(100vh - 100px)" }}>
                                             <SongDetails //
                                                 song={popup.song}
                                                 onSongUpdateSuccess={onSongUpdateSuccess} />

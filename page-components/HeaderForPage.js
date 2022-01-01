@@ -1,10 +1,12 @@
+import { Container } from "./Common";
+
 export default function HeaderForPage({ tag, title, description }) {
     return <header className="relative" style={{ height: "400px" }}>
         <div className="absolute top-0 left-0 w-full h-full z-0 bg-image bg-no-repeat bg-cover"
             style={{ backgroundImage: "url(/img/green-waves.svg)" }}>
 
             <a href="/" className="absolute top-2 left-2 bg-gray-900 bg-opacity-50 hover:bg-opacity-70 hover:shadow-xl duration-200 transition w-10 h-10 p-3 rounded-lg text-white fill-current flex items-center justify-center">
-                <svg id="lnr-chevron-left" viewBox="0 0 1024 1024"><title>chevron-left</title><path class="path1" d="M716.8 1024c6.552 0 13.102-2.499 18.101-7.499 9.998-9.997 9.998-26.206 0-36.203l-442.698-442.698 442.698-442.699c9.998-9.997 9.998-26.206 0-36.203s-26.206-9.998-36.203 0l-460.8 460.8c-9.998 9.997-9.998 26.206 0 36.203l460.8 460.8c5 5 11.55 7.499 18.102 7.499z"></path></svg>
+                <svg id="lnr-chevron-left" viewBox="0 0 1024 1024"><title>chevron-left</title><path className="path1" d="M716.8 1024c6.552 0 13.102-2.499 18.101-7.499 9.998-9.997 9.998-26.206 0-36.203l-442.698-442.698 442.698-442.699c9.998-9.997 9.998-26.206 0-36.203s-26.206-9.998-36.203 0l-460.8 460.8c-9.998 9.997-9.998 26.206 0 36.203l460.8 460.8c5 5 11.55 7.499 18.102 7.499z"></path></svg>
             </a>
 
             <div style={{
@@ -26,18 +28,18 @@ export default function HeaderForPage({ tag, title, description }) {
 
             <div className="pt-36 lg:pt-48 xl:pt-56"></div>
 
-            <div className="px-4 max-w-5xl mx-auto">
-                <span className="text-left text-gray-100 text-sm sm:text-base uppercase tracking-wider font-regular opacity-50">
+            <Container>
+                <div className="text-left text-gray-100 text-sm sm:text-base uppercase tracking-wider font-regular opacity-50">
                     {tag}
-                </span>
-            </div>
-
-            <h1 className="mt-2 relative z-10 px-4 max-w-5xl mx-auto">
-                <div className="text-white text-left text-4xl sm:text-5xl md:text-7xl">
-                    <span className="font-bold">{title}</span>
                 </div>
-                <div className="mt-1 sm:mt-2 md:mt-3 text-left text-gray-100 text-sm md:text-xl font-regular opacity-80">{description}</div>
-            </h1>
+
+                <h1 className="mt-2">
+                    <div className="text-white text-left text-4xl sm:text-5xl md:text-7xl">
+                        <span className="font-bold">{title}</span>
+                    </div>
+                    <div className="mt-1 sm:mt-2 md:mt-3 text-left text-gray-100 text-sm md:text-xl font-regular opacity-80">{description}</div>
+                </h1>
+            </Container>
         </div>
     </header>
 
