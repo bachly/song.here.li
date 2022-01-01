@@ -121,7 +121,7 @@ export default function Home() {
         <Layout>
             <div className="bg-gray-900 relative overflow-x-hidden">
                 <header className="relative" style={{ height: "100vh" }}>
-                    <div className="relative top-0 left-0 w-full z-0 bg-image bg-no-repeat bg-cover"
+                    <div className="relative top-0 left-0 w-full z-0 bg-image bg-no-repeat bg-cover bg-contain xl:bg-cover"
                         style={{ backgroundImage: "url(/img/green-waves.svg)", height: "50vh" }}>
 
                         {/* <div style={{
@@ -141,7 +141,7 @@ export default function Home() {
                             </svg>
                         </div> */}
 
-                        <div className="pt-56"></div>
+                        <div className="pt-36 lg:pt-48 xl:pt-56"></div>
 
                         <h1 className="relative z-10 px-4">
                             <div className="text-center text-gray-100 text-sm sm:text-base md:text-lg uppercase tracking-wider font-semibold">Welcome To</div>
@@ -151,8 +151,6 @@ export default function Home() {
                             </div>
                             <div className="mt-1 sm:mt-2 md:mt-3 text-center text-gray-100 text-sm md:text-xl font-regular">Personal Worship Song Books linked with AirTable</div>
                         </h1>
-
-                        <div className="pt-96"></div>
                     </div>
                 </header>
             </div>
