@@ -109,11 +109,11 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
 
                         <div className="pt-2"></div>
 
-                        <h1 className="relative z-10 px-4 max-w-5xl mx-auto">
-                            <div className="text-white text-center text-lg sm:text-2xl md:text-3xl">
+                        <h1 className="relative z-10 pt-2 px-6 max-w-5xl mx-auto">
+                            <div className="text-white text-left text-lg sm:text-2xl md:text-3xl">
                                 <span className="font-bold">{song['Name']}</span>
                             </div>
-                            <div className="text-center text-gray-100 text-sm md:text-base font-regular opacity-60">
+                            <div className="text-left text-gray-100 text-sm md:text-base font-regular opacity-60">
                                 {song['Author/Singer']}
                             </div>
                         </h1>
@@ -123,7 +123,7 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
 
                     <div className="absolute z-0 left-0 w-full">
                         <div className="overflow-y-scroll" style={{ height: "calc(100vh)" }}>
-                            <div className="pt-36"></div>
+                            <div className="pt-24"></div>
 
                             <style>
                                 {ChordSheetJS.HtmlDivFormatter.cssString('.chordSheetViewer')}
@@ -137,39 +137,56 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                             line-height: 1;
                         }
                         .chordSheetViewer .paragraph:not(:last-child) {
-                            border-bottom: 1px dashed #333;
+                            padding-bottom: 1rem;
                         }
+                        .chordSheetViewer .chord {
+                            line-height: 1.5;
+                        }
+
                         .chordSheetViewer .lyrics:after {
                             content: ' ';
                             display: inline-block;
                         }
+
+                        .chordSheetViewer .comment {
+                            font-weight: bold;
+                            margin: 2rem 0;
+                        }
                         `}
                             </style>
 
-                            <div className="max-w-2xl mx-auto px-4">
+                            <div className="mt-6 px-6">
+                                <h2 className="text-gray-500 uppercase text-sm tracking-widest border-b border-gray-600 border-opacity-60 pb-2">Chord Sheet</h2>
+                            </div>
+
+                            <div className="mx-auto">
                                 {editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ?
                                     <>
-                                        <div className="text-gray-200 leading-loose text-sm sm:text-base md:text-xl py-4">
+                                        <div className="text-gray-200 leading-loose text-sm sm:text-base md:text-xl px-6">
                                             <div className="chordSheetViewer"
                                                 dangerouslySetInnerHTML={{ __html: song['Chord Sheet'] ? formatChordSheet(song['Chord Sheet']) : '' }}>
                                             </div>
                                         </div>
-                                        <div className="pt-12"></div>
-                                        <div className="relative bg-gray-800 w-full h-full pb-9/16">
-                                            <iframe className="absolute top-0 left-0 w-full h-full" width="1600px" height="900px"
-                                                src={`https://www.youtube.com/embed/${getYouTubeID(song['YouTube Link'])}?controls=1&enablejsapi=1`} frameBorder="0"
-                                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                                        </div>
-                                        <div className="pt-48"></div>
                                     </>
                                     :
                                     <div className="">
-                                        <div className="text-gray-200 bg-gray-800 bg-opacity-40  text-sm sm:text-base md:text-xl shadow-inner">
+                                        <div className="text-gray-200 bg-black font-mono text-sm sm:text-base md:text-xl shadow-inner">
                                             <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet} className="w-full bg-transparent py-4 px-6 leading-loose shadow-inner" style={{ minHeight: "calc(100vh - 300px)" }}>
                                             </textarea>
                                         </div>
                                     </div>}
                             </div>
+
+                            <div className="mt-12 px-6 py-12">
+                                <h3 className="text-gray-500 uppercase text-sm tracking-widest border-b border-gray-600 border-opacity-60 pb-2">Youtube Video</h3>
+                                <div className="mt-4 relative w-full h-full pb-9/16">
+                                    <iframe className="absolute top-0 left-0 w-full h-full" width="1600px" height="900px"
+                                        src={`https://www.youtube.com/embed/${getYouTubeID(song['YouTube Link'])}?controls=1&enablejsapi=1`} frameBorder="0"
+                                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                </div>
+                            </div>
+
+                            <div className="pt-48"></div>
                         </div>
                     </div>
                 </div> : <div className="text-gray-300 h-screen flex items-center justify-center">Loading...</div>}

@@ -1,12 +1,12 @@
 import { Container } from "./Common";
 
 export default function HeaderForPage({ tag, title, description }) {
-    return <header className="relative">
+    return <header className="relative z-50">
         <div className="relative top-0 left-0 w-full h-full z-0 bg-image bg-no-repeat bg-cover">
             {/* style={{ backgroundImage: "url(/img/green-waves.svg)" }}> */}
 
-            <a href="/" className="absolute top-2 left-2 bg-gray-900 bg-opacity-50 hover:bg-opacity-70 hover:shadow-xl duration-200 transition w-10 h-10 p-3 rounded-lg text-white fill-current flex items-center justify-center">
-                <svg id="lnr-chevron-left" viewBox="0 0 1024 1024"><title>chevron-left</title><path className="path1" d="M716.8 1024c6.552 0 13.102-2.499 18.101-7.499 9.998-9.997 9.998-26.206 0-36.203l-442.698-442.698 442.698-442.699c9.998-9.997 9.998-26.206 0-36.203s-26.206-9.998-36.203 0l-460.8 460.8c-9.998 9.997-9.998 26.206 0 36.203l460.8 460.8c5 5 11.55 7.499 18.102 7.499z"></path></svg>
+            <a href="/" className="fixed z-50 top-2 left-2 shadow-2xl hover:bg-black duration-200 transition py-2 px-4 rounded-lg text-white">
+               Back
             </a>
 
             {/* <div style={{
