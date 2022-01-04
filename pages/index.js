@@ -73,7 +73,7 @@ export default function Home() {
     return (
         <Layout>
             <Page>
-                <HeaderForHome title1="Worship" title2="Here" />
+                <HeaderForHome title1="Song" title2="Here" />
 
                 <Container>
                     <H2 icon="music">Songs</H2>
