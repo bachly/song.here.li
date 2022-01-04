@@ -121,7 +121,7 @@ export default function List({ tableName = 'Song List' }) {
                                     <span className="sr-only">Close popup</span>
                                 </button>
                                 <div className="w-full h-screen flex items-center justify-center">
-                                    <div id="popupBody" className="w-full sm:max-w-2xl md:max-w-4xl lg:max-w-6xl z-50 realtive bg-gray-800 bg-opacity-40 border border-gray-700 border-opacity-50 rounded-2xl shadow-2xl overflow-hidden">
+                                    <div id="popupBody" className="w-full sm:max-w-2xl md:max-w-4xl lg:max-w-7xl z-50 realtive bg-gray-800 bg-opacity-40 border border-gray-700 border-opacity-50 rounded-2xl shadow-2xl overflow-hidden">
                                         <div style={{ height: "calc(100vh - 100px)" }}>
                                             <SongDetails //
                                                 song={popup.song}
