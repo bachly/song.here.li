@@ -107,17 +107,13 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
 
                     <div className="absolute top-0 left-0 w-full z-10 bg-gray-900 bg-opacity-10 backdrop-blur-sm">
 
-                        <div className="pt-6"></div>
-
-                        <div className="text-center text-gray-100 text-xs sm:text-sm uppercase tracking-wider font-regular">
-                            Chord Sheet
-                        </div>
+                        <div className="pt-2"></div>
 
                         <h1 className="relative z-10 px-4 max-w-5xl mx-auto">
                             <div className="text-white text-center text-lg sm:text-2xl md:text-3xl">
                                 <span className="font-bold">{song['Name']}</span>
                             </div>
-                            <div className="mt-1 text-center text-gray-100 text-sm md:text-base font-regular opacity-60">
+                            <div className="text-center text-gray-100 text-sm md:text-base font-regular opacity-60">
                                 {song['Author/Singer']}
                             </div>
                         </h1>
@@ -146,7 +142,7 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                         `}
                             </style>
 
-                            <div className="max-w-2xl mx-auto">
+                            <div className="max-w-2xl mx-auto px-4">
                                 {editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ?
                                     <>
                                         <div className="text-gray-200 leading-loose text-sm sm:text-base md:text-xl py-4">
@@ -155,8 +151,8 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                                             </div>
                                         </div>
                                         <div className="pt-12"></div>
-                                        <div className="bg-gray-800 w-full h-full" style={{ maxWidth: '400px', maxHeight: '225px' }}>
-                                            <iframe width="100%" height="225px"
+                                        <div className="relative bg-gray-800 w-full h-full pb-9/16">
+                                            <iframe className="absolute top-0 left-0 w-full h-full" width="1600px" height="900px"
                                                 src={`https://www.youtube.com/embed/${getYouTubeID(song['YouTube Link'])}?controls=1&enablejsapi=1`} frameBorder="0"
                                                 allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                                         </div>
