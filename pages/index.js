@@ -14,8 +14,8 @@ var base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID);
 
 export default function Home() {
     const [allSongs, setAllSongs] = React.useState({});
-    const [songGroups, setSongGroups] = React.useState([]);
-    const [schedules, setSchedules] = React.useState([]);
+    const [songGroups, setSongGroups] = React.useState(null);
+    const [schedules, setSchedules] = React.useState(null);
 
     React.useEffect(function onLoad() {
         const allSongs = {}
@@ -80,19 +80,24 @@ export default function Home() {
 
                     <div className="pt-6"></div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
-                        {songGroups.map(group => {
-                            return <a key={group} href={`/list?group=${encodeURIComponent(group)}`} className="bg-gray-800 bg-opacity-50 hover:bg-opacity-90 duration-200 transition rounded-lg backdrop-blur-sm">
-                                <h2 className="text-white py-6 px-6">
-                                    <div className="flex items-center justify-center">
-                                        <div className="font-semibold text-base sm:text-lg md:text-xl">
-                                            {group}
+                    {songGroups ?
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
+                            {songGroups.map(group => {
+                                return <a key={group} href={`/list?group=${encodeURIComponent(group)}`} className="bg-gray-800 bg-opacity-50 hover:bg-opacity-90 duration-200 transition rounded-lg backdrop-blur-sm">
+                                    <h2 className="text-white py-6 px-6">
+                                        <div className="flex items-center justify-center">
+                                            <div className="font-semibold text-base sm:text-lg md:text-xl">
+                                                {group}
+                                            </div>
                                         </div>
-                                    </div>
-                                </h2>
-                            </a>
-                        })}
-                    </div>
+                                    </h2>
+                                </a>
+                            })}
+                        </div> : <>
+                            <div className="text-white text-center">
+                                Loading...
+                            </div>
+                        </>}
 
                     <div className="py-12"></div>
 
@@ -101,7 +106,7 @@ export default function Home() {
 
                         <div className="pt-6"></div>
 
-                        {schedules.length > 0 ?
+                        {schedules ?
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-6">
                                 {schedules.map((schedule, index) => {
                                     if (index > 5) {

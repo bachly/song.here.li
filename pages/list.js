@@ -117,11 +117,11 @@ export default function List({ tableName = 'Song List' }) {
                     {
                         popup.song ?
                             <div id="popup" className={`${popup.visible ? 'block' : 'hidden'} fixed z-50 w-full h-full left-0 top-0`}>
-                                <button className="fixed z-50 w-full h-full bg-gray-900 bg-opacity-30 backdrop-blur-sm cursor-zoom-out" onClick={closePopup}>
+                                <button className="fixed z-50 w-full h-full bg-gray-900 bg-opacity-30 backdrop-blur-md cursor-zoom-out" onClick={closePopup}>
                                     <span className="sr-only">Close popup</span>
                                 </button>
                                 <div className="w-full h-screen flex items-center justify-center">
-                                    <div id="popupBody" className="w-full sm:max-w-2xl md:max-w-4xl lg:max-w-6xl z-50 realtive bg-gray-900 bg-opacity-90 border border-gray-700 border-opacity-30 rounded-2xl shadow-2xl overflow-hidden">
+                                    <div id="popupBody" className="w-full sm:max-w-2xl md:max-w-4xl lg:max-w-6xl z-50 realtive bg-gray-800 bg-opacity-40 border border-gray-700 border-opacity-50 rounded-2xl shadow-2xl overflow-hidden">
                                         <div style={{ height: "calc(100vh - 100px)" }}>
                                             <SongDetails //
                                                 song={popup.song}
@@ -131,6 +131,8 @@ export default function List({ tableName = 'Song List' }) {
                                 </div>
                             </div> : <></>
                     }
+
+                    <div className="pt-24"></div>
                 </div> :
                 <div className="bg-gray-900">
                     <div className="text-white h-screen w-screen flex items-center justify-center">

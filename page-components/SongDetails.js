@@ -134,10 +134,14 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                         }
                         .chordSheetViewer .row {
                             flex-wrap: wrap;
-                            line-height: 1.5;
+                            line-height: 1;
                         }
                         .chordSheetViewer .paragraph:not(:last-child) {
                             border-bottom: 1px dashed #333;
+                        }
+                        .chordSheetViewer .lyrics:after {
+                            content: ' ';
+                            display: inline-block;
                         }
                         `}
                             </style>
