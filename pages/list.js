@@ -130,6 +130,7 @@ export default function List({ tableName = 'Song List' }) {
                                         centeredSlides={true}
                                         navigation
                                         pagination={{ clickable: true }}
+                                        allowTouchMove={false}
                                         style={{ zIndex: '50', width: '100vw', height: 'calc(100vh - 150px)', top: '50px' }} className="relative text-white">
                                         {songs && Object.keys(songs).map(id => {
                                             const song = songs[id];
