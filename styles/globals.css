@@ -13,3 +13,7 @@
 /* Stop purging. */
 
 /* Your own custom utilities */
+* {
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: transparent;
+}
