@@ -8,6 +8,8 @@ import SongList from '../page-components/SongList';
 import HeaderForPage from '../page-components/HeaderForPage';
 import SongDetails from '../page-components/SongDetails';
 import { Container } from '../page-components/Common';
+import { Navigation, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const AIRTABLE_API_KEY = 'keyjmQKQsWuyPGqct';
 const AIRTABLE_BASE_ID = 'app8970gPuPsnHk2l';
@@ -16,7 +18,7 @@ var base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID);
 export default function List({ tableName = 'Song List' }) {
     const router = useRouter()
     const { group } = router.query;
-    const [items, setItems] = React.useState(null);
+    const [songs, setSongs] = React.useState(null);
 
     const [popup, setPopup] = React.useState({
         visible: false,
@@ -47,10 +49,10 @@ export default function List({ tableName = 'Song List' }) {
     }
 
     function onSongUpdateSuccess({ song }) {
-        setItems({
-            ...items,
+        setSongs({
+            ...songs,
             [song.id]: {
-                ...items[song.id],
+                ...songs[song.id],
                 ...song
             }
         })
@@ -58,7 +60,7 @@ export default function List({ tableName = 'Song List' }) {
         setPopup({
             ...popup,
             song: {
-                ...items[song.id],
+                ...songs[song.id],
                 ...song
             }
         })
@@ -97,7 +99,7 @@ export default function List({ tableName = 'Song List' }) {
                         allItems[song.id] = song;
                     });
 
-                    setItems(allItems);
+                    setSongs(allItems);
                 });
             }
         }
@@ -105,30 +107,45 @@ export default function List({ tableName = 'Song List' }) {
 
     return (
         <Layout>
-            {router && items ?
+            {router && songs ?
                 <div className="bg-gray-900 relative overflow-x-hidden">
                     <HeaderForPage tag="Song List" title={group} />
 
                     <Container>
-                        <SongList songs={items} openPopup={openPopup} />
+                        <SongList songs={songs} openPopup={openPopup} />
                     </Container>
 
                     {/* Popup */}
                     {
                         popup.song ?
                             <div id="popup" className={`${popup.visible ? 'block' : 'hidden'} fixed z-50 w-full h-full left-0 top-0`}>
-                                <button className="fixed z-50 w-full h-full bg-gray-900 bg-opacity-30 backdrop-blur-md cursor-zoom-out" onClick={closePopup}>
+                                <button className="fixed z-40 w-full h-full bg-gray-900 bg-opacity-30 backdrop-blur-md cursor-zoom-out" onClick={closePopup}>
                                     <span className="sr-only">Close popup</span>
                                 </button>
-                                <div className="w-full h-screen flex items-center justify-center">
-                                    <div id="popupBody" className="w-full sm:max-w-2xl md:max-w-4xl lg:max-w-7xl z-50 realtive bg-gray-800 bg-opacity-40 border border-gray-700 border-opacity-50 rounded-2xl shadow-2xl overflow-hidden">
-                                        <div style={{ height: "calc(100vh - 100px)" }}>
-                                            <SongDetails //
-                                                song={popup.song}
-                                                onSongUpdateSuccess={onSongUpdateSuccess} />
-                                        </div>
-                                    </div>
+
+                                <div id="popup-content">
+                                    <Swiper //
+                                        modules={[Navigation, Pagination]}
+                                        initialSlide={Object.keys(songs).findIndex(id => id === popup?.song?.id)}
+                                        slidesPerView={'auto'}
+                                        spaceBetween={30}
+                                        centeredSlides={true}
+                                        navigation
+                                        pagination={{ clickable: true }}
+                                        style={{ zIndex: '50', width: '100vw', height: 'calc(100vh - 100px)', top: '50px' }} className="relative text-white">
+                                        {songs && Object.keys(songs).map(id => {
+                                            const song = songs[id];
+                                            return <SwiperSlide key={song.id}
+                                                style={{ height: 'calc(100vh - 150px)'}}
+                                                className="relative w-full max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-7xl z-50 realtive bg-gray-800 bg-opacity-40 border border-gray-700 border-opacity-50 rounded-2xl shadow-2xl overflow-hidden">
+                                                <SongDetails //
+                                                    song={song}
+                                                    onSongUpdateSuccess={onSongUpdateSuccess} />
+                                            </SwiperSlide>
+                                        })}
+                                    </Swiper>
                                 </div>
+
                             </div> : <></>
                     }
 
@@ -138,7 +155,8 @@ export default function List({ tableName = 'Song List' }) {
                     <div className="text-white h-screen w-screen flex items-center justify-center">
                         Loading...
                     </div>
-                </div>}
-        </Layout>
+                </div>
+            }
+        </Layout >
     );
 }

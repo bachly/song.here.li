@@ -29,7 +29,7 @@ export default function HeaderForPage({ tag, title, description }) {
             <div className="pt-36 lg:pt-48 xl:pt-56"></div>
 
             <Container>
-                <div className="text-left text-gray-100 text-sm sm:text-base uppercase tracking-wider font-regular opacity-50">
+                <div className="text-left text-gray-100 text-xs sm:text-sm uppercase tracking-wider font-regular opacity-50">
                     {tag}
                 </div>
 

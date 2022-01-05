@@ -1,6 +1,8 @@
 import React from 'react';
 import ChordSheetJS from 'chordsheetjs';
 import Airtable from 'airtable';
+import Video from 'react-player';
+
 const AIRTABLE_API_KEY = 'keyjmQKQsWuyPGqct';
 const AIRTABLE_BASE_ID = 'app8970gPuPsnHk2l';
 
@@ -83,9 +85,9 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
     return (
         <div className="w-full h-full">
             {song ?
-                <div className="relative">
+                <div className="w-full h-full relative">
 
-                    <div className="absolute z-20 top-2 right-0 flex items-center px-6">
+                    <div className="absolute z-20 top-4 right-0 flex items-center px-6">
                         <div className="flex items-center">
                             {editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ?
                                 <button onClick={startEditing} className="w-8 h-8 text-white fill-current p-2 hover:bg-teal-900 rounded-lg duration-100 transition">
@@ -122,7 +124,7 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                     </div>
 
                     <div className="absolute z-0 left-0 w-full">
-                        <div className="overflow-y-scroll" style={{ height: "calc(100vh)" }}>
+                        <div className="overflow-y-scroll" style={{ height: `calc(100vh)` }}>
                             <div className="pt-24"></div>
 
                             <style>
@@ -166,7 +168,7 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                                     :
                                     <div className="mt-2 px-6">
                                         <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet}
-                                            className="w-full text-gray-200 bg-black font-mono text-sm sm:text-base md:text-xl py-4 px-6 leading-normal shadow-inner focus:outline-none focus:ring focus:ring-teal-800 rounded-xl" style={{ minHeight: "calc(100vh - 300px)" }}>
+                                            className="w-full text-gray-200 bg-black font-mono text-sm sm:text-base md:text-xl py-4 px-6 leading-normal shadow-inner focus:outline-none focus:ring focus:ring-teal-800 rounded-xl" style={{ minHeight: "calc(50vh)" }}>
                                         </textarea>
                                     </div>}
                             </div>
@@ -175,9 +177,9 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                                 <h3 className="text-gray-500 uppercase text-sm tracking-widest border-b border-gray-600 border-opacity-60 pb-2">Youtube Video</h3>
                                 <div className="max-w-2xl">
                                     <div className="mt-4 relative w-full h-full pb-9/16">
-                                        <iframe className="absolute top-0 left-0 w-full h-full" width="1600px" height="900px"
-                                            src={`https://www.youtube.com/embed/${getYouTubeID(song['YouTube Link'])}?controls=1&enablejsapi=1`} frameBorder="0"
-                                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                        {song['YouTube Link'] ?
+                                            song['YouTube Link']
+                                            : <></>}
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +187,9 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                             <div className="pt-48"></div>
                         </div>
                     </div>
-                </div> : <div className="text-gray-300 h-screen flex items-center justify-center">Loading...</div>}
+                </div> :
+                <div className="text-gray-300 h-screen flex items-center justify-center">Loading...</div>
+            }
         </div>
     );
 }
