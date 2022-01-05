@@ -20,7 +20,7 @@ export default function List({ tableName = 'Song List' }) {
 
     const [popup, setPopup] = React.useState({
         visible: false,
-        song: null
+        activeSlideIndex: null
     })
 
     function closePopup(event) {
@@ -41,7 +41,7 @@ export default function List({ tableName = 'Song List' }) {
 
             setPopup({
                 visible: true,
-                song
+                activeSlideIndex: Object.keys(songs).findIndex(id => id === song?.id)
             })
         }
     }
@@ -50,14 +50,6 @@ export default function List({ tableName = 'Song List' }) {
         setSongs({
             ...songs,
             [song.id]: {
-                ...songs[song.id],
-                ...song
-            }
-        })
-
-        setPopup({
-            ...popup,
-            song: {
                 ...songs[song.id],
                 ...song
             }
@@ -103,6 +95,14 @@ export default function List({ tableName = 'Song List' }) {
         }
     }, [router])
 
+    function setActiveSlideIndex(swiper) {
+        console.log("swiper:", swiper);
+        setPopup({
+            visible: true,
+            activeSlideIndex: swiper.activeIndex
+        });
+    }
+
     return (
         <Layout>
             {router && songs ?
@@ -115,7 +115,7 @@ export default function List({ tableName = 'Song List' }) {
 
                     {/* Popup */}
                     {
-                        popup.song ?
+                        popup.visible ?
                             <div id="popup" className={`${popup.visible ? 'block' : 'hidden'} fixed z-50 w-full h-full left-0 top-0`}>
                                 <button className="fixed z-40 w-full h-full bg-gray-900 bg-opacity-30 backdrop-blur-md cursor-zoom-out" onClick={closePopup}>
                                     <span className="sr-only">Close popup</span>
@@ -124,19 +124,24 @@ export default function List({ tableName = 'Song List' }) {
                                 <div id="popup-content">
                                     <Swiper //
                                         modules={[Navigation, Pagination]}
-                                        initialSlide={Object.keys(songs).findIndex(id => id === popup?.song?.id)}
+                                        initialSlide={popup.activeSlideIndex}
                                         slidesPerView={'auto'}
                                         spaceBetween={30}
                                         centeredSlides={true}
                                         navigation
                                         pagination={{ clickable: true }}
                                         allowTouchMove={false}
-                                        style={{ zIndex: '50', width: '100vw', height: 'calc(100vh - 150px)', top: '50px' }} className="relative text-white">
-                                        {songs && Object.keys(songs).map(id => {
+                                        onActiveIndexChange={setActiveSlideIndex}
+                                        style={{ zIndex: '50', width: '100vw', height: 'calc(100vh - 170px)', top: '70px' }} className="relative text-white">
+                                        {songs && Object.keys(songs).map((id, index) => {
                                             const song = songs[id];
                                             return <SwiperSlide key={song.id}
-                                                style={{ height: 'calc(100vh - 200px)' }}
-                                                className="relative w-full max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-7xl z-50 realtive bg-gray-800 bg-opacity-40 border border-gray-700 border-opacity-50 rounded-2xl shadow-2xl overflow-hidden">
+                                                style={{ height: 'calc(100vh - 210px)' }}
+                                                className="relative w-full max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-7xl z-50 realtive bg-gray-800 bg-opacity-80 border border-gray-700 border-opacity-50 rounded-2xl shadow-2xl overflow-hidden">
+                                                {popup.activeSlideIndex !== index ?
+                                                    <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-40 z-30 backdrop-blur-sm"></div>
+                                                    : <></>}
+
                                                 <SongDetails //
                                                     song={song}
                                                     onSongUpdateSuccess={onSongUpdateSuccess} />
