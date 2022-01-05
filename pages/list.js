@@ -11,9 +11,7 @@ import { Container } from '../page-components/Common';
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-const AIRTABLE_API_KEY = 'keyjmQKQsWuyPGqct';
-const AIRTABLE_BASE_ID = 'app8970gPuPsnHk2l';
-var base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID);
+var base = new Airtable({ apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
 export default function List({ tableName = 'Song List' }) {
     const router = useRouter()
@@ -132,11 +130,11 @@ export default function List({ tableName = 'Song List' }) {
                                         centeredSlides={true}
                                         navigation
                                         pagination={{ clickable: true }}
-                                        style={{ zIndex: '50', width: '100vw', height: 'calc(100vh - 100px)', top: '50px' }} className="relative text-white">
+                                        style={{ zIndex: '50', width: '100vw', height: 'calc(100vh - 150px)', top: '50px' }} className="relative text-white">
                                         {songs && Object.keys(songs).map(id => {
                                             const song = songs[id];
                                             return <SwiperSlide key={song.id}
-                                                style={{ height: 'calc(100vh - 150px)'}}
+                                                style={{ height: 'calc(100vh - 200px)' }}
                                                 className="relative w-full max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-7xl z-50 realtive bg-gray-800 bg-opacity-40 border border-gray-700 border-opacity-50 rounded-2xl shadow-2xl overflow-hidden">
                                                 <SongDetails //
                                                     song={song}

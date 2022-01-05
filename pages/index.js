@@ -2,15 +2,11 @@ import React from 'react'
 import _ from 'underscore';
 import Airtable from 'airtable';
 import { format } from 'date-fns';
-import ChordSheetJS from 'chordsheetjs';
 import Layout from '../page-components/Layout';
-import SongList from '../page-components/SongList';
 import HeaderForHome from '../page-components/HeaderForHome';
 import { Container, H2, Page } from '../page-components/Common';
 
-const AIRTABLE_API_KEY = 'keyjmQKQsWuyPGqct';
-const AIRTABLE_BASE_ID = 'app8970gPuPsnHk2l';
-var base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID);
+var base = new Airtable({ apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
 export default function Home() {
     const [allSongs, setAllSongs] = React.useState({});

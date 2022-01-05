@@ -3,9 +3,6 @@ import ChordSheetJS from 'chordsheetjs';
 import Airtable from 'airtable';
 import Video from 'react-player';
 
-const AIRTABLE_API_KEY = 'keyjmQKQsWuyPGqct';
-const AIRTABLE_BASE_ID = 'app8970gPuPsnHk2l';
-
 const EDIT_MODE = {
     'IDLE': 'IDLE',
     'ACTIVE': 'ACTIVE',
@@ -21,7 +18,7 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
     const parser = new ChordSheetJS.ChordProParser();
     const formatter = new ChordSheetJS.HtmlDivFormatter();
 
-    var base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID);
+    var base = new Airtable({ apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
     function cancelEditing(event) {
         event.preventDefault();
@@ -178,7 +175,7 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                                 <div className="max-w-2xl">
                                     <div className="mt-4 relative w-full h-full pb-9/16">
                                         {song['YouTube Link'] ?
-                                            song['YouTube Link']
+                                            <Video url={song['YouTube Link']} />
                                             : <></>}
                                     </div>
                                 </div>
