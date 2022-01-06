@@ -12,6 +12,12 @@
 @tailwind utilities;
 /* Stop purging. */
 
+html,
+body {
+  overscroll-behavior: contain;
+  position: relative;
+}
+
 /* Your own custom utilities */
 * {
   -webkit-backface-visibility: hidden;
