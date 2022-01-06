@@ -69,7 +69,7 @@ export default function Header({ primaryName, secondaryName, user }) {
             </div>
         </div>
 
-        <div className={`left-pane left-pane--${leftPaneState} absolute transition transform duraiton-200 bg-gray-900 border-r border-gray-700 border-opacity-50`}>
+        <div className={`left-pane left-pane--${leftPaneState} absolute transition transform duraiton-200 bg-gray-800 border-r border-gray-700 border-opacity-50`}>
             <div className="border-b border-gray-700 border-opacity-50" style={{ height: '45px' }}>
                 <div className="h-full flex items-center px-4 justify-center select-none">
                     <span className="text-white font-light text-xl">List</span>
@@ -77,7 +77,7 @@ export default function Header({ primaryName, secondaryName, user }) {
             </div>
             <div className="left-pane__inner">
                 <div className="text-white p-4">
-                    <a className="text-white py-6 block hover:underline" href="#" onClick={toggleLeftPane}>Open item</a>
+                    <a className="text-white pb-6 block hover:underline" href="#" onClick={toggleLeftPane}>Open item</a>
                     <LoremIpsum length={3} />
                 </div>
             </div>

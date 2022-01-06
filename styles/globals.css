@@ -14,26 +14,28 @@
 
 /* Your own custom utilities */
 * {
-    -webkit-backface-visibility: hidden;
-    -webkit-tap-highlight-color: transparent;
+  -webkit-backface-visibility: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .left-pane {
-    position: fixed;
-    width: 320px;
-    top: 45px;
+  position: fixed;
+  width: 320px;
+  top: 45px;
+  height: calc(100vh - 45px);
 }
 
 .left-pane--hidden {
-    transform: translateX(-320px);
+  transform: translateX(-320px);
 }
 
 .left-pane--visible {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
 .left-pane__inner {
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: calc(100vh - 90px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 45px - 45px);
+  padding-bottom: 70px; /* 70px is the bottom portion that mobile browsers often crop */
 }
