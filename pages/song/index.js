@@ -1,20 +1,8 @@
 import React from 'react';
-import Airtable from 'airtable';
 import { useRouter } from 'next/router';
 import Header from '../../components/Header';
 import Toolbar from '../../components/Toolbar';
-import PaneLeft from '../../components/PaneLeft';
-import SongListWithLinks from '../../page-components/SongListWithLinks';
 import { AppDataContext } from '../contexts';
-import ChordSheetJS from 'chordsheetjs';
-import Video from 'react-player';
-
-const EDIT_MODE = {
-    'IDLE': 'IDLE',
-    'ACTIVE': 'ACTIVE',
-    'ERROR': 'ERROR',
-    'SUCCESS': 'SUCCESS'
-}
 
 export default function Song() {
     const router = useRouter();
