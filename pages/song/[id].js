@@ -229,7 +229,7 @@ export default function Song() {
 
                 <div className="pt-24"></div>
             </div> :
-            <div className="text-gray-300 h-screen flex items-center justify-center">Loading...</div>
+            <div className="text-gray-300 flex items-center justify-center" style={{ height: '50vh' }}>Loading...</div>
         }
     </>
 }

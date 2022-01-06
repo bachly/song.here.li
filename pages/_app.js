@@ -21,7 +21,7 @@ export default function MyApp({ Component, pageProps }) {
         /* Get Songs */
         base('Song List').select({
             view: "All Songs",
-            filterByFormula: "NOT({Group} = '')",
+            filterByFormula: "AND(NOT({Group} = ''), NOT({Name} = ''))",
             fields: ['Name', 'Ready', 'Group', 'BPM', 'Key', 'YouTube Link', 'Chord Sheet', 'Author/Singer']
         }).all().then(function (records) {
             const groups = [];
