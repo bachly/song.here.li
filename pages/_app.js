@@ -6,7 +6,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '../styles/swiper-custom.scss';
 import Airtable from 'airtable';
-import { AppDataContext } from './contexts';
+import { AppDataContext } from '../contexts';
 const base = new Airtable({ apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
 export default function MyApp({ Component, pageProps }) {

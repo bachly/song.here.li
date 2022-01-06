@@ -5,7 +5,7 @@ import Header from '../../components/Header';
 import Toolbar from '../../components/Toolbar';
 import PaneLeft from '../../components/PaneLeft';
 import SongListWithLinks from '../../page-components/SongListWithLinks';
-import { AppDataContext } from '../contexts';
+import { AppDataContext } from '../../contexts';
 import ChordSheetJS from 'chordsheetjs';
 import Video from 'react-player';
 
