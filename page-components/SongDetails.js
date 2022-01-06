@@ -61,12 +61,15 @@ export default function SongDetails({ song, onSongUpdateSuccess }) {
                 ...records[0].fields
             });
             console.log(records);
-            onSongUpdateSuccess({
-                song: {
-                    id: song.id,
-                    "Chord Sheet": records[0].get("Chord Sheet")
-                }
-            })
+
+            if (typeof onSongUpdateSuccess === 'function') {
+                onSongUpdateSuccess({
+                    song: {
+                        id: song.id,
+                        "Chord Sheet": records[0].get("Chord Sheet")
+                    }
+                })
+            }
 
             setTimeout(function () {
                 setEditMessage('');
