@@ -15,7 +15,7 @@ export default function SongList({ songs = {}, openPopup }) {
                 const song = songs[id];
                 return <button key={`song-${song.id}`}
                     onClick={openPopup && openPopup(song)}
-                    className="w-full block text-left hover:bg-gray-800 hover:bg-opacity-50 border border-transparent rounded-md duration-100 transition cursor-pointer">
+                    className="w-full block text-left hover:bg-gray-800 hover:bg-opacity-50 border border-transparent rounded-md duration-100 transition ease-in-out cursor-pointer">
                     <div className="w-full flex items-center py-2">
                         <div className="px-4 text-gray-400 text-sm text-center" style={{ width: "70px" }}>{index}</div>
                         <div className="px-4 flex-1" style={{ minWidth: "50%" }}>

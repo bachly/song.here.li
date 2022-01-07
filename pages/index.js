@@ -79,7 +79,7 @@ export default function Home() {
                     {songGroups ?
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
                             {songGroups.map(group => {
-                                return <a key={group} href={`/list?group=${encodeURIComponent(group)}`} className="bg-gray-800 bg-opacity-50 hover:bg-opacity-90 duration-200 transition rounded-lg backdrop-blur-sm">
+                                return <a key={group} href={`/list?group=${encodeURIComponent(group)}`} className="bg-gray-800 bg-opacity-50 hover:bg-opacity-90 duration-200 transition ease-in-out rounded-lg backdrop-blur-sm">
                                     <h2 className="text-white py-6 px-6">
                                         <div className="flex items-center justify-center">
                                             <div className="font-semibold text-base sm:text-lg md:text-xl">

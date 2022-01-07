@@ -7,6 +7,8 @@ import 'swiper/css/pagination';
 import '../styles/swiper-custom.scss';
 import Airtable from 'airtable';
 import { AppDataContext } from '../contexts';
+import Head from 'next/head';
+
 const base = new Airtable({ apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
 export default function MyApp({ Component, pageProps }) {
@@ -122,6 +124,10 @@ export default function MyApp({ Component, pageProps }) {
             loadingAppData,
             updateSong
         }}>
+            <Head>
+                <meta name="viewport" content="width=device-width, user-scalable=no" />
+                <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"></meta>
+            </Head>
             <Component {...pageProps} />
         </AppDataContext.Provider>
     );

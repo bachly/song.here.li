@@ -149,7 +149,7 @@ export default function Home() {
                                 <span className="font-light">Here</span>
                             </div>
                             <menu className="flex items-center justify-center">
-                                <a href="#schedule" className="px-3 py-2 hover:bg-teal-900 hover:bg-opacity-70 duration-100 transition rounded-lg">
+                                <a href="#schedule" className="px-3 py-2 hover:bg-teal-900 hover:bg-opacity-70 duration-100 transition ease-in-out rounded-lg">
                                     <div className="w-6 h-6 text-white fill-current">
                                         <svg id="lnr-calendar-full" viewBox="0 0 1024 1024">
                                             <title>calendar-full</title>
@@ -157,7 +157,7 @@ export default function Home() {
                                         </svg>
                                     </div>
                                 </a>
-                                <a href="#songs" className="px-3 py-2 hover:bg-teal-900 hover:bg-opacity-70 duration-100 transition rounded-lg">
+                                <a href="#songs" className="px-3 py-2 hover:bg-teal-900 hover:bg-opacity-70 duration-100 transition ease-in-out rounded-lg">
                                     <div className="w-6 h-6 text-white fill-current">
                                         <svg id="lnr-music-note" viewBox="0 0 1024 1024"><title>music-note</title><path className="path1" d="M1014.803 57.146c-5.826-4.864-13.509-6.891-20.982-5.533l-563.2 102.4c-12.173 2.213-21.021 12.816-21.021 25.187v583.632c-6.986-4.722-14.629-9.181-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.806 23.902-74.136 57.749-74.136 95.304s26.33 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.806-23.902 74.136-57.749 74.136-95.304v-516.294l512-94.549v426.475c-6.984-4.722-14.629-9.182-22.936-13.336-42.166-21.085-97.662-32.696-156.264-32.696s-114.098 11.611-156.264 32.696c-47.808 23.902-74.136 57.749-74.136 95.304s26.328 71.402 74.136 95.304c42.166 21.085 97.662 32.696 156.264 32.696s114.098-11.611 156.264-32.696c47.808-23.902 74.136-57.749 74.136-95.304v-665.6c0-7.59-3.368-14.79-9.197-19.654zM230.4 921.6c-102.563 0-179.2-40.547-179.2-76.8s76.637-76.8 179.2-76.8 179.2 40.547 179.2 76.8-76.637 76.8-179.2 76.8zM460.8 276.438v-75.874l512-93.091v74.416l-512 94.549zM793.6 819.2c-102.565 0-179.2-40.547-179.2-76.8s76.635-76.8 179.2-76.8c102.566 0 179.2 40.547 179.2 76.8s-76.634 76.8-179.2 76.8z"></path></svg>
                                     </div>
@@ -310,7 +310,7 @@ function SongList({ songs, openPopup }) {
             if (index < 12) {
                 return <button key={`song-${song.id}`}
                     onClick={openPopup(song)}
-                    className="text-left py-1 px-4 md:px-6 hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-md duration-100 transition cursor-pointer">
+                    className="text-left py-1 px-4 md:px-6 hover:bg-teal-900 hover:bg-opacity-10 border border-transparent hover:border hover:border-gray-100 hover:border-opacity-10 rounded-md duration-100 transition ease-in-out cursor-pointer">
                     <h3 className="font-bold text-teal-400 text-sm">{song['Name']}</h3>
                     <div className="font-light flex items-center">
                         <span className="mr-2">

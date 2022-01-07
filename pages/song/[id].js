@@ -30,7 +30,16 @@ export default function Song() {
 
     function toggleSidebar(event) {
         event && event.preventDefault();
-        setSidebarState(sidebarState === 'hidden' ? 'block' : 'hidden');
+        event && event.stopPropagation();
+
+        const newState = sidebarState === 'hidden' ? 'block' : 'hidden';
+        setSidebarState(newState);
+        
+        if (newState === 'block') {
+            $(window).one('click', () => {
+                setSidebarState('hidden');
+            })
+        }
     }
 
     React.useEffect(() => {
@@ -162,12 +171,12 @@ export default function Song() {
                         <div className="pt-20"></div>
 
                         {/* Edit Modal */}
-                        <div className={`${editMode === EDIT_MODE.IDLE ? 'edit-modal--hidden' : 'edit-modal--block bg-gray-900'} fixed z-50 left-0 top-0 w-screen h-screen duration-200 transition`}>
+                        <div className={`${editMode === EDIT_MODE.IDLE ? 'edit-modal--hidden' : 'edit-modal--block'} bg-gray-900 fixed z-50 left-0 top-0 w-screen h-screen duration-200 transition`}>
                             <div className="border-b border-gray-700 border-opacity-50" style={{ height: '45px' }}>
                                 <div className="h-full flex items-center justify-between px-4">
                                     <Button onClick={cancelEditing}>Cancel</Button>
-                                    <div className="text-white text-center flex-1 text-xl w-24">
-                                        Edit {song['Name']}
+                                    <div className="text-gray-400 text-center flex-1 text-xl w-24">
+                                        Edit
                                     </div>
                                     <AsyncButton loading={editMode === EDIT_MODE.SAVING} success={editMode === EDIT_MODE.SUCCESS} onClick={saveEditing}>
                                         Save
