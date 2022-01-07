@@ -119,11 +119,11 @@ export default function Song() {
 
                 <Sidebar state={sidebarState} currentSong={song} />
 
-                <div className="pt-24 mainbar">
-                    <div className="w-full max-w-3xl mx-auto relative py-2 px-4 lg:py-6 lg:px-12">
+                <div className="pt-32 mainbar">
+                    <div className="w-full max-w-3xl mx-auto relative px-4">
 
                         <h1 className="">
-                            <div className="text-white text-left text-lg sm:text-2xl md:text-3xl">
+                            <div className="text-white text-left text-2xl md:text-3xl">
                                 <span className="font-bold">{song['Name']}</span>
                             </div>
                             <div className="flex items-center">

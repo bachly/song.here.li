@@ -94,10 +94,10 @@ export default function Sidebar({ state, currentSong }) {
     }
 
     return appData.isLoadingAppData ? <></> :
-        <div className={`sidebar ${state} lg:block bg-gray-900 fixed z-20 transition ease-in-out duration-200`} data-active-level={activeLevel}>
+        <div onClick={event => event && event.stopPropagation()} className={`sidebar ${state} lg:block bg-gray-900 fixed z-20 transition ease-in-out duration-200`} data-active-level={activeLevel}>
             <Pane level={0}>
                 <button className="block w-full select-none" onClick={selectGroup(null)}>
-                    <div className="pl-8 w-full block text-left hover:bg-gray-700 hover:bg-opacity-50 duration-200 transition ease-in-out cursor-pointer">
+                    <div className={`pl-8 w-full block text-left ${!activeGroupName.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} duration-200 transition ease-in-out cursor-pointer`}>
                         <div className="py-3 border-b border-gray-700 border-opacity-50">
                             <h3 className="text-md text-white">All Songs</h3>
                         </div>
@@ -107,7 +107,7 @@ export default function Sidebar({ state, currentSong }) {
                     <div className="text-white">
                         {Object.keys(appData?.songGroups || {}).map(groupName => {
                             return <button className="block w-full select-none" key={`song-group-${groupName}`} onClick={selectGroup(groupName)}>
-                                <div className={`pl-8 w-full block text-left ${currentSong && groupName === currentSong['Group'] ? 'bg-gray-700' : 'hover:bg-gray-700 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
+                                <div className={`pl-8 w-full block text-left ${groupName === activeGroupName.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
                                     <div className="py-3 border-b border-gray-700 border-opacity-50">
                                         <h3 className="text-md text-white">{groupName}</h3>
                                     </div>
@@ -138,7 +138,7 @@ export default function Sidebar({ state, currentSong }) {
 
                             return <div key={`song-item-${id}`}>
                                 <Link href={`/song/${id}`}>
-                                    <a className={`pl-8 w-full block text-left select-none ${id === currentSong?.id ? 'bg-gray-700' : 'hover:bg-gray-700 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
+                                    <a className={`pl-8 w-full block text-left select-none ${id === currentSong?.id ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
                                         <div className="py-3 border-b border-gray-700 border-opacity-50">
                                             <h3 className="font-bold text-md text-white">{song['Name']}</h3>
                                             <div className="mr-2">
