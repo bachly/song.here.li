@@ -17,7 +17,7 @@ export function PaneHeader({ title, leftIcon, rightIcon }) {
 
 export function Pane({ children, level = 0 }) {
     return <div data-level={level}
-        className={`pane absolute transition transform duration-200 bg-gray-800 border-r border-gray-700 border-opacity-50 z-50`}>{children}
+        className={`pane absolute transition transform duration-200 bg-gray-800 border-r border-gray-700 border-opacity-50`}>{children}
     </div>
 }
 
@@ -102,7 +102,7 @@ export default function Sidebar({ state, currentSong }) {
     }
 
     return appData.isLoadingAppData ? <></> :
-        <div className={`sidebar ${state} lg:block`} data-active-level={activeLevel}>
+        <div className={`sidebar ${state} lg:block fixed z-20`} data-active-level={activeLevel}>
             <Pane level={0}>
                 <button className="block w-full" onClick={selectGroup(null)}>
                     <div className="pl-8 w-full block text-left hover:bg-gray-700 hover:bg-opacity-50 duration-100 transition cursor-pointer">

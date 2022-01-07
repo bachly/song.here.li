@@ -7,12 +7,15 @@ import Sidebar from '../../components/Sidebar';
 import { AppDataContext } from '../../contexts';
 import ChordSheetJS from 'chordsheetjs';
 import Video from 'react-player';
+import { CheckIcon } from '../../components/Icons';
+import { AsyncButton } from '../../components/Buttons';
 
 const EDIT_MODE = {
     'IDLE': 'IDLE',
     'ACTIVE': 'ACTIVE',
     'ERROR': 'ERROR',
-    'SUCCESS': 'SUCCESS'
+    'SUCCESS': 'SUCCESS',
+    'SAVING': 'SAVING'
 }
 
 export default function Song() {
@@ -22,7 +25,6 @@ export default function Song() {
     const appData = React.useContext(AppDataContext);
     const [editedChordSheet, setEditedChordSheet] = React.useState('');
     const [editMode, setEditMode] = React.useState(EDIT_MODE.IDLE);
-    const [editMessage, setEditMessage] = React.useState('');
     const parser = new ChordSheetJS.ChordProParser();
     const formatter = new ChordSheetJS.HtmlDivFormatter();
     const textareaRef = React.useRef();
@@ -63,7 +65,6 @@ export default function Song() {
 
         setSong(appData.allSongs[id]);
         setSidebarState('hidden');
-        console.log("textareaRef", textareaRef.current);
     }, [router, appData])
 
     var base = new Airtable({ apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
@@ -71,6 +72,9 @@ export default function Song() {
     function cancelEditing(event) {
         event.preventDefault();
         setEditMode(EDIT_MODE.IDLE)
+
+        // stop <body> from scrolling
+        document.getElementsByTagName('body')[0].classList = ""
     }
 
     function startEditing(event) {
@@ -78,10 +82,12 @@ export default function Song() {
         setEditMode(EDIT_MODE.ACTIVE);
         setEditedChordSheet(song['Chord Sheet'] ? song['Chord Sheet'] : '')
 
-        // adjust textarea height to fit content
-        console.log('textareaRef', textareaRef?.current.height);
-        const scrollHeight = textareaRef?.current.height;
-        textareaRef.current.style.height = `${scrollHeight}px`;
+        // // adjust textarea height to fit content
+        // const scrollHeight = textareaRef?.current.height;
+        // textareaRef.current.style.height = `${scrollHeight}px`;
+
+        // stop <body> from scrolling
+        document.getElementsByTagName('body')[0].classList = "overflow-hidden"
     }
 
     function handleOnChangeChordSheet(event) {
@@ -90,6 +96,8 @@ export default function Song() {
 
     function saveEditing(event) {
         event.preventDefault();
+
+        setEditMode(EDIT_MODE.SAVING);
 
         base('Song List').update([
             {
@@ -101,19 +109,16 @@ export default function Song() {
         ], function (err, records) {
             if (err) {
                 setEditMode(EDIT_MODE.ERROR);
-                setEditMessage(err.message);
                 console.error(err);
                 alert(err);
                 return;
             }
 
             setEditMode(EDIT_MODE.SUCCESS);
-            setEditMessage('Successfully updated');
-            console.log('Successfully updated', {
+            console.log('Song saved:', {
                 id: records[0].id,
                 ...records[0].fields
             });
-            console.log(records);
 
             if (typeof onSongUpdateSuccess === 'function') {
                 onSongUpdateSuccess({
@@ -125,9 +130,11 @@ export default function Song() {
             }
 
             setTimeout(function () {
-                setEditMessage('');
                 setEditMode(EDIT_MODE.IDLE);
-            }, 3000)
+
+                // stop <body> rom scrolling
+                document.getElementsByTagName('body')[0].classList = ""
+            }, 700)
         })
     }
 
@@ -157,13 +164,13 @@ export default function Song() {
 
         <Sidebar state={sidebarState} currentSong={song} />
 
-        <div className="mainbar">
+        <div className="pt-24 mainbar">
             {!song ?
                 <div className="text-gray-300 flex items-center justify-center" style={{ height: '50vh' }}>Loading...</div>
                 :
                 <div className="w-full max-w-3xl mx-auto relative py-6 px-12">
 
-                    <h1 className="relative z-10">
+                    <h1 className="">
                         <div className="text-white text-left text-lg sm:text-2xl md:text-3xl">
                             <span className="font-bold">{song['Name']}</span>
                         </div>
@@ -200,42 +207,43 @@ export default function Song() {
                     </style>
 
                     <div className="mt-6 mx-auto">
-                        <div className={editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ? 'block' : 'hidden'}>
+                        <div className={editMode === EDIT_MODE.IDLE ? 'block' : 'hidden'}>
                             <div className="text-gray-200 leading-normal text-sm sm:text-base md:text-xl">
                                 <div className="chordSheetViewer"
                                     dangerouslySetInnerHTML={{ __html: song['Chord Sheet'] ? formatChordSheet(song['Chord Sheet']) : '' }}>
                                 </div>
                             </div>
                         </div>
-
-                        <div className={editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ? 'hidden' : 'block'}>
-                            <div className="my-4">
-                                <div className="flex items-center">
-                                    {editMode === EDIT_MODE.IDLE || editMode === EDIT_MODE.SUCCESS ?
-                                        <button onClick={startEditing} className="h-8 text-white fill-current p-1 px-3 hover:bg-teal-900 rounded-lg bg-gray-700 hover:bg-gray-600 duration-100 transition">
-                                            Edit
-                                        </button>
-                                        : <>
-                                            <button onClick={cancelEditing} className="h-8 text-white text-sm p-1 px-3 rounded-lg bg-gray-700 hover:bg-gray-600 mr-2 duration-100 transition">Cancel</button>
-                                            <button onClick={saveEditing} className="h-8 text-white text-sm p-1 px-3 rounded-lg bg-teal-900 hover:bg-teal-800 duration-100 transition">Save</button>
-                                        </>}
-                                    <div className="text-white text-sm">
-                                        {editMode === EDIT_MODE.SUCCESS ?
-                                            <div className="text-teal-500 ml-2">{editMessage}</div> : <></>}
-
-                                        {editMode === EDIT_MODE.ERROR ?
-                                            <div className="text-red-400 ml-2">{editMessage}</div> : <></>}
-                                    </div>
-                                </div>
-                                <textarea ref={textareaRef} onKeyUp={textAreaAdjust} onChange={handleOnChangeChordSheet} value={editedChordSheet}
-                                    style={{ minHeight: '50vh' }}
-                                    className="textarea-autogrow mt-6 -ml-4 w-full text-gray-200 bg-gray-800 bg-opacity-50 font-mono text-sm sm:text-base md:text-xl p-4 leading-loose shadow-inner focus:outline-none rounded-xl">
-                                </textarea>
-                            </div>
-                        </div>
                     </div>
 
-                    <div className="pt-24"></div>
+                    <div className="pt-20"></div>
+
+                    {/* Edit Modal */}
+                    <div className={`${editMode === EDIT_MODE.IDLE ? 'edit-modal--hidden' : 'edit-modal--block bg-gray-900'} fixed z-50 left-0 top-0 w-screen h-screen duration-200 transition`}>
+                        <div className="border-b border-gray-700 border-opacity-50" style={{ height: '45px' }}>
+                            <div className="h-full flex items-center justify-between px-4">
+                                <button onClick={cancelEditing} className="text-white text-opacity-50 text-xl py-1 px-2 rounded-md hover:bg-gray-800 hover:text-opacity-100 active:scale-95 duration-100 transition">Cancel</button>
+                                <div className="text-white text-center flex-1 text-xl w-24">
+                                    Edit {song['Name']}
+                                </div>
+                                <AsyncButton loading={editMode === EDIT_MODE.SAVING} success={editMode === EDIT_MODE.SUCCESS} onClick={saveEditing}>
+                                    Save
+                                </AsyncButton>
+                            </div>
+                        </div>
+                        <div className="">
+                            {/* <div className="border-b border-gray-700 border-opacity-50" style={{ height: '45px' }}>
+                                <div className="h-full flex items-center px-4">
+                                    <input type="text" defaultValue={song['Name']} className="text-xl text-white bg-transparent mr-2 focus:outline-none" />
+                                    <input type="text" defaultValue={song['Author/Singer']} className="text-xl text-white bg-transparent focus:outline-none" />
+                                </div>
+                            </div> */}
+                            <textarea ref={textareaRef} onChange={handleOnChangeChordSheet} value={editedChordSheet}
+                                style={{ height: 'calc(100vh - 45px)', paddingBottom: '70px' }}
+                                className="w-full text-gray-200 bg-gray-800 bg-opacity-50 font-mono text-sm sm:text-base md:text-xl p-4 leading-loose shadow-inner focus:outline-none rounded-xl">
+                            </textarea>
+                        </div>
+                    </div>
                 </div>
             }
         </div>

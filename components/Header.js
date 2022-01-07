@@ -4,7 +4,7 @@ import { ProfileCircledIcon } from './Icons'
 
 export default function Header({ primaryName, secondaryName, user }) {
     return <>
-        <div className="border-b border-gray-700 border-opacity-50" style={{ height: '45px' }}>
+        <div className="fixed top-0 left-0 w-full border-b border-gray-700 border-opacity-50 bg-gray-900 z-10" style={{ height: '45px' }}>
             <div className="h-full mx-auto px-4 flex items-center">
                 <div id="logo" className="h-full flex items-center select-none">
                     <span className="text-primary-400 font-semibold text-2xl">{primaryName}</span>

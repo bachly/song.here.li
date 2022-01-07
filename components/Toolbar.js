@@ -2,7 +2,7 @@ import { IconButton } from "./Buttons"
 import { ListIcon, EditPencilIcon, LinkIcon, MediaVideoListIcon, TrashIcon } from "./Icons"
 
 export default function Toolbar({ currentSong, toggleLeftPane, onStartEditing }) {
-    return <div className="toolbar border-b border-gray-700 border-opacity-50" style={{ height: '45px' }}>
+    return <div className="toolbar fixed top-0 left-0 w-full border-b border-gray-700 border-opacity-50 bg-gray-900 z-10" style={{ height: '45px', top: '45px' }}>
         <div className="h-full mx-auto px-4 flex items-center">
             <div className="toolbar-left flex items-center justify-start" style={{ width: '100px' }}>
                 <IconButton onClick={toggleLeftPane}>
