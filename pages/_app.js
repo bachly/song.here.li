@@ -42,8 +42,10 @@ export default function MyApp({ Component, pageProps }) {
 
                 allSongs[record.id] = song;
 
-                if (song['Group'] !== null && groups.indexOf(song['Group']) === -1) {
-                    groups.push(song['Group']);
+                const groupName = song['Group'];
+                if (!!groupName) {
+                    groups[groupName] = groups[groupName] || {};
+                    groups[groupName][record.id] = song;
                 }
             });
 
