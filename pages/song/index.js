@@ -28,12 +28,11 @@ export default function Song() {
             primaryName="Song"
             secondaryName="Here"
             userName="Bach"
+            loading="true"
         />
 
         <Toolbar
             toggleLeftPane={toggleLeftPane}
         />
-
-        <div className="text-gray-300 flex items-center justify-center" style={{ height: '50vh' }}>Loading...</div>
     </>
 }

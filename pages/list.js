@@ -10,6 +10,7 @@ import SongDetails from '../page-components/SongDetails';
 import { Container } from '../page-components/Common';
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Spinner from '../components/Spinner';
 
 var base = new Airtable({ apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
@@ -157,7 +158,7 @@ export default function List({ tableName = 'Song List' }) {
                 </div> :
                 <div className="bg-gray-900">
                     <div className="text-white h-screen w-screen flex items-center justify-center">
-                        Loading...
+                        <Spinner />
                     </div>
                 </div>
             }

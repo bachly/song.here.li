@@ -17,7 +17,7 @@ export function PaneHeader({ title, leftIcon, rightIcon }) {
 
 export function Pane({ children, level = 0 }) {
     return <div data-level={level}
-        className={`pane absolute transition transform duration-200 bg-gray-800 border-r border-gray-700 border-opacity-50`}>{children}
+        className={`pane absolute transition transform duration-200 bg-gray-800 bg-opacity-20 border-r border-gray-700 border-opacity-50`}>{children}
     </div>
 }
 
@@ -26,8 +26,8 @@ export default function Sidebar({ state, currentSong }) {
     const [activeLevel, setActiveLevel] = React.useState(1);
     const appData = React.useContext(AppDataContext);
 
-    const activeGroupName = React.useRef('');
-    const [searchTerm, setSearchTerm] = React.useState('');
+    const activeGroupName = React.useRef(currentSong['Group']);
+    const [searchTerm, setSearchTerm] = React.useState();
 
     const debouncedSearch = React.useRef(_.debounce((term) => {
         const songs = {};
@@ -40,17 +40,9 @@ export default function Sidebar({ state, currentSong }) {
             }
         })
 
-        console.log(`found songs:`, songs);
+        console.log(`Found songs:`, songs);
         setSongs(songs);
     }, 500)).current;
-
-    React.useEffect(function whenCurrentSongReady() {
-
-        if (!currentSong) return;
-
-        activeGroupName.current = currentSong['Group']
-
-    }, [currentSong]);
 
     React.useEffect(function whenGroupSelected() {
         if (appData.isLoadingAppData) return;
@@ -102,7 +94,7 @@ export default function Sidebar({ state, currentSong }) {
     }
 
     return appData.isLoadingAppData ? <></> :
-        <div className={`sidebar ${state} lg:block fixed z-20`} data-active-level={activeLevel}>
+        <div className={`sidebar ${state} lg:block bg-gray-900 fixed z-20 transition duration-200`} data-active-level={activeLevel}>
             <Pane level={0}>
                 <button className="block w-full" onClick={selectGroup(null)}>
                     <div className="pl-8 w-full block text-left hover:bg-gray-700 hover:bg-opacity-50 duration-100 transition cursor-pointer">

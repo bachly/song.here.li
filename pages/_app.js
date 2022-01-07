@@ -15,11 +15,14 @@ export default function MyApp({ Component, pageProps }) {
     const [schedules, setSchedules] = React.useState(null);
     const [loadingAppData, setLoadingAppData] = React.useState(true);
 
+    const SongListTable = base('Song List');
+    const SchedulesTable = base('Schedule');
+
     React.useEffect(function onLoad() {
         const allSongs = {}
 
         /* Get Songs */
-        base('Song List').select({
+        SongListTable.select({
             view: "All Songs",
             filterByFormula: "AND(NOT({Group} = ''), NOT({Name} = ''))",
             fields: ['Name', 'Ready', 'Group', 'BPM', 'Key', 'YouTube Link', 'Chord Sheet', 'Author/Singer']
@@ -53,7 +56,7 @@ export default function MyApp({ Component, pageProps }) {
             setSongGroups(groups);
 
             /** Get Schedules */
-            base('Schedule').select({
+            SchedulesTable.select({
                 view: "All",
                 fields: ['Date', 'Service', 'Song 1', 'Song 2', 'Song 3']
             }).all().then(function (records) {
@@ -81,12 +84,43 @@ export default function MyApp({ Component, pageProps }) {
         })
     }, [loadingAppData])
 
+    function updateSong({ song, onSuccess }) {
+        SongListTable.update([
+            {
+                id: song.id,
+                "fields": {
+                    "Chord Sheet": song.chordSheet
+                }
+            }
+        ], function (error, records) {
+            if (error) {
+                alert(error);
+                console.error(error);
+                return;
+            }
+
+            const savedSong = {
+                id: records[0].id,
+                ...records[0].fields
+            }
+            console.log('Saved song:', savedSong);
+
+            setAllSongs({
+                ...allSongs,
+                [records[0].id]: savedSong
+            });
+
+            onSuccess();
+        });
+    }
+
     return (
         <AppDataContext.Provider value={{
             allSongs,
             songGroups,
             schedules,
-            loadingAppData
+            loadingAppData,
+            updateSong
         }}>
             <Component {...pageProps} />
         </AppDataContext.Provider>
