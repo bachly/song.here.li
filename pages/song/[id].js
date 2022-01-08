@@ -115,8 +115,8 @@ export default function Song() {
 
                 <Sidebar state={sidebarState} currentSong={song} />
 
-                <div className="py-24 mainbar flex flex-wrap justify-between">
-                    <div className="w-full md:max-w-3xl flex-1 relative p-4 md:p-12">
+                <div className="py-24 mainbar">
+                    <div className="w-full relative p-4 md:p-12">
 
                         <h1 className="">
                             <div className="text-white text-left text-2xl md:text-3xl">
@@ -185,8 +185,8 @@ export default function Song() {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full md:max-w-xl p-4 md:p-12">
-                        <div className="flex justify-center">
+                    <div className="w-full p-4 md:p-12">
+                        <div className="flex justify-start">
                             <div className="block md:hidden">
                                 <Video url={song['YouTube Link']} light={true}
                                     width="300px" height="168.75px" controls={true} />
