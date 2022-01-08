@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@headlessui/react": "^1.4.2",
     "airtable": "^0.11.1",
     "chordsheetjs": "^5.1.2",
     "date-fns": "^2.27.0",

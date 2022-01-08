@@ -26,7 +26,6 @@ export default function Song() {
     const formatter = new ChordSheetJS.HtmlDivFormatter();
     const textFormatter = new ChordSheetJS.TextFormatter();
     const chordProFormatter = new ChordSheetJS.ChordProFormatter();
-    const textareaRef = React.useRef();
 
     function toggleSidebar(event) {
         event && event.preventDefault();
@@ -34,7 +33,7 @@ export default function Song() {
 
         const newState = sidebarState === 'hidden' ? 'block' : 'hidden';
         setSidebarState(newState);
-        
+
         if (newState === 'block') {
             $(window).one('click', () => {
                 setSidebarState('hidden');
@@ -75,29 +74,26 @@ export default function Song() {
         event.preventDefault();
 
         setEditMode(EDIT_MODE.SAVING);
-
-        const updatedSong = {
-            id: song.id,
-            chordSheet: editedChordSheet
-        }
+        document.getElementsByTagName('body')[0].classList = ""  // stop <body> rom scrolling
 
         appDataContext.updateSong({
-            song: updatedSong,
+            song: {
+                id: song.id,
+                'Chord Sheet': editedChordSheet
+            },
             onSuccess: () => {
-                setEditMode(EDIT_MODE.SUCCESS);
+                setEditMode(EDIT_MODE.IDLE);
 
-                setTimeout(function () {
-                    setEditMode(EDIT_MODE.IDLE);
-                    document.getElementsByTagName('body')[0].classList = ""  // stop <body> rom scrolling
-                }, 500)
+                // setTimeout(function () {
+                //     setEditMode(EDIT_MODE.IDLE);
+                //     document.getElementsByTagName('body')[0].classList = ""  // stop <body> rom scrolling
+                // }, 500)
             }
         })
     }
 
     function formatChordSheet(chordProText) {
         const song = parser.parse(chordProText);
-        console.log("ChordSheetJS Song:", song);
-        console.log("ChordPro text:", chordProFormatter.format(song));
         return formatter.format(song);
     }
 
@@ -105,7 +101,7 @@ export default function Song() {
         <Header
             primaryName="Song"
             secondaryName="Here"
-            loading={appDataContext.isLoadingAppData || !song}
+            loading={appDataContext.isLoadingAppData || !song || editMode === EDIT_MODE.SAVING}
         />
 
         {!song ? <></> :
@@ -119,8 +115,8 @@ export default function Song() {
 
                 <Sidebar state={sidebarState} currentSong={song} />
 
-                <div className="pt-32 mainbar">
-                    <div className="w-full max-w-3xl mx-auto relative px-4">
+                <div className="py-24 mainbar flex flex-wrap justify-between">
+                    <div className="w-full md:max-w-3xl flex-1 relative p-4 md:p-12">
 
                         <h1 className="">
                             <div className="text-white text-left text-2xl md:text-3xl">
@@ -159,35 +155,45 @@ export default function Song() {
                         </style>
 
                         <div className="mt-6 mx-auto">
-                            <div className={editMode === EDIT_MODE.IDLE ? 'block' : 'hidden'}>
-                                <div className="text-gray-200 leading-normal text-sm sm:text-base md:text-xl">
-                                    <div className="chordSheetViewer"
-                                        dangerouslySetInnerHTML={{ __html: song['Chord Sheet'] ? formatChordSheet(song['Chord Sheet']) : '' }}>
-                                    </div>
+                            <div className="text-gray-200 leading-normal text-sm sm:text-base md:text-lg font-mono">
+                                <div className="chordSheetViewer"
+                                    dangerouslySetInnerHTML={{ __html: song['Chord Sheet'] ? formatChordSheet(song['Chord Sheet']) : '' }}>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="pt-20"></div>
-
                         {/* Edit Modal */}
-                        <div className={`${editMode === EDIT_MODE.IDLE ? 'edit-modal--hidden' : 'edit-modal--block'} bg-gray-900 fixed z-50 left-0 top-0 w-screen h-screen duration-200 transition`}>
-                            <div className="border-b border-gray-700 border-opacity-50" style={{ height: '45px' }}>
-                                <div className="h-full flex items-center justify-between px-4">
-                                    <Button onClick={cancelEditing}>Cancel</Button>
-                                    <div className="text-gray-400 text-center flex-1 text-xl w-24">
-                                        Edit
+                        <div className={`${editMode === EDIT_MODE.ACTIVE ? 'edit-modal--block' : 'edit-modal--hidden'} bg-gray-900 fixed z-30 left-0 top-0 w-screen h-screen duration-200 transition`}>
+                            <div className="mx-auto">
+                                <div className="border-b border-gray-700 border-opacity-50 bg-gray-800 bg-opacity-80" style={{ height: '45px' }}>
+                                    <div className="h-full flex items-center justify-between px-4">
+                                        <Button onClick={cancelEditing}>Cancel</Button>
+                                        <div className="text-gray-400 text-center flex-1 text-lg w-24">
+                                            Edit
+                                        </div>
+                                        <AsyncButton loading={editMode === EDIT_MODE.SAVING} success={editMode === EDIT_MODE.SUCCESS} onClick={saveEditing}>
+                                            Save
+                                        </AsyncButton>
                                     </div>
-                                    <AsyncButton loading={editMode === EDIT_MODE.SAVING} success={editMode === EDIT_MODE.SUCCESS} onClick={saveEditing}>
-                                        Save
-                                    </AsyncButton>
+                                </div>
+                                <div className="mx-auto">
+                                    <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet}
+                                        style={{ height: 'calc(100vh - 45px)', paddingBottom: '70px', fontSize: '18px' }}
+                                        className="bg-gray-900 w-full text-gray-200 leading-10 text-sm sm:text-base md:text-xl font-mono py-3 px-6 shadow-inner focus:outline-none">
+                                    </textarea>
                                 </div>
                             </div>
-                            <div className="">
-                                <textarea ref={textareaRef} onChange={handleOnChangeChordSheet} value={editedChordSheet}
-                                    style={{ height: 'calc(100vh - 45px)', paddingBottom: '70px' }}
-                                    className="w-full text-gray-200 bg-gray-800 bg-opacity-50 font-mono text-sm sm:text-base md:text-xl py-3 px-6 leading-loose shadow-inner focus:outline-none rounded-xl">
-                                </textarea>
+                        </div>
+                    </div>
+                    <div className="w-full md:max-w-xl p-4 md:p-12">
+                        <div className="flex justify-center">
+                            <div className="block md:hidden">
+                                <Video url={song['YouTube Link']} light={true}
+                                    width="300px" height="168.75px" controls={true} />
+                            </div>
+                            <div className="hidden md:block">
+                                <Video url={song['YouTube Link']} light={true}
+                                    width="500px" height="281.25px" controls={true} />
                             </div>
                         </div>
                     </div>

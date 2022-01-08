@@ -8,6 +8,7 @@ import '../styles/swiper-custom.scss';
 import Airtable from 'airtable';
 import { AppDataContext } from '../contexts';
 import Head from 'next/head';
+import { deepClone } from '../components/utils';
 
 const base = new Airtable({ apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
@@ -87,30 +88,40 @@ export default function MyApp({ Component, pageProps }) {
     }, [loadingAppData])
 
     function updateSong({ song, onSuccess }) {
+        const songBackup = deepClone(allSongs[song.id]);
+
+        // Optimistic UI: First, assume saving successfully
+        const songAfterSaved = {
+            ...allSongs[song.id],
+            ...song
+        }
+        console.log('Optimistic saved song:', songAfterSaved);
+        setAllSongs({
+            ...allSongs,
+            [song.id]: songAfterSaved
+        });
+
+        // Then, actually send data to backend
         SongListTable.update([
             {
                 id: song.id,
                 "fields": {
-                    "Chord Sheet": song.chordSheet
+                    "Chord Sheet": song['Chord Sheet']
                 }
             }
         ], function (error, records) {
             if (error) {
-                alert(error);
+                alert("Error:", error);
                 console.error(error);
+
+                // If error, revert to backup
+                setAllSongs({
+                    ...allSongs,
+                    [records[0].id]: songBackup
+                });
+
                 return;
             }
-
-            const savedSong = {
-                id: records[0].id,
-                ...records[0].fields
-            }
-            console.log('Saved song:', savedSong);
-
-            setAllSongs({
-                ...allSongs,
-                [records[0].id]: savedSong
-            });
 
             onSuccess();
         });
