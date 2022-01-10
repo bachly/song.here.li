@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton } from "./Buttons";
-import { ChevronLeftIcon, FolderIcon, MoreHorzIcon, SearchIcon } from "./Icons";
+import { CalendarIcon, ChevronLeftIcon, FolderIcon, MoreHorzIcon, SearchIcon } from "./Icons";
 import AppDataContext from '../contexts';
 import Link from 'next/link';
 import _ from 'underscore';
@@ -173,7 +173,7 @@ export default function Sidebar({ state, currentSong }) {
                             return <button className="block w-full select-none" key={`schedule-${schedule.id}`} onClick={selectSchedule(schedule)}>
                                 <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
                                     <div className="py-3 border-b border-gray-700 border-opacity-50 flex items-center text-white">
-                                        <FolderIcon />
+                                        <CalendarIcon />
                                         <h3 className="text-lg text-white ml-4">{schedule['Formatted Datetime']}</h3>
                                     </div>
                                 </div>
