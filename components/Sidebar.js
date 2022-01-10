@@ -22,12 +22,14 @@ export function Pane({ children, level = 0 }) {
 }
 
 export default function Sidebar({ state, currentSong }) {
-    const [songs, setSongs] = React.useState({});
-    const [activeLevel, setActiveLevel] = React.useState(1);
     const appData = React.useContext(AppDataContext);
-
-    const activeGroupName = React.useRef(currentSong['Group']);
     const [searchTerm, setSearchTerm] = React.useState();
+    const [activeLevel, setActiveLevel] = React.useState(1);
+
+    const activeSchedule = React.useRef();
+    const activeGroupName = React.useRef(currentSong['Group']);
+    const [level1Title, setLevel1Title] = React.useState('');
+    const [songs, setSongs] = React.useState({});
 
     const debouncedSearch = React.useRef(_.debounce((term) => {
         const songs = {};
@@ -48,6 +50,7 @@ export default function Sidebar({ state, currentSong }) {
         if (appData.isLoadingAppData) return;
 
         let songs = {};
+        let title = '';
 
         if (activeGroupName.current) {
             Object.keys(appData.allSongs).map(id => {
@@ -56,34 +59,72 @@ export default function Sidebar({ state, currentSong }) {
                     songs[id] = song;
                 }
             })
+            title = activeGroupName.current;
         } else {
-            Object.keys(appData.allSongs).map(id => {
-                const song = appData.allSongs[id];
-                if (!!searchTerm) {
-                    if (song['Name'].toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+            if (activeSchedule.current) {
+                const schedule = activeSchedule.current;
+
+                const song1 = schedule['Song 1'];
+                const song2 = schedule['Song 2'];
+                const song3 = schedule['Song 3'];
+
+                if (song1) {
+                    songs[song1['id']] = song1;
+                }
+                if (song1) {
+                    songs[song2['id']] = song2;
+                }
+                if (song1) {
+                    songs[song3['id']] = song3;
+                }
+
+                title = schedule['Formatted Datetime'];
+            } else {
+                Object.keys(appData.allSongs).map(id => {
+                    const song = appData.allSongs[id];
+                    if (!!searchTerm) {
+                        if (song['Name'].toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+                            songs[id] = song;
+                        }
+                    } else {
                         songs[id] = song;
                     }
-                } else {
-                    songs[id] = song;
-                }
-            })
+                })
+
+                title = 'All Songs';
+            }
+
         }
 
-        console.log(`songs under group:`, songs);
+        console.log(`songs under ${title}:`, songs);
         setSongs(songs);
-    }, [appData, activeGroupName.current])
+        setLevel1Title(title);
+    }, [appData, activeGroupName.current, activeSchedule.current])
 
     function selectGroup(groupName) {
         return event => {
             event && event.preventDefault();
-            setActiveLevel(activeLevel + 1);
+            setActiveLevel(1);
+            setSearchTerm('');
             activeGroupName.current = groupName;
+            activeSchedule.current = null;
+        }
+    }
+
+    function selectSchedule(schedule) {
+        return event => {
+            event && event.preventDefault();
+            setActiveLevel(1);
+            setSearchTerm('');
+            activeSchedule.current = schedule;
+            activeGroupName.current = null;
         }
     }
 
     function drillup(event) {
         event && event.preventDefault();
-        setActiveLevel(activeLevel <= 0 ? 0 : activeLevel - 1);
+        setSearchTerm('');
+        setActiveLevel(0);
     }
 
     function enterSearchTerm(event) {
@@ -94,6 +135,8 @@ export default function Sidebar({ state, currentSong }) {
         if (appData.isLoadingAppData) return;
 
         activeGroupName.current = null; // reset to no group
+        activeSchedule.current = null; //reset to no schedule
+        setLevel1Title('All Songs');
 
         if (term === '') {
             setSongs(appData.allSongs);
@@ -105,15 +148,15 @@ export default function Sidebar({ state, currentSong }) {
     return appData.isLoadingAppData ? <></> :
         <div onClick={event => event && event.stopPropagation()} className={`sidebar ${state} lg:block bg-gray-900 fixed z-20 transition ease-in-out duration-200`} data-active-level={activeLevel}>
             <Pane level={0}>
-                <button className="block w-full select-none" onClick={selectGroup(null)}>
-                    <div className={`pl-4 w-full block text-left ${!activeGroupName.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} duration-200 transition ease-in-out cursor-default`}>
-                        <div className="py-3 border-b border-gray-700 border-opacity-50 flex items-center text-white">
-                            <FolderIcon />
-                            <h3 className="text-lg text-white ml-4">All Songs</h3>
-                        </div>
-                    </div>
-                </button>
                 <div className="sidebar__inner">
+                    <button className="block w-full select-none" onClick={selectGroup(null)}>
+                        <div className={`pl-4 w-full block text-left ${!activeGroupName.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} duration-200 transition ease-in-out cursor-default`}>
+                            <div className="py-3 border-b border-gray-700 border-opacity-50 flex items-center text-white">
+                                <FolderIcon />
+                                <h3 className="text-lg text-white ml-4">All Songs</h3>
+                            </div>
+                        </div>
+                    </button>
                     {Object.keys(appData?.songGroups || {}).map(groupName => {
                         return <button className="block w-full select-none" key={`song-group-${groupName}`} onClick={selectGroup(groupName)}>
                             <div className={`pl-4 w-full block text-left ${groupName === activeGroupName.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
@@ -124,18 +167,34 @@ export default function Sidebar({ state, currentSong }) {
                             </div>
                         </button>
                     })}
+                    <div className="mt-12 mb-4 text-xs text-white tracking-wider uppercase pl-4">Coming Up</div>
+                    {appData?.schedules.map((schedule, index) => {
+                        if (index < 3) {
+                            return <button className="block w-full select-none" key={`schedule-${schedule.id}`} onClick={selectSchedule(schedule)}>
+                                <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
+                                    <div className="py-3 border-b border-gray-700 border-opacity-50 flex items-center text-white">
+                                        <FolderIcon />
+                                        <h3 className="text-lg text-white ml-4">{schedule['Formatted Datetime']}</h3>
+                                    </div>
+                                </div>
+                            </button>
+                        } else {
+                            return <div key={`schedule-${schedule.id}`} />
+                        }
+                    })}
                 </div>
             </Pane>
             <Pane level={1}>
                 <PaneHeader
-                    title={activeGroupName.current || 'All songs'}
+                    title={level1Title}
                     leftIcon={<IconButton onClick={drillup}><ChevronLeftIcon /></IconButton>}
                     rightIcon={<IconButton><MoreHorzIcon /></IconButton>} />
                 <div className="sidebar__inner">
                     <div className="flex items-center bg-gray-800 bg-opacity-20 w-full border-b border-gray-700 border-opacity-50">
                         <div className="text-gray-500 px-2 py-3"><SearchIcon /></div>
-                        <input type="search"
-                            defaultValue={searchTerm}
+                        <input type="text"
+                            name="searchTerm"
+                            value={searchTerm}
                             onChange={enterSearchTerm}
                             className="appearance-none py-3 text-white w-full bg-gray-800 bg-opacity-20 placeholder-gray-500 focus:outline-none text-white"
                             placeholder="Search" />

@@ -185,7 +185,7 @@ export default function Song() {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full p-4 md:p-12">
+                    <div className="w-full p-4 md:p-12 border-t border-gray-800">
                         <div className="flex justify-start">
                             <div className="block md:hidden">
                                 <Video url={song['YouTube Link']} light={true}
