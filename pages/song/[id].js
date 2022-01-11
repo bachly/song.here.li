@@ -49,7 +49,7 @@ export default function Song() {
         const currentSong = appDataContext.allSongs[id];
         const currentSongWithChordSheetJS = {
             ...currentSong,
-            'Chord Sheet JS Song': currentSong ? parser.parse(currentSong['Chord Sheet']) : null
+            'Chord Sheet JS Song': currentSong ? parser.parse(currentSong['Chord Sheet'] || '') : null
         }
         console.log("song loaded:", currentSongWithChordSheetJS);
         setSong(currentSongWithChordSheetJS);
@@ -206,20 +206,16 @@ export default function Song() {
 }
 
 function ChordSheetJsSongDisplay({ chordSheetJsSong }) {
-    const display = [];
+    console.log("chord sheet js song:", chordSheetJsSong);
 
-    console.log(chordSheetJsSong?.paragraphs);
-
-    chordSheetJsSong?.paragraphs?.map(paragraph => {
-        display.push(<Paragraph paragraph={paragraph} />)
+    return chordSheetJsSong?.paragraphs?.map((paragraph, index) => {
+        return <Paragraph key={`paragarph-${index}`} paragraph={paragraph} />
     })
-
-    return display.map(d => d);
 }
 
 function Paragraph({ paragraph }) {
-    return <div className="chordSheetParagraph mt-16">{paragraph.lines.map(line => {
-        return <Line line={line} />
+    return <div className="chordSheetParagraph mt-16">{paragraph.lines.map((line, index) => {
+        return <Line key={`line-${index}`} line={line} />
     })}</div>
 }
 
@@ -236,8 +232,8 @@ function Line({ line }) {
 
 function ChordLyricsLine({ items }) {
     return <div className="flex flex-wrap items-center mb-2">
-        {items.map(item => {
-            return <span className="">
+        {items.map((item, index) => {
+            return <span key={`line-item-${index}`} className="">
                 <div className="h-6 text-primary-400">
                     {item['chords']}
                     {item['lyrics'] === ' ' || item['lyrics'] === '' ? <>&nbsp;&nbsp;</> : <></>}
@@ -250,4 +246,8 @@ function ChordLyricsLine({ items }) {
             </span>
         })}
     </div>
+}
+
+function lyricsItemIsEmpty(item) {
+    return !item || item === ' ' || item === '';
 }
