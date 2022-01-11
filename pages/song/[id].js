@@ -46,8 +46,13 @@ export default function Song() {
         const { id } = router.query;
         if (!id) return;
 
-        console.log("song loaded:", appDataContext.allSongs[id]);
-        setSong(appDataContext.allSongs[id]);
+        const currentSong = appDataContext.allSongs[id];
+        const currentSongWithChordSheetJS = {
+            ...currentSong,
+            'Chord Sheet JS Song': currentSong ? parser.parse(currentSong['Chord Sheet']) : null
+        }
+        console.log("song loaded:", currentSongWithChordSheetJS);
+        setSong(currentSongWithChordSheetJS);
         setSidebarState('hidden');
     }, [router, appDataContext])
 
@@ -83,11 +88,6 @@ export default function Song() {
             },
             onSuccess: () => {
                 setEditMode(EDIT_MODE.IDLE);
-
-                // setTimeout(function () {
-                //     setEditMode(EDIT_MODE.IDLE);
-                //     document.getElementsByTagName('body')[0].classList = ""  // stop <body> rom scrolling
-                // }, 500)
             }
         })
     }
@@ -155,10 +155,12 @@ export default function Song() {
                         </style>
 
                         <div className="mt-6 mx-auto">
-                            <div className="text-gray-200 leading-normal text-sm sm:text-base md:text-lg font-mono">
-                                <div className="chordSheetViewer"
+                            <div className="text-gray-200 leading-normal text-sm sm:text-base md:text-lg">
+                                <ChordSheetJsSongDisplay chordSheetJsSong={song['Chord Sheet JS Song']} />
+
+                                {/* <div className="chordSheetViewer"
                                     dangerouslySetInnerHTML={{ __html: song['Chord Sheet'] ? formatChordSheet(song['Chord Sheet']) : '' }}>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
@@ -201,4 +203,51 @@ export default function Song() {
             </>
         }
     </>
+}
+
+function ChordSheetJsSongDisplay({ chordSheetJsSong }) {
+    const display = [];
+
+    console.log(chordSheetJsSong?.paragraphs);
+
+    chordSheetJsSong?.paragraphs?.map(paragraph => {
+        display.push(<Paragraph paragraph={paragraph} />)
+    })
+
+    return display.map(d => d);
+}
+
+function Paragraph({ paragraph }) {
+    return <div className="chordSheetParagraph mt-16">{paragraph.lines.map(line => {
+        return <Line line={line} />
+    })}</div>
+}
+
+function Line({ line }) {
+    const item = line.items[0];
+    const itemType = item.constructor.name;
+
+    if (itemType === 'Tag') {
+        return <div className={`tag tag--${item['name']} text-gray-400 font-bold mb-4`}>{item['value']}</div>;
+    } else if (itemType === 'ChordLyricsPair') {
+        return <ChordLyricsLine items={line.items} />
+    }
+}
+
+function ChordLyricsLine({ items }) {
+    return <div className="flex flex-wrap items-center mb-2">
+        {items.map(item => {
+            return <span className="">
+                <div className="h-6 text-primary-400">
+                    {item['chords']}
+                    {item['lyrics'] === ' ' || item['lyrics'] === '' ? <>&nbsp;&nbsp;</> : <></>}
+                </div>
+                <div className="h-6">
+                    {item['lyrics'][item['lyrics'].length - 1] === ' ' ?
+                        <div>{item['lyrics'].slice(0, -1)}&nbsp; </div> :
+                        <div>{item['lyrics']}</div>}
+                </div>
+            </span>
+        })}
+    </div>
 }
