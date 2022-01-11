@@ -179,7 +179,7 @@ export default function Song() {
                                 <div className="mx-auto">
                                     <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet}
                                         style={{ height: 'calc(100vh - 45px)', paddingBottom: '70px', fontSize: '18px' }}
-                                        className="bg-gray-900 select-none w-full text-gray-200 leading-10 text-sm sm:text-base md:text-xl font-mono py-3 px-6 shadow-inner focus:outline-none">
+                                        className="bg-gray-900 w-full text-gray-200 leading-10 text-sm sm:text-base md:text-xl font-mono py-3 px-6 shadow-inner focus:outline-none">
                                     </textarea>
                                 </div>
                             </div>
