@@ -27,7 +27,7 @@ export default function Sidebar({ state, currentSong }) {
     const [activeLevel, setActiveLevel] = React.useState(1);
 
     const activeSchedule = React.useRef();
-    const activeGroupName = React.useRef(currentSong['Group']);
+    const activeGroupName = React.useRef(currentSong ? currentSong['Group'] : null);
     const [level1Title, setLevel1Title] = React.useState('');
     const [songs, setSongs] = React.useState({});
 
@@ -157,6 +157,7 @@ export default function Sidebar({ state, currentSong }) {
                             </div>
                         </div>
                     </button>
+                    
                     {Object.keys(appData?.songGroups || {}).map(groupName => {
                         return <button className="block w-full select-none" key={`song-group-${groupName}`} onClick={selectGroup(groupName)}>
                             <div className={`pl-4 w-full block text-left ${groupName === activeGroupName.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
@@ -167,21 +168,23 @@ export default function Sidebar({ state, currentSong }) {
                             </div>
                         </button>
                     })}
-                    <div className="mt-12 mb-4 text-xs text-white tracking-wider uppercase pl-4">Coming Up</div>
-                    {appData?.schedules.map((schedule, index) => {
-                        if (index < 3) {
-                            return <button className="block w-full select-none" key={`schedule-${schedule.id}`} onClick={selectSchedule(schedule)}>
-                                <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
-                                    <div className="py-3 border-b border-gray-700 border-opacity-50 flex items-center text-white">
-                                        <CalendarIcon />
-                                        <h3 className="text-lg text-white ml-4">{schedule['Formatted Datetime']}</h3>
+
+                    {appData?.schedules ? <>
+                        <div className="mt-12 mb-4 text-xs text-white tracking-wider uppercase pl-4">Coming Up</div>
+                        {appData?.schedules.map((schedule, index) => {
+                            if (index < 3) {
+                                return <button className="block w-full select-none" key={`schedule-${schedule.id}`} onClick={selectSchedule(schedule)}>
+                                    <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
+                                        <div className="py-3 border-b border-gray-700 border-opacity-50 flex items-center text-white">
+                                            <CalendarIcon />
+                                            <h3 className="text-lg text-white ml-4">{schedule['Formatted Datetime']}</h3>
+                                        </div>
                                     </div>
-                                </div>
-                            </button>
-                        } else {
-                            return <div key={`schedule-${schedule.id}`} />
-                        }
-                    })}
+                                </button>
+                            } else {
+                                return <div key={`schedule-${schedule.id}`} />
+                            }
+                        })}</> : <></>}
                 </div>
             </Pane>
             <Pane level={1}>

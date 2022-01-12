@@ -7,7 +7,7 @@ import Layout from '../page-components/Layout';
 import SongList from '../page-components/SongList';
 import HeaderForPage from '../page-components/HeaderForPage';
 import SongDetails from '../page-components/SongDetails';
-import { Container } from '../page-components/Common';
+import { Container } from './Common';
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Spinner from '../components/Spinner';

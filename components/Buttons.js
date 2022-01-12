@@ -2,7 +2,7 @@ import { CheckIcon } from "./Icons"
 import Spinner from "./Spinner"
 
 export function IconButton({ onClick, children }) {
-    return <button onClick={onClick} className="p-1 duration-100 transition ease-in-out transform active:opacity-80 active:scale-95 rounded-md">
+    return <button onClick={onClick} className="p-1 duration-100 transition ease-in-out transform active:opacity-60 active:scale-90 rounded-md">
         <div className="text-primary-400 select-none">
             {children}
         </div>
@@ -32,7 +32,7 @@ export function AsyncButton({ children, onClick, loading, success }) {
 
 export function Button({ children, onClick }) {
     return <button onClick={onClick}
-        className={`w-20 h-8 text-white text-opacity-80 text-xl p-1 px-2 rounded-md hover:text-opacity-100 active:scale-90 duration-100 transition ease-in-out flex items-center justify-center`}>
+        className={`w-20 h-8 text-white text-opacity-80 text-xl p-1 px-2 rounded-md hover:text-opacity-60 active:scale-90 duration-100 transition ease-in-out flex items-center justify-center`}>
         {children}
     </button>
 }
