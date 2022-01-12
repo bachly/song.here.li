@@ -9,7 +9,6 @@ export default class MyDocument extends Document {
                     <Main />
                     <NextScript />
                     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossOrigin="anonymous" defer />
-                    <script src="/js/globals.js" />
                 </body>
             </Html>
         )

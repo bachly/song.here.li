@@ -211,12 +211,10 @@ function ChordLyricsLine({ items }) {
             return <span key={`line-item-${index}`} className="">
                 <div className="h-6 text-primary-400">
                     {item['chords']}
-                    {item['lyrics'] === ' ' || item['lyrics'] === '' ? <>&nbsp;&nbsp;</> : <></>}
+                    {lyricsItemIsEmpty(item['lyrics']) ? <>&nbsp;&nbsp;</> : <></>}
                 </div>
                 <div className="h-6">
-                    {item['lyrics'][item['lyrics'].length - 1] === ' ' ?
-                        <div>{item['lyrics'].slice(0, -1)}&nbsp; </div> :
-                        <div>{item['lyrics']}</div>}
+                    {lyricsItemDisplay(item['lyrics'])}
                 </div>
             </span>
         })}
@@ -225,4 +223,30 @@ function ChordLyricsLine({ items }) {
 
 function lyricsItemIsEmpty(item) {
     return !item || item === ' ' || item === '';
+}
+
+function lyricsItemEndsWithSpace(item) {
+    return item && item[item.length - 1] === ' '
+}
+
+function lyricsItemStartsWithSpace(item) {
+    return item && item[0] === ' '
+}
+
+function lyricsItemDisplay(item) {
+    if (!item) return;
+
+    let display = [];
+
+    if (lyricsItemEndsWithSpace(item)) {
+        display[2] = <>&nbsp;</>;
+    }
+
+    if (lyricsItemStartsWithSpace(item)) {
+        display[0] = <>&nbsp;&nbsp;&nbsp;&nbsp;</>;
+    }
+
+    display[1] = item.trim();
+
+    return display;
 }
