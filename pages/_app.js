@@ -75,7 +75,7 @@ export default function MyApp({ Component, pageProps }) {
                         schedules.push({
                             id: record.id,
                             'Datetime': record.get('Datetime') || null,
-                            'Formatted Datetime': formattedDatetime || null, 
+                            'Formatted Datetime': formattedDatetime || null,
                             'Song 1': record.get('Song 1') ? allSongs[record.get('Song 1')[0]] : null,
                             'Song 2': record.get('Song 2') ? allSongs[record.get('Song 2')[0]] : null,
                             'Song 3': record.get('Song 3') ? allSongs[record.get('Song 3')[0]] : null
@@ -90,12 +90,16 @@ export default function MyApp({ Component, pageProps }) {
     }, [])
 
     React.useEffect(() => {
-        console.log('App data ready:', {
-            allSongs,
-            songGroups,
-            schedules,
-            loadingAppData
-        })
+        if (loadingAppData) {
+            console.log('Loading app data...')
+        } else {
+            console.log('[SongHere] App data ready:', {
+                allSongs,
+                songGroups,
+                schedules,
+                loadingAppData
+            })
+        }
     }, [loadingAppData])
 
     function updateSong({ song, onSuccess }) {

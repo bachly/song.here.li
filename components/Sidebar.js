@@ -96,7 +96,7 @@ export default function Sidebar({ state, currentSong }) {
 
         }
 
-        console.log(`songs under ${title}:`, songs);
+        console.log(`[SongHere] Song list "${title}":`, songs);
         setSongs(songs);
         setLevel1Title(title);
     }, [appData, activeGroupName.current, activeSchedule.current])

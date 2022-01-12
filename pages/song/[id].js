@@ -23,9 +23,6 @@ export default function Song() {
     const [editedChordSheet, setEditedChordSheet] = React.useState('');
     const [editMode, setEditMode] = React.useState(EDIT_MODE.IDLE);
     const parser = new ChordSheetJS.ChordProParser();
-    const formatter = new ChordSheetJS.HtmlDivFormatter();
-    const textFormatter = new ChordSheetJS.TextFormatter();
-    const chordProFormatter = new ChordSheetJS.ChordProFormatter();
 
     function toggleSidebar(event) {
         event && event.preventDefault();
@@ -47,11 +44,15 @@ export default function Song() {
         if (!id) return;
 
         const currentSong = appDataContext.allSongs[id];
+        const chordSheetJsSong = currentSong ? parser.parse(currentSong['Chord Sheet'] || '') : null;
         const currentSongWithChordSheetJS = {
             ...currentSong,
-            'Chord Sheet JS Song': currentSong ? parser.parse(currentSong['Chord Sheet'] || '') : null
+            'Chord Sheet JS Song': {
+                artist: chordSheetJsSong ? chordSheetJsSong.metadata?.artist : '',
+                key: chordSheetJsSong ? chordSheetJsSong.metadata?.key : '',
+                paragraphs: chordSheetJsSong ? JSON.parse(JSON.stringify(chordSheetJsSong.paragraphs)) : []
+            }
         }
-        console.log("song loaded:", currentSongWithChordSheetJS);
         setSong(currentSongWithChordSheetJS);
         setSidebarState('hidden');
     }, [router, appDataContext])
@@ -92,11 +93,6 @@ export default function Song() {
         })
     }
 
-    function formatChordSheet(chordProText) {
-        const song = parser.parse(chordProText);
-        return formatter.format(song);
-    }
-
     return <>
         <Header
             primaryName="Song"
@@ -128,31 +124,6 @@ export default function Song() {
                                 </div>
                             </div>
                         </h1>
-
-                        <style>
-                            {ChordSheetJS.HtmlDivFormatter.cssString('.chordSheetViewer')}
-                            {`
-                                .chord { color: rgb(45, 212, 191) }
-                                .chordSheetViewer .column {
-                                }
-                                .chordSheetViewer .row {
-                                    flex-wrap: wrap;
-                                    line-height: 1;
-                                }
-                                .chordSheetViewer .chord {
-                                    line-height: 1.5;
-                                }
-                                .chordSheetViewer .lyrics:after {
-                                    content: ' ';
-                                    display: inline-block;
-                                }
-
-                                .chordSheetViewer .comment {
-                                    font-weight: bold;
-                                    margin: 2rem 0;
-                                }
-                            `}
-                        </style>
 
                         <div className="mt-6 mx-auto">
                             <div className="text-gray-200 leading-normal text-sm sm:text-base md:text-lg">
@@ -206,11 +177,15 @@ export default function Song() {
 }
 
 function ChordSheetJsSongDisplay({ chordSheetJsSong }) {
-    console.log("chord sheet js song:", chordSheetJsSong);
-
-    return chordSheetJsSong?.paragraphs?.map((paragraph, index) => {
-        return <Paragraph key={`paragarph-${index}`} paragraph={paragraph} />
-    })
+    if (chordSheetJsSong && chordSheetJsSong.paragraphs) {
+        console.log("[SongHere] ChordSheetJsSong:", chordSheetJsSong);
+        return chordSheetJsSong?.paragraphs?.map((paragraph, index) => {
+            return <Paragraph key={`paragarph-${index}`} paragraph={paragraph} />
+        })
+    } else {
+        console.log("[SongHere] ChordSheetJsSong: empty");
+        return <></>
+    }
 }
 
 function Paragraph({ paragraph }) {
@@ -221,12 +196,12 @@ function Paragraph({ paragraph }) {
 
 function Line({ line }) {
     const item = line.items[0];
-    const itemType = item.constructor.name;
 
-    if (itemType === 'Tag') {
-        return <div className={`tag tag--${item['name']} text-gray-400 font-bold mb-4`}>{item['value']}</div>;
-    } else if (itemType === 'ChordLyricsPair') {
-        return <ChordLyricsLine items={line.items} />
+    switch (item._name) {
+        case 'comment':
+            return <div className={`ChordSongComment text-gray-400 font-bold mb-4`}>{item_.value}</div>;
+        default:
+            return <ChordLyricsLine items={line.items} />
     }
 }
 
