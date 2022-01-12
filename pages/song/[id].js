@@ -199,7 +199,7 @@ function Line({ line }) {
 
     switch (item._name) {
         case 'comment':
-            return <div className={`ChordSongComment text-gray-400 font-bold mb-4`}>{item_.value}</div>;
+            return <div className={`ChordSongComment text-gray-400 font-bold mb-4`}>{item._value}</div>;
         default:
             return <ChordLyricsLine items={line.items} />
     }
