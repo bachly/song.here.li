@@ -9,7 +9,7 @@ import Airtable from 'airtable';
 import { AppDataContext } from '../contexts';
 import Head from 'next/head';
 import { deepClone } from '../components/utils';
-import { format, isFuture } from 'date-fns';
+import { endOfYesterday, format, isAfter } from 'date-fns';
 
 const base = new Airtable({ apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY }).base(process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID);
 
@@ -71,7 +71,7 @@ export default function MyApp({ Component, pageProps }) {
                     const scheduleDatetime = record.get('Datetime') || null;
                     const formattedDatetime = scheduleDatetime ? format(new Date(scheduleDatetime), 'iii dd MMM hh:mm b') : null;
 
-                    if (scheduleDatetime && isFuture(new Date(scheduleDatetime))) {
+                    if (scheduleDatetime && isAfter(new Date(scheduleDatetime), endOfYesterday())) {
                         schedules.push({
                             id: record.id,
                             'Datetime': record.get('Datetime') || null,
