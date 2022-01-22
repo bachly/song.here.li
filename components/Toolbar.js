@@ -1,29 +1,37 @@
 import { IconButton } from "./Buttons"
-import { ListIcon, EditPencilIcon, MinusIcon, PlusIcon } from "./Icons"
+import { ListIcon, EditPencilIcon, MinusIcon, PlusIcon, LinkIcon } from "./Icons"
 import { Popover } from '@headlessui/react'
 
-export default function Toolbar({ toggleLeftPane, onStartEditing }) {
+export default function Toolbar({ toggleLeftPane, onStartEditing, currentSong }) {
+    function openCurrentSongInNewTab(event) {
+        event && event.preventDefault();
+        window.open(`/song/${currentSong.id}`, '_blank')
+    }
+
     return <div className="toolbar fixed top-0 left-0 w-full border-b border-gray-700 border-opacity-50 bg-gray-900 z-10" style={{ height: '45px', top: '45px' }}>
         <div className="h-full mx-auto px-4 flex items-center justify-between">
-            <div className="toolbar-left flex items-center justify-start" style={{ width: '100px' }}>
+            <div className="toolbar-left flex items-center justify-start" style={{ width: '65px' }}>
                 <IconButton onClick={toggleLeftPane}>
                     <ListIcon />
                 </IconButton>
                 <ToolbarDivider />
             </div>
             <div className="flex-1">
-                <div className="mx-auto flex items-center justify-center">
-                    <TransposeButton><MinusIcon /></TransposeButton>
-                    <span className="text-white text-sm font-light px-3">Transpose</span>
-                    <TransposeButton><PlusIcon /></TransposeButton>
+                <div className="mx-auto flex items-center justify-between">
+                    <div className="flex items-center">
+                        <TransposeButton><MinusIcon /></TransposeButton>
+                        <span className="text-white text-sm font-light px-3">Transpose</span>
+                        <TransposeButton><PlusIcon /></TransposeButton>
+                    </div>
+                    <IconButton onClick={openCurrentSongInNewTab}>
+                        <LinkIcon />
+                    </IconButton>
                 </div>
             </div>
-            {/* <div className="block md:hidden flex items-center justify-center flex-1">
-                <IconButton>
-                    <MoreHorzIcon />
-                </IconButton>
-            </div> */}
-            <div className="ml-auto flex items-center justify-end" style={{ width: '100px' }}>
+            <div className="block md:hidden flex items-center justify-center">
+
+            </div>
+            <div className="ml-auto flex items-center justify-end" style={{ width: '65px' }}>
                 <ToolbarDivider />
                 <IconButton onClick={onStartEditing}>
                     <EditPencilIcon />
