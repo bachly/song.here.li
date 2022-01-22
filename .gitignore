@@ -105,3 +105,6 @@ dist
 
 # NextJS export
 out/
+
+# OS files
+.DS_Store

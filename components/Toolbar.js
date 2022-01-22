@@ -38,7 +38,7 @@ export default function Toolbar({ toggleLeftPane, onStartEditing, currentSong })
                 </IconButton>
             </div>
         </div>
-    </div>
+    </div >
 }
 
 export function ToolbarDivider() {
