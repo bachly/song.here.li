@@ -128,10 +128,6 @@ export default function Song() {
                         <div className="mt-6 mx-auto">
                             <div className="text-gray-200 leading-normal text-sm sm:text-base md:text-lg">
                                 <ChordSheetJsSongDisplay chordSheetJsSong={song['Chord Sheet JS Song']} />
-
-                                {/* <div className="chordSheetViewer"
-                                    dangerouslySetInnerHTML={{ __html: song['Chord Sheet'] ? formatChordSheet(song['Chord Sheet']) : '' }}>
-                                </div> */}
                             </div>
                         </div>
 
@@ -199,7 +195,7 @@ function Line({ line }) {
 
     switch (item._name) {
         case 'comment':
-            return <div className={`ChordSongComment text-gray-400 font-bold mb-4`}>{item._value}</div>;
+            return <div className={`ChordSongComment text-teal-400 font-bold mb-4`}>{item._value}</div>;
         default:
             return <ChordLyricsLine items={line.items} />
     }
@@ -213,7 +209,7 @@ function ChordLyricsLine({ items }) {
                     {item['chords']}
                     {lyricsItemIsEmpty(item['lyrics']) ? <>&nbsp;&nbsp;</> : <></>}
                 </div>
-                <div className="h-6">
+                <div className="h-6 text-2xl">
                     {lyricsItemDisplay(item['lyrics'])}
                 </div>
             </span>
