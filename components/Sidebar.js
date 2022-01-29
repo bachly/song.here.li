@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import clsx from 'clsx';
 
 export function PaneHeader({ title, leftIcon, rightIcon }) {
-    return <div className="sidebar__header border-b border-gray-700 border-opacity-50 select-none fixed top-0 w-full bg-gray-900 bg-opacity-5 backdrop-blur-md" style={{ height: '45px' }}>
+    return <div className="sidebar__header border-b border-gray-700 border-opacity-50 select-none fixed top-0 w-full" style={{ height: '45px' }}>
         <div className="h-full w-full flex items-center px-1 justify-between select-none text-primary-400">
             <div className="w-12">{leftIcon}</div>
             <span className="text-white font-light text-sm mx-auto">{title}</span>
@@ -162,9 +162,9 @@ export default function Sidebar({ visibility, currentSong }) {
 
     return appData.isLoadingAppData ? <></> :
         <>
-            <div onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gray-900 fixed top-0 z-30 transition ease-in-out duration-300 border-r border-gray-700 border-opacity-50`} data-active-level={activeLevel}>
+            <div onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gray-900 bg-opacity-70 backdrop-blur-sm fixed top-0 z-30 transition ease-in-out duration-300 border-r border-gray-700 border-opacity-50`} data-active-level={activeLevel}>
                 <Pane level={0}>
-                    <div className="sidebar__header border-b border-gray-700 border-opacity-50 select-none fixed top-0 w-full bg-gray-900 bg-opacity-5 backdrop-blur-md" style={{ height: '45px' }}>
+                    <div className="sidebar__header border-b border-gray-700 border-opacity-50 select-none fixed top-0 w-full" style={{ height: '45px' }}>
                         <div id="logo" className="h-full flex items-center pl-4 pt-1 pb-2">
                             <span className="text-primary-400 font-semibold text-xl">Song</span>
                             <span className="text-white font-light text-xl">Here</span>
@@ -261,7 +261,7 @@ export default function Sidebar({ visibility, currentSong }) {
                     </div>
                 </Pane>
             </div>
-            <div className={clsx(visibility, 'sidebar__overlay lg:hidden bg-gray-900 fixed z-10 top-0 left-0 w-screen h-screen bg-opacity-70')}>
+            <div className={clsx(visibility, 'sidebar__overlay lg:hidden bg-black fixed z-10 top-0 left-0 w-screen h-screen bg-opacity-80')}>
             </div>
         </>
 }
