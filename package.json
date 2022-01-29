@@ -7,6 +7,7 @@
     "@headlessui/react": "^1.4.2",
     "airtable": "^0.11.1",
     "chordsheetjs": "^5.1.2",
+    "clsx": "^1.1.1",
     "date-fns": "^2.27.0",
     "next": "^11.0.0",
     "react": "^17.0.2",

@@ -7,7 +7,7 @@ export default function SectionHero({ title, subtitle, ctaText, ctaLink }) {
             {ctaText && ctaLink ?
                 <>
                     <div className="pt-8"></div>
-                    <a className="inline-block bg-primary-700 text-white text-opacity-80 py-2 px-6 rounded-md hover:opacity-80 active:scale-90 duration-100 transition ease-in-out" href={ctaLink}>{ctaText}</a>
+                    <a className="inline-block bg-primary-700 text-white text-opacity-80 py-2 px-6 rounded-md hover:opacity-80 duration-100 transition ease-in-out" href={ctaLink}>{ctaText}</a>
                 </>
                 : <></>}
         </div>

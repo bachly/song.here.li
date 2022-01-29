@@ -4,6 +4,7 @@ import { CalendarIcon, ChevronLeftIcon, FolderIcon, MoreHorzIcon, SearchIcon } f
 import AppDataContext from '../contexts';
 import Link from 'next/link';
 import _ from 'underscore';
+import { useRouter } from 'next/router';
 
 export function PaneHeader({ title, leftIcon, rightIcon }) {
     return <div className="border-b border-gray-700 border-opacity-50 select-none" style={{ height: '45px' }}>
@@ -21,13 +22,14 @@ export function Pane({ children, level = 0 }) {
     </div>
 }
 
-export default function Sidebar({ state, currentSong }) {
+export default function Sidebar({ visibility, currentSong }) {
+    const router = useRouter();
     const appData = React.useContext(AppDataContext);
     const [searchTerm, setSearchTerm] = React.useState();
     const [activeLevel, setActiveLevel] = React.useState(1);
 
     const activeSchedule = React.useRef();
-    const activeGroupName = React.useRef(currentSong ? currentSong['Group'] : null);
+    const activeGroupName = React.useRef();
     const [level1Title, setLevel1Title] = React.useState('');
     const [songs, setSongs] = React.useState({});
 
@@ -52,33 +54,33 @@ export default function Sidebar({ state, currentSong }) {
         let songs = {};
         let title = '';
 
-        if (activeGroupName.current) {
-            Object.keys(appData.allSongs).map(id => {
-                const song = appData.allSongs[id];
-                if (song['Group'] === activeGroupName.current) {
-                    songs[id] = song;
-                }
-            })
-            title = activeGroupName.current;
+        if (activeSchedule.current) {
+            const schedule = activeSchedule.current;
+
+            const song1 = schedule['Song 1'];
+            const song2 = schedule['Song 2'];
+            const song3 = schedule['Song 3'];
+
+            if (song1) {
+                songs[song1['id']] = song1;
+            }
+            if (song1) {
+                songs[song2['id']] = song2;
+            }
+            if (song1) {
+                songs[song3['id']] = song3;
+            }
+
+            title = schedule['Formatted Datetime'];
         } else {
-            if (activeSchedule.current) {
-                const schedule = activeSchedule.current;
-
-                const song1 = schedule['Song 1'];
-                const song2 = schedule['Song 2'];
-                const song3 = schedule['Song 3'];
-
-                if (song1) {
-                    songs[song1['id']] = song1;
-                }
-                if (song1) {
-                    songs[song2['id']] = song2;
-                }
-                if (song1) {
-                    songs[song3['id']] = song3;
-                }
-
-                title = schedule['Formatted Datetime'];
+            if (activeGroupName.current) {
+                Object.keys(appData.allSongs).map(id => {
+                    const song = appData.allSongs[id];
+                    if (song['Group'] === activeGroupName.current) {
+                        songs[id] = song;
+                    }
+                })
+                title = activeGroupName.current;
             } else {
                 Object.keys(appData.allSongs).map(id => {
                     const song = appData.allSongs[id];
@@ -93,13 +95,25 @@ export default function Sidebar({ state, currentSong }) {
 
                 title = 'All Songs';
             }
-
         }
 
         console.log(`[SongHere] Song list "${title}":`, songs);
+
+        if (activeSchedule.current) {
+            console.log(`[SongHere] Schedule:`, activeSchedule.current);
+        }
+
         setSongs(songs);
         setLevel1Title(title);
     }, [appData, activeGroupName.current, activeSchedule.current])
+
+    React.useEffect(() => {
+        if (router) {
+            const matchedSchedules = appData?.schedules?.filter(schedule => schedule.id === router.query?.scheduleId);
+            activeSchedule.current = matchedSchedules ? matchedSchedules[0] : undefined;
+            console.log('currentSchedule', activeSchedule.current);
+        }
+    }, [router, appData])
 
     function selectGroup(groupName) {
         return event => {
@@ -146,24 +160,29 @@ export default function Sidebar({ state, currentSong }) {
     }
 
     return appData.isLoadingAppData ? <></> :
-        <div onClick={event => event && event.stopPropagation()} className={`sidebar ${state} lg:block bg-gray-900 fixed z-20 transition ease-in-out duration-200`} data-active-level={activeLevel}>
+        <div onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gray-900 fixed z-20 transition ease-in-out duration-200`} data-active-level={activeLevel}>
             <Pane level={0}>
+                <div id="logo" className="h-full flex items-center select-none pl-4 py-2 my-2">
+                    <span className="text-primary-400 font-semibold text-2xl">Song</span>
+                    <span className="text-white font-light text-2xl">Here</span>
+                </div>
+
                 <div className="sidebar__inner">
                     <button className="block w-full select-none" onClick={selectGroup(null)}>
-                        <div className={`pl-4 w-full block text-left ${!activeGroupName.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} duration-200 transition ease-in-out cursor-default`}>
-                            <div className="py-3 border-b border-gray-700 border-opacity-50 flex items-center text-white">
+                        <div className={`pl-4 w-full block text-left ${!activeGroupName.current && !activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} duration-200 transition ease-in-out cursor-default`}>
+                            <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                 <FolderIcon />
-                                <h3 className="text-lg text-white ml-4">All Songs</h3>
+                                <h3 className="text-lg text-white ml-4 font-light">All Songs</h3>
                             </div>
                         </div>
                     </button>
-                    
+
                     {Object.keys(appData?.songGroups || {}).map(groupName => {
                         return <button className="block w-full select-none" key={`song-group-${groupName}`} onClick={selectGroup(groupName)}>
                             <div className={`pl-4 w-full block text-left ${groupName === activeGroupName.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
-                                <div className="py-3 border-b border-gray-700 border-opacity-50 flex items-center text-white">
+                                <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                     <FolderIcon />
-                                    <h3 className="text-lg text-white ml-4">{groupName}</h3>
+                                    <h3 className="text-lg text-white ml-4 font-light">{groupName}</h3>
                                 </div>
                             </div>
                         </button>
@@ -175,9 +194,9 @@ export default function Sidebar({ state, currentSong }) {
                             if (index < 3) {
                                 return <button className="block w-full select-none" key={`schedule-${schedule.id}`} onClick={selectSchedule(schedule)}>
                                     <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
-                                        <div className="py-3 border-b border-gray-700 border-opacity-50 flex items-center text-white">
+                                        <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                             <CalendarIcon />
-                                            <h3 className="text-lg text-white ml-4">{schedule['Formatted Datetime']}</h3>
+                                            <h3 className="text-lg text-white ml-4 font-light">{schedule['Formatted Datetime']}</h3>
                                         </div>
                                     </div>
                                 </button>
@@ -208,11 +227,17 @@ export default function Sidebar({ state, currentSong }) {
 
                             if (!song['Name']) return <div key={`song-item-${id}`}></div>;
 
+                            let songHref = `/${id}`;
+
+                            if (activeSchedule.current) {
+                                songHref = `${songHref}?scheduleId=${activeSchedule.current.id}`
+                            }
+
                             return <div key={`song-item-${id}`}>
-                                <Link href={`/song/${id}`}>
+                                <Link href={songHref}>
                                     <a className={`pl-8 w-full block text-left select-none ${id === currentSong?.id ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-default`}>
-                                        <div className="py-3 border-b border-gray-700 border-opacity-50">
-                                            <h3 className="font-bold text-md text-white">{song['Name']}</h3>
+                                        <div className="py-2 border-b border-gray-700 border-opacity-50">
+                                            <h3 className="text-white">{song['Name']}</h3>
                                             <div className="mr-2">
                                                 {song['Author/Singer'] ?
                                                     <span className="text-gray-400 text-sm">{song['Author/Singer']}</span>

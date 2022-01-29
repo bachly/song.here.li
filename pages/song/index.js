@@ -13,7 +13,7 @@ export default function Song() {
         if (!router || appData.loadingAppData) return;
 
         const firstId = Object.keys(appData.allSongs)[0];
-        router.push(`/song/${firstId}`);
+        router.push(`/${firstId}`);
         console.log("firstSong:", appData.allSongs[firstId]);
     }, [router, appData])
 

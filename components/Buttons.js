@@ -1,4 +1,6 @@
-import { CheckIcon } from "./Icons"
+import clsx from "clsx"
+import React from "react"
+import { CheckIcon, MinusIcon, MoreHorzIcon, PlusIcon } from "./Icons"
 import Spinner from "./Spinner"
 
 export function IconButton({ onClick, children }) {
@@ -35,4 +37,35 @@ export function Button({ children, onClick }) {
         className={`w-20 h-8 text-white text-opacity-80 text-xl p-1 px-2 rounded-md hover:text-opacity-60 active:scale-90 duration-100 transition ease-in-out flex items-center justify-center`}>
         {children}
     </button>
+}
+
+export function DropdownButton({ children }) {
+    const [showDropdown, setShowDropdown] = React.useState(false);
+
+    function toggleDropdown(event) {
+        event && event.preventDefault();
+
+        if (showDropdown) {
+            setShowDropdown(false);
+        } else {
+            setShowDropdown(true);
+
+            $(window).one('click', () => {
+                setShowDropdown(false);
+            })
+        }
+    }
+
+    return <div onClick={event => event.stopPropagation()} className="dropdown-wrapper relative select-none">
+        <button onClick={toggleDropdown}
+            className={clsx(showDropdown ? "bg-primary-400 bg-opacity-50 text-white" : "text-primary-400 hover:bg-primary-400 hover:bg-opacity-20", "p-1 duration-100 transition ease-in-out transform active:opacity-60 active:scale-90 rounded-md")}>
+            <MoreHorzIcon />
+        </button>
+        {showDropdown ?
+            <div className="dropdown absolute top-100 right-0 p-1" style={{ width: "240px" }}>
+                <div className="border border-gray-700 border-opacity-70 rounded-md bg-gray-900 backdrop-blur-md py-1">
+                    {children}
+                </div>
+            </div> : <></>}
+    </div>
 }
