@@ -1,9 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import Header from '../../components/Header';
-import Toolbar from '../../components/Toolbar';
 import { AppDataContext } from '../../contexts';
-import Sidebar from '../../components/Sidebar';
+import Spinner from '../../components/Spinner';
 
 export default function Song() {
     const router = useRouter();
@@ -18,10 +16,6 @@ export default function Song() {
     }, [router, appData])
 
     return <>
-        <Header
-            primaryName="Song"
-            secondaryName="Here"
-            loading="true"
-        />
+        <Spinner />
     </>
 }

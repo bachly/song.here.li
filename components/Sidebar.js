@@ -191,7 +191,7 @@ export default function Sidebar({ visibility, currentSong }) {
                     {appData?.schedules ? <>
                         <div className="mt-12 mb-4 text-xs text-white tracking-wider uppercase pl-4">Coming Up</div>
                         {appData?.schedules.map((schedule, index) => {
-                            if (index < 3) {
+                            if (index < 6) {
                                 return <button className="block w-full select-none" key={`schedule-${schedule.id}`} onClick={selectSchedule(schedule)}>
                                     <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
                                         <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">

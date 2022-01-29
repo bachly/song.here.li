@@ -162,7 +162,7 @@ export default function Song() {
                 <Sidebar visibility={sidebarState} currentSong={song} />
 
                 <div className="py-6 lg:py-12 mainbar">
-                    <div className="w-full relative p-4 md:p-12">
+                    <div className="w-full relative p-4 md:px-12">
 
                         <h1 id="songName">
                             <div className="text-white text-left text-2xl md:text-3xl font-light leading-tight">
