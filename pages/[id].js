@@ -175,13 +175,14 @@ export default function Song() {
                             </div>
                         </h1>
 
-                        <div className="mt-12 py-4 px-6 bg-black rounded-xl">
-                            <span className="text-white text-opacity-60">{song['Audio Filename']}</span>
-                            <audio className="mt-2 w-full" controls src={`/audio/${song['Audio Filename']}`} title={`${song['Name']}`} type="audio/mpeg/">
-                                Your browser does not support the
-                                <code>audio</code> element.
-                            </audio>
-                        </div>
+                        {song['Audio Filename'] ?
+                            <div className="mt-12 py-4 px-6 bg-black rounded-xl">
+                                <span className="text-white text-opacity-60">{song['Audio Filename']}</span>
+                                <audio className="mt-2 w-full" controls src={`/audio/${song['Audio Filename']}`} title={`${song['Name']}`} type="audio/mpeg/">
+                                    Your browser does not support the
+                                    <code>audio</code> element.
+                                </audio>
+                            </div> : <></>}
 
                         <div className="mt-6 mx-auto">
                             <div className="text-gray-200 leading-normal text-sm sm:text-base md:text-lg">
