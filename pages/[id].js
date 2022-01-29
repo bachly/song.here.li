@@ -193,7 +193,7 @@ export default function Song() {
                         {/* Edit Modal */}
                         <div className={`${editMode === EDIT_MODE.ACTIVE ? 'edit-modal--block' : 'edit-modal--hidden'} bg-gray-900 fixed z-30 left-0 top-0 w-screen h-screen duration-200 transition`}>
                             <div className="mx-auto">
-                                <div className="border-b border-gray-700 border-opacity-50 bg-gray-800 bg-opacity-80" style={{ height: '45px' }}>
+                                <div className="border-b border-gray-700 border-opacity-50 bg-gray-800 bg-opacity-80 fixed top-0 w-full" style={{ height: '45px' }}>
                                     <div className="h-full flex items-center justify-between">
                                         <Button onClick={cancelEditing}>Cancel</Button>
                                         <div className="text-gray-400 text-center flex-1 text-lg truncate mx-4">
@@ -204,7 +204,7 @@ export default function Song() {
                                         </AsyncButton>
                                     </div>
                                 </div>
-                                <div className="mx-auto">
+                                <div className="mx-auto" style={{ marginTop: '45px' }}>
                                     <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet}
                                         style={{ height: 'calc(100vh - 45px)', paddingBottom: '70px', fontSize: '18px' }}
                                         className="bg-gray-900 w-full text-gray-200 leading-10 text-sm sm:text-base md:text-xl font-mono py-3 px-6 shadow-inner focus:outline-none">
