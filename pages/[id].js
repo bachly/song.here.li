@@ -225,7 +225,7 @@ export default function Song() {
                         <div className="flex justify-start">
                             <div className="block md:hidden">
                                 <Video url={song['YouTube Link']} light={true}
-                                    width="300px" height="168.75px" controls={true} />
+                                    width="280px" height="168.75px" controls={true} />
                             </div>
                             <div className="hidden md:block">
                                 <Video url={song['YouTube Link']} light={true}

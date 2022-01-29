@@ -169,7 +169,7 @@ export default function Home() {
 
                 <div id="schedule" className="relative" style={{ top: "-400px" }}></div>
 
-                <div style={{ marginTop: "-300px" }}></div>
+                <div style={{ marginTop: "-280px" }}></div>
 
                 <div className="relative z-10 max-w-7xl mx-auto px-4">
                     <div className="px-6 bg-gray-900 bg-opacity-40 backdrop-blur-sm rounded-2xl border border-teal-100 border-opacity-10">
