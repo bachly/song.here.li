@@ -19,7 +19,7 @@ export function PaneHeader({ title, leftIcon, rightIcon }) {
 
 export function Pane({ children, level = 0 }) {
     return <div data-level={level}
-        className={`pane absolute z-20 transition ease-in-out transform duration-500 bg-gray-800 bg-opacity-20 border-r border-gray-700 border-opacity-50`}>{children}
+        className={`pane absolute z-20 transition ease-in-out transform duration-500 bg-gray-800 bg-opacity-20`}>{children}
     </div>
 }
 
@@ -162,7 +162,7 @@ export default function Sidebar({ visibility, currentSong }) {
 
     return appData.isLoadingAppData ? <></> :
         <>
-            <div onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gray-900 fixed top-0 z-30 transition ease-in-out duration-500`} data-active-level={activeLevel}>
+            <div onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gray-900 fixed top-0 z-30 transition ease-in-out duration-500 border-r border-gray-700 border-opacity-50`} data-active-level={activeLevel}>
                 <Pane level={0}>
                     <div className="sidebar__header border-b border-gray-700 border-opacity-50 select-none fixed top-0 w-full bg-gray-900 bg-opacity-5 backdrop-blur-md" style={{ height: '45px' }}>
                         <div id="logo" className="h-full flex items-center pl-4 pt-1 pb-2">
@@ -173,7 +173,7 @@ export default function Sidebar({ visibility, currentSong }) {
 
                     <div className="sidebar__inner">
                         <button className="block w-full select-none" onClick={selectGroup(null)}>
-                            <div className={`pl-4 w-full block text-left ${!activeGroupName.current && !activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} duration-200 transition ease-in-out cursor-default`}>
+                            <div className={`pl-4 w-full block text-left ${!activeGroupName.current && !activeSchedule.current ? 'bg-gray-800' : ''} duration-200 transition ease-in-out cursor-default`}>
                                 <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                     <FolderIcon />
                                     <h3 className="text-lg text-white ml-4 font-light truncate">All Songs</h3>
@@ -183,7 +183,7 @@ export default function Sidebar({ visibility, currentSong }) {
 
                         {Object.keys(appData?.songGroups || {}).map(groupName => {
                             return <button className="block w-full select-none" key={`song-group-${groupName}`} onClick={selectGroup(groupName)}>
-                                <div className={`pl-4 w-full block text-left ${groupName === activeGroupName.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
+                                <div className={`pl-4 w-full block text-left ${groupName === activeGroupName.current ? 'bg-gray-800' : ''} active:opacity-80 duration-200 transition ease-in-out cursor-default`}>
                                     <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                         <FolderIcon />
                                         <h3 className="text-lg text-white ml-4 font-light truncate">{groupName}</h3>
@@ -197,7 +197,7 @@ export default function Sidebar({ visibility, currentSong }) {
                             {appData?.schedules.map((schedule, index) => {
                                 if (index < 6) {
                                     return <button className="block w-full select-none" key={`schedule-${schedule.id}`} onClick={selectSchedule(schedule)}>
-                                        <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
+                                        <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : ''} active:opacity-80 duration-200 transition ease-in-out cursor-default`}>
                                             <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                                 <CalendarIcon />
                                                 <h3 className="text-lg text-white ml-4 font-light truncate">{schedule['Formatted Datetime']}</h3>
@@ -239,7 +239,7 @@ export default function Sidebar({ visibility, currentSong }) {
 
                                 return <div key={`song-item-${id}`}>
                                     <Link href={songHref}>
-                                        <a className={`pl-8 w-full block text-left select-none ${id === currentSong?.id ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-default`}>
+                                        <a className={`pl-8 w-full block text-left select-none ${id === currentSong?.id ? 'bg-gray-800' : ''} active:opacity-80 duration-200 transition ease-in-out cursor-default`}>
                                             <div className="py-2 border-b border-gray-700 border-opacity-50">
                                                 <h3 className="text-white truncate pr-4">{song['Name']}</h3>
                                                 <div className="mr-2">
