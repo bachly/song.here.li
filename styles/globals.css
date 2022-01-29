@@ -92,8 +92,8 @@ body {
 .sidebar__inner {
   overflow-y: auto;
   overflow-x: hidden;
-  height: calc(100vh);
-  padding-bottom: 70px; /* 70px is the bottom portion that mobile browsers often crop */
+  height: calc(100vh - 45px);
+  padding-bottom: 80px; /* 80px is the bottom portion that mobile browsers often crop */
 }
 
 @media (min-width: 1440px) {
