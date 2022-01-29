@@ -49,19 +49,27 @@ export default function Song() {
         if (!id) return;
 
         const currentSong = appDataContext.allSongs[id];
-        const chordSheetJsSong = currentSong ? parser.parse(currentSong['Chord Sheet'] || '') : null;
+        let chordSheetJsSong;
 
-        const currentSongWithChordSheetJS = {
-            ...currentSong,
-            'Chord Sheet JS Song': {
-                _original: chordSheetJsSong,
-                artist: chordSheetJsSong ? chordSheetJsSong.metadata?.artist : '',
-                key: chordSheetJsSong ? chordSheetJsSong.metadata?.key : '',
-                paragraphs: chordSheetJsSong ? JSON.parse(JSON.stringify(chordSheetJsSong.paragraphs)) : []
+        try {
+            chordSheetJsSong = currentSong ? parser.parse(currentSong['Chord Sheet']) : null;
+        } catch (e) {
+            alert("There is an error with chords of this song. Please fix it!");
+            chordSheetJsSong = null;
+            console.error(e);
+        } finally {
+            const currentSongWithChordSheetJS = {
+                ...currentSong,
+                'Chord Sheet JS Song': {
+                    _original: chordSheetJsSong,
+                    artist: chordSheetJsSong ? chordSheetJsSong.metadata?.artist : '',
+                    key: chordSheetJsSong ? chordSheetJsSong.metadata?.key : '',
+                    paragraphs: chordSheetJsSong ? JSON.parse(JSON.stringify(chordSheetJsSong.paragraphs)) : []
+                }
             }
+            setSong(currentSongWithChordSheetJS);
+            setSidebarState('hidden');
         }
-        setSong(currentSongWithChordSheetJS);
-        setSidebarState('hidden');
     }, [router, appDataContext])
 
     function cancelEditing(event) {
@@ -161,8 +169,8 @@ export default function Song() {
 
                 <Sidebar visibility={sidebarState} currentSong={song} />
 
-                <div className="py-6 lg:py-12 mainbar">
-                    <div className="w-full relative p-4 md:px-12">
+                <div className="mainbar pb-24" style={{ marginTop: '45px' }}>
+                    <div className="w-full relative p-4 md:p-12">
 
                         <h1 id="songName">
                             <div className="text-white text-left text-2xl md:text-3xl font-light leading-tight">
@@ -206,7 +214,7 @@ export default function Song() {
                                 </div>
                                 <div className="mx-auto" style={{ marginTop: '45px' }}>
                                     <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet}
-                                        style={{ height: 'calc(100vh - 45px)', paddingBottom: '70px'}}
+                                        style={{ height: 'calc(100vh - 45px)', paddingBottom: '70px' }}
                                         className="bg-gray-900 w-full text-gray-200 leading-normal text-sm sm:text-base md:text-lg font-mono py-3 px-2 lg:px-6 shadow-inner focus:outline-none">
                                     </textarea>
                                 </div>
@@ -254,7 +262,7 @@ function Line({ line }) {
 
     switch (item._name) {
         case 'comment':
-            return <div className={`ChordSongComment text-teal-400 font-bold mb-4`}>{item._value}</div>;
+            return <div className={`ChordSongComment text-primary-400 font-bold mb-4 text-base uppercase tracking-wide`}>{item._value}</div>;
         default:
             return <ChordLyricsLine items={line.items} />
     }

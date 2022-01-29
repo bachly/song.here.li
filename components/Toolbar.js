@@ -9,7 +9,7 @@ export default function Toolbar({ toggleLeftPane, onStartEditing, currentSong, l
         window.open(`/${currentSong.id}`, '_blank')
     }
 
-    return <div className="toolbar border-b border-gray-700 border-opacity-50 bg-gray-900 bg-opacity-50 backdrop-blur-md relative z-10" style={{ height: '45px' }}>
+    return <div className="toolbar fixed top-0 w-full border-b border-gray-700 border-opacity-50 bg-gray-900 bg-opacity-50 backdrop-blur-md z-10" style={{ height: '45px' }}>
         <div className="h-full mx-auto px-2 flex items-center justify-between">
             <div className="toolbar-left flex items-center justify-start" style={{ width: '65px' }}>
                 <IconButton onClick={toggleLeftPane}>
