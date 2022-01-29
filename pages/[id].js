@@ -161,7 +161,7 @@ export default function Song() {
 
                 <Sidebar visibility={sidebarState} currentSong={song} />
 
-                <div className="py-12 mainbar">
+                <div className="py-6 lg:py-12 mainbar">
                     <div className="w-full relative p-4 md:p-12">
 
                         <h1 id="songName">
@@ -196,7 +196,7 @@ export default function Song() {
                                 <div className="border-b border-gray-700 border-opacity-50 bg-gray-800 bg-opacity-80 fixed top-0 w-full" style={{ height: '45px' }}>
                                     <div className="h-full flex items-center justify-between">
                                         <Button onClick={cancelEditing}>Cancel</Button>
-                                        <div className="text-gray-400 text-center flex-1 text-lg truncate mx-4">
+                                        <div className="text-gray-400 text-center flex-1 text-sm truncate mx-4">
                                             {song['Name']}
                                         </div>
                                         <AsyncButton loading={editMode === EDIT_MODE.SAVING} success={editMode === EDIT_MODE.SUCCESS} onClick={saveEditing}>
@@ -206,8 +206,8 @@ export default function Song() {
                                 </div>
                                 <div className="mx-auto" style={{ marginTop: '45px' }}>
                                     <textarea onChange={handleOnChangeChordSheet} value={editedChordSheet}
-                                        style={{ height: 'calc(100vh - 45px)', paddingBottom: '70px', fontSize: '18px' }}
-                                        className="bg-gray-900 w-full text-gray-200 leading-10 text-sm sm:text-base md:text-xl font-mono py-3 px-6 shadow-inner focus:outline-none">
+                                        style={{ height: 'calc(100vh - 45px)', paddingBottom: '70px'}}
+                                        className="bg-gray-900 w-full text-gray-200 leading-normal text-sm sm:text-base md:text-lg font-mono py-3 px-2 lg:px-6 shadow-inner focus:outline-none">
                                     </textarea>
                                 </div>
                             </div>
@@ -268,7 +268,7 @@ function ChordLyricsLine({ items }) {
                     {item['chords']}
                     {lyricsItemIsEmpty(item['lyrics']) ? <>&nbsp;&nbsp;</> : <></>}
                 </div>
-                <div className="h-6 text-base sm:text-lg md:text-xl lg:text-2xl">
+                <div className="h-6 text-base sm:text-lg md:text-xl lg:text-2xl font-regular">
                     {lyricsItemDisplay(item['lyrics'])}
                 </div>
             </div>

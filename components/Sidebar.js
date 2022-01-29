@@ -8,9 +8,9 @@ import { useRouter } from 'next/router';
 
 export function PaneHeader({ title, leftIcon, rightIcon }) {
     return <div className="border-b border-gray-700 border-opacity-50 select-none" style={{ height: '45px' }}>
-        <div className="h-full flex items-center px-3 justify-between select-none text-primary-400">
+        <div className="h-full flex items-center px-1 justify-between select-none text-primary-400">
             {leftIcon}
-            <span className="text-white font-light text-lg">{title}</span>
+            <span className="text-white font-light text-sm">{title}</span>
             {rightIcon}
         </div>
     </div>
@@ -160,19 +160,19 @@ export default function Sidebar({ visibility, currentSong }) {
     }
 
     return appData.isLoadingAppData ? <></> :
-        <div onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gray-900 fixed z-20 transition ease-in-out duration-200`} data-active-level={activeLevel}>
+        <div onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gray-900 fixed top-0 z-20 transition ease-in-out duration-200`} data-active-level={activeLevel}>
             <Pane level={0}>
-                <div id="logo" className="h-full flex items-center select-none pl-4 py-2 my-2">
-                    <span className="text-primary-400 font-semibold text-2xl">Song</span>
-                    <span className="text-white font-light text-2xl">Here</span>
-                </div>
-
                 <div className="sidebar__inner">
+                    <div id="logo" className="flex items-center select-none pl-4 pt-1 pb-2 border-b border-gray-700 border-opacity-50">
+                        <span className="text-primary-400 font-semibold text-xl">Song</span>
+                        <span className="text-white font-light text-xl">Here</span>
+                    </div>
+
                     <button className="block w-full select-none" onClick={selectGroup(null)}>
                         <div className={`pl-4 w-full block text-left ${!activeGroupName.current && !activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} duration-200 transition ease-in-out cursor-default`}>
                             <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                 <FolderIcon />
-                                <h3 className="text-lg text-white ml-4 font-light">All Songs</h3>
+                                <h3 className="text-lg text-white ml-4 font-light truncate">All Songs</h3>
                             </div>
                         </div>
                     </button>
@@ -182,7 +182,7 @@ export default function Sidebar({ visibility, currentSong }) {
                             <div className={`pl-4 w-full block text-left ${groupName === activeGroupName.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
                                 <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                     <FolderIcon />
-                                    <h3 className="text-lg text-white ml-4 font-light">{groupName}</h3>
+                                    <h3 className="text-lg text-white ml-4 font-light truncate">{groupName}</h3>
                                 </div>
                             </div>
                         </button>
@@ -196,7 +196,7 @@ export default function Sidebar({ visibility, currentSong }) {
                                     <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : 'hover:bg-gray-800 hover:bg-opacity-50'} active:opacity-80 duration-200 transition ease-in-out cursor-pointer`}>
                                         <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                             <CalendarIcon />
-                                            <h3 className="text-lg text-white ml-4 font-light">{schedule['Formatted Datetime']}</h3>
+                                            <h3 className="text-lg text-white ml-4 font-light truncate">{schedule['Formatted Datetime']}</h3>
                                         </div>
                                     </div>
                                 </button>
@@ -213,12 +213,12 @@ export default function Sidebar({ visibility, currentSong }) {
                     rightIcon={<IconButton><MoreHorzIcon /></IconButton>} />
                 <div className="sidebar__inner">
                     <div className="flex items-center bg-gray-800 bg-opacity-20 w-full border-b border-gray-700 border-opacity-50">
-                        <div className="text-gray-500 px-2 py-3"><SearchIcon /></div>
+                        <div className="text-gray-500 px-2 py-2"><SearchIcon /></div>
                         <input type="text"
                             name="searchTerm"
                             value={searchTerm}
                             onChange={enterSearchTerm}
-                            className="appearance-none py-3 text-white w-full bg-gray-800 bg-opacity-20 placeholder-gray-500 focus:outline-none text-white"
+                            className="appearance-none py-2 text-white w-full bg-gray-800 bg-opacity-20 placeholder-gray-500 focus:outline-none text-white"
                             placeholder="Search" />
                     </div>
                     <div className="">

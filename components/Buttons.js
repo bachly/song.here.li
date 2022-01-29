@@ -14,7 +14,7 @@ export function IconButton({ onClick, children }) {
 export function AsyncButton({ children, onClick, loading, success }) {
     if (loading) {
         return <button
-            className={`w-20 h-8 text-gray-400 text-xl p-1 px-2 rounded-md scale-90 flex items-center justify-center`}>
+            className={`w-20 h-8 text-gray-400 text-base p-1 px-2 rounded-md scale-90 flex items-center justify-center`}>
             <Spinner />
         </button>
     }
@@ -34,7 +34,7 @@ export function AsyncButton({ children, onClick, loading, success }) {
 
 export function Button({ children, onClick }) {
     return <button onClick={onClick}
-        className={`w-20 h-8 text-white text-opacity-80 text-xl p-1 px-2 rounded-md hover:text-opacity-60 active:scale-90 duration-100 transition ease-in-out flex items-center justify-center`}>
+        className={`w-20 h-8 text-white text-opacity-80 text-base p-1 px-2 rounded-md hover:text-opacity-60 active:scale-90 duration-100 transition ease-in-out flex items-center justify-center`}>
         {children}
     </button>
 }
@@ -62,8 +62,8 @@ export function DropdownButton({ children }) {
             <MoreHorzIcon />
         </button>
         {showDropdown ?
-            <div className="dropdown absolute top-100 right-0 p-1" style={{ width: "240px" }}>
-                <div className="border border-gray-700 border-opacity-70 rounded-md bg-gray-900 backdrop-blur-md py-1">
+            <div className="dropdown absolute top-100 z-30 right-0 py-1" style={{ width: "240px" }}>
+                <div className="border border-gray-700 border-opacity-70 bg-gray-900 rounded-md py-1 shadow-2xl">
                     {children}
                 </div>
             </div> : <></>}

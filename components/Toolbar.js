@@ -9,8 +9,8 @@ export default function Toolbar({ toggleLeftPane, onStartEditing, currentSong, l
         window.open(`/${currentSong.id}`, '_blank')
     }
 
-    return <div className="toolbar fixed top-0 left-0 w-full border-b border-gray-700 border-opacity-50 bg-gray-900 bg-opacity-50 backdrop-blur-md z-10" style={{ height: '45px' }}>
-        <div className="h-full mx-auto px-4 flex items-center justify-between">
+    return <div className="toolbar border-b border-gray-700 border-opacity-50 bg-gray-900 bg-opacity-50 backdrop-blur-md relative z-10" style={{ height: '45px' }}>
+        <div className="h-full mx-auto px-2 flex items-center justify-between">
             <div className="toolbar-left flex items-center justify-start" style={{ width: '65px' }}>
                 <IconButton onClick={toggleLeftPane}>
                     <ListIcon />
@@ -29,9 +29,9 @@ export default function Toolbar({ toggleLeftPane, onStartEditing, currentSong, l
                         </IconButton>
                         <ToolbarDivider />
                         <DropdownButton>
-                            <div className="border-b border-gray-700 border-opacity-50 py-2 px-3 text-white">
+                            <div className="border-b border-gray-700 border-opacity-50 py-1 px-3 text-white">
                                 <button className="w-full block text-white" onClick={openCurrentSongInNewTab}>
-                                    <div className="w-full flex items-center justify-between">
+                                    <div className="w-full flex items-center justify-between text-sm">
                                         Open in new tab
                                         <div className="text-gray-400">
                                             <LinkIcon />
@@ -39,11 +39,11 @@ export default function Toolbar({ toggleLeftPane, onStartEditing, currentSong, l
                                     </div>
                                 </button>
                             </div>
-                            <div className="border-b border-gray-700 border-opacity-50 py-2 px-3 text-white">
+                            <div className="border-b border-gray-700 border-opacity-50 py-1 px-3 text-white">
                                 <div className="w-full flex items-center">
-                                    <span className="text-white flex-1 text-left">Transpose</span>
+                                    <span className="text-white flex-1 text-left text-sm">Transpose</span>
                                     <IconButton onClick={onTranspose(-1)}><MinusIcon /></IconButton>
-                                    <div className="text-white px-2 text-lg">{currentTranpose}</div>
+                                    <div className="text-white px-2">{currentTranpose}</div>
                                     <IconButton onClick={onTranspose(1)}><PlusIcon /></IconButton>
                                 </div>
                             </div>
