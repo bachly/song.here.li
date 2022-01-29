@@ -19,7 +19,7 @@ export function PaneHeader({ title, leftIcon, rightIcon }) {
 
 export function Pane({ children, level = 0 }) {
     return <div data-level={level}
-        className={`pane absolute z-20 transition ease-in-out transform duration-500 bg-gray-800 bg-opacity-20`}>{children}
+        className={`pane absolute z-20 transition ease-in-out transform duration-300 bg-gray-800 bg-opacity-20`}>{children}
     </div>
 }
 
@@ -162,7 +162,7 @@ export default function Sidebar({ visibility, currentSong }) {
 
     return appData.isLoadingAppData ? <></> :
         <>
-            <div onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gray-900 fixed top-0 z-30 transition ease-in-out duration-500 border-r border-gray-700 border-opacity-50`} data-active-level={activeLevel}>
+            <div onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gray-900 fixed top-0 z-30 transition ease-in-out duration-300 border-r border-gray-700 border-opacity-50`} data-active-level={activeLevel}>
                 <Pane level={0}>
                     <div className="sidebar__header border-b border-gray-700 border-opacity-50 select-none fixed top-0 w-full bg-gray-900 bg-opacity-5 backdrop-blur-md" style={{ height: '45px' }}>
                         <div id="logo" className="h-full flex items-center pl-4 pt-1 pb-2">
