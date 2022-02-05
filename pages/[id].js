@@ -53,7 +53,7 @@ export default function Song() {
 
         try {
             chordSheetJsSong = currentSong ? parser.parse(currentSong['Chord Sheet']) : null;
-        } catch (e) {
+        } catch (error) {
             console.error("Error parsing the chords. Please fix it!", error);
             chordSheetJsSong = null;
         } finally {
