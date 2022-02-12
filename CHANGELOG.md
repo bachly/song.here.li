@@ -38,3 +38,6 @@
 ## Error handling
 - ✅ Display global error handling icon and dialog
 - Log error in third-party service
+
+## Publishable
+- All keys are stored in server's environment variables
