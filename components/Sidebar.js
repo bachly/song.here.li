@@ -162,12 +162,13 @@ export default function Sidebar({ visibility, currentSong }) {
 
     return appData.isLoadingAppData ? <></> :
         <aside>
-            <div id="sidebar-content" onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gradient-to-b from-gray-800 to-gray-900 backdrop-blur-sm fixed top-0 z-30 transition ease-in-out duration-300 border-r border-gray-700 border-opacity-50`} data-active-level={activeLevel}>
+            <div id="sidebar-content" onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gradient-to-b from-primary-800 to-primary-900 backdrop-blur-sm fixed top-0 z-30 transition ease-in-out duration-300 border-r border-gray-700 border-opacity-50`} data-active-level={activeLevel}>
                 <Pane level={0}>
                     <div className="sidebar__header border-b border-gray-700 border-opacity-50 select-none fixed top-0 w-full" style={{ height: '45px' }}>
                         <div id="logo" className="h-full flex items-center pl-4 pt-1 pb-2">
-                            <span className="text-primary-400 font-semibold text-xl">Song</span>
-                            <span className="text-white font-light text-xl">Here</span>
+                            <img src="/img/songhere-logo.svg" className="w-8 mr-2" />
+                            <span className="text-white font-semibold text-xl">Song</span>
+                            <span className="text-white font-thin text-xl">Here</span>
                         </div>
                     </div>
 

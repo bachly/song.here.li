@@ -40,7 +40,11 @@ module.exports = {
     extend: {
       colors: {
         gray: colors.neutral,
-        primary: colors.teal
+        primary: {
+          ...colors.teal,
+          800: '#011c1a',
+          900: '#000e0c'
+        }
       },
       gridTemplateRows: {
         '10': 'repeat(10, minmax(0, 1fr))'

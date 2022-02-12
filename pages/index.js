@@ -1,7 +1,6 @@
 import React from 'react'
 import _ from 'underscore';
 import Header from '../components/Header';
-import SectionHero from '../components/SectionHero';
 import Layout from '../components/Layout';
 import SectionTickList from '../components/SectionTickList';
 import SectionNumberedList from '../components/SectionNumberedList';
@@ -14,13 +13,6 @@ export default function Home() {
                 primaryName="Song"
                 secondaryName="Here"
             />
-
-            <SectionHero
-                title="View Songs, Chords and Lyrics from AirTable"
-                subtitle="With a webapp that works on both Desktop and Mobile"
-                ctaText="Go to app"
-                ctaLink={`/song`}
-                />
 
             <SectionTickList
                 tag="Features"
