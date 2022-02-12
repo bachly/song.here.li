@@ -28,7 +28,7 @@ export default function MyApp({ Component, pageProps }) {
         SongListTable.select({
             view: "All Songs",
             filterByFormula: "AND(NOT({Group} = ''), NOT({Name} = ''))",
-            fields: ['Name', 'Ready', 'Group', 'BPM', 'Key', 'YouTube Link', 'Chord Sheet', 'Author/Singer', 'Audio Filename']
+            fields: ['Name', 'Colour', 'Group', 'BPM', 'Key', 'YouTube Link', 'Chord Sheet', 'Author/Singer', 'Audio Filename']
         }).all().then(function (records) {
             const allSongs = {}
             const groups = [];
@@ -37,7 +37,7 @@ export default function MyApp({ Component, pageProps }) {
                 const song = {
                     id: record.id,
                     'Name': record.get('Name') || null,
-                    'Ready': record.get('Ready') || null,
+                    'Colour': record.get('Colour') || null,
                     'Group': record.get('Group') || null,
                     'Key': record.get('c') || null,
                     'BPM': record.get('BPM') || null,
@@ -94,7 +94,7 @@ export default function MyApp({ Component, pageProps }) {
         if (loadingAppData) {
             console.log('Loading app data...')
         } else {
-            console.log('[SongHere] App data ready:', {
+            console.log('[SongHere] App data Colour:', {
                 allSongs,
                 songGroups,
                 schedules,

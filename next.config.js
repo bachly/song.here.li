@@ -36,6 +36,15 @@ module.exports = {
         }
         return cfg;
     },
+    async redirects() {
+        return [
+            {
+                source: '/song',
+                destination: '/app',
+                permanent: true,
+            },
+        ]
+    },
     async exportPathMap(defaultPathMap) {
         return {
             ...defaultPathMap,

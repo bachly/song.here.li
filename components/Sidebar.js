@@ -26,7 +26,7 @@ export function Pane({ children, level = 0 }) {
 export default function Sidebar({ visibility, currentSong }) {
     const router = useRouter();
     const appData = React.useContext(AppDataContext);
-    const [searchTerm, setSearchTerm] = React.useState();
+    const searchTerm = React.createRef('');
     const [activeLevel, setActiveLevel] = React.useState(1);
 
     const activeSchedule = React.useRef();
@@ -85,8 +85,8 @@ export default function Sidebar({ visibility, currentSong }) {
             } else {
                 Object.keys(appData.allSongs).map(id => {
                     const song = appData.allSongs[id];
-                    if (!!searchTerm) {
-                        if (song['Name'].toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+                    if (!!searchTerm.current.value) {
+                        if (song['Name'].toLowerCase().indexOf(searchTerm.current.value.toLowerCase()) > -1) {
                             songs[id] = song;
                         }
                     } else {
@@ -120,7 +120,7 @@ export default function Sidebar({ visibility, currentSong }) {
         return event => {
             event && event.preventDefault();
             setActiveLevel(1);
-            setSearchTerm('');
+            searchTerm.current.value = '';
             activeGroupName.current = groupName;
             activeSchedule.current = null;
         }
@@ -130,7 +130,7 @@ export default function Sidebar({ visibility, currentSong }) {
         return event => {
             event && event.preventDefault();
             setActiveLevel(1);
-            setSearchTerm('');
+            searchTerm.current.value = '';
             activeSchedule.current = schedule;
             activeGroupName.current = null;
         }
@@ -138,14 +138,14 @@ export default function Sidebar({ visibility, currentSong }) {
 
     function drillup(event) {
         event && event.preventDefault();
-        setSearchTerm('');
+        searchTerm.current.value = '';
         setActiveLevel(0);
     }
 
     function enterSearchTerm(event) {
         event.preventDefault();
         const term = event.target.value;
-        setSearchTerm(term);
+        searchTerm.current.value = term;
 
         if (appData.isLoadingAppData) return;
 
@@ -161,8 +161,8 @@ export default function Sidebar({ visibility, currentSong }) {
     }
 
     return appData.isLoadingAppData ? <></> :
-        <>
-            <div onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gray-900 bg-opacity-70 backdrop-blur-sm fixed top-0 z-30 transition ease-in-out duration-300 border-r border-gray-700 border-opacity-50`} data-active-level={activeLevel}>
+        <aside>
+            <div id="sidebar-content" onClick={event => event && event.stopPropagation()} className={`sidebar ${visibility} lg:block bg-gradient-to-b from-gray-800 to-gray-900 backdrop-blur-sm fixed top-0 z-30 transition ease-in-out duration-300 border-r border-gray-700 border-opacity-50`} data-active-level={activeLevel}>
                 <Pane level={0}>
                     <div className="sidebar__header border-b border-gray-700 border-opacity-50 select-none fixed top-0 w-full" style={{ height: '45px' }}>
                         <div id="logo" className="h-full flex items-center pl-4 pt-1 pb-2">
@@ -175,7 +175,9 @@ export default function Sidebar({ visibility, currentSong }) {
                         <button className="block w-full select-none" onClick={selectGroup(null)}>
                             <div className={`pl-4 w-full block text-left ${!activeGroupName.current && !activeSchedule.current ? 'bg-gray-800' : ''} duration-200 transition ease-in-out cursor-default`}>
                                 <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
-                                    <FolderIcon />
+                                    <span className="text-primary-500 fill-current">
+                                        <FolderIcon />
+                                    </span>
                                     <h3 className="text-lg text-white ml-4 font-light truncate">All Songs</h3>
                                 </div>
                             </div>
@@ -185,7 +187,9 @@ export default function Sidebar({ visibility, currentSong }) {
                             return <button className="block w-full select-none" key={`song-group-${groupName}`} onClick={selectGroup(groupName)}>
                                 <div className={`pl-4 w-full block text-left ${groupName === activeGroupName.current ? 'bg-gray-800' : ''} active:opacity-80 duration-200 transition ease-in-out cursor-default`}>
                                     <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
-                                        <FolderIcon />
+                                        <span className="text-primary-500 fill-current">
+                                            <FolderIcon />
+                                        </span>
                                         <h3 className="text-lg text-white ml-4 font-light truncate">{groupName}</h3>
                                     </div>
                                 </div>
@@ -199,7 +203,9 @@ export default function Sidebar({ visibility, currentSong }) {
                                     return <button className="block w-full select-none" key={`schedule-${schedule.id}`} onClick={selectSchedule(schedule)}>
                                         <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : ''} active:opacity-80 duration-200 transition ease-in-out cursor-default`}>
                                             <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
-                                                <CalendarIcon />
+                                                <span className="text-primary-500 fill-current">
+                                                    <CalendarIcon />
+                                                </span>
                                                 <h3 className="text-lg text-white ml-4 font-light truncate">{schedule['Formatted Datetime']}</h3>
                                             </div>
                                         </div>
@@ -219,8 +225,9 @@ export default function Sidebar({ visibility, currentSong }) {
                         <div className="flex items-center bg-gray-800 bg-opacity-20 w-full border-b border-gray-700 border-opacity-50">
                             <div className="text-gray-500 px-2 py-2"><SearchIcon /></div>
                             <input type="text"
+                                ref={searchTerm}
                                 name="searchTerm"
-                                value={searchTerm}
+                                value={searchTerm?.current?.value}
                                 onChange={enterSearchTerm}
                                 className="appearance-none py-2 text-white w-full bg-gray-800 bg-opacity-20 placeholder-gray-500 focus:outline-none text-white"
                                 placeholder="Search" />
@@ -231,17 +238,21 @@ export default function Sidebar({ visibility, currentSong }) {
 
                                 if (!song['Name']) return <div key={`song-item-${id}`}></div>;
 
-                                let songHref = `/${id}`;
+                                let songHref;
 
                                 if (activeSchedule.current) {
-                                    songHref = `${songHref}?scheduleId=${activeSchedule.current.id}`
+                                    songHref = `/app/${id}?scheduleId=${activeSchedule.current.id}`
+                                } else {
+                                    songHref = `/app/${id}`;
                                 }
+
+                                const isActiveLink = id === currentSong?.id;
 
                                 return <div key={`song-item-${id}`}>
                                     <Link href={songHref}>
-                                        <a className={`pl-8 w-full block text-left select-none ${id === currentSong?.id ? 'bg-gray-800' : ''} active:opacity-80 duration-200 transition ease-in-out cursor-default`}>
+                                        <a className={clsx(isActiveLink && 'bg-gray-700 bg-opacity-40', `pl-8 w-full block text-left select-none active:opacity-80 duration-200 transition ease-in-out cursor-default`)}>
                                             <div className="py-2 border-b border-gray-700 border-opacity-50">
-                                                <h3 className="text-white truncate pr-4">{song['Name']}</h3>
+                                                <h3 className={clsx(isActiveLink ? 'text-white' : 'text-gray-200', "truncate pr-4")}>{song['Name']}</h3>
                                                 <div className="mr-2">
                                                     {song['Author/Singer'] ?
                                                         <span className="text-gray-400 text-sm">{song['Author/Singer']}</span>
@@ -261,8 +272,8 @@ export default function Sidebar({ visibility, currentSong }) {
                     </div>
                 </Pane>
             </div>
-            <div className={clsx(visibility, 'sidebar__overlay lg:hidden bg-black fixed z-10 top-0 left-0 w-screen h-screen bg-opacity-80')}>
+            <div id="sidebar-overlay" className={clsx(visibility, 'sidebar__overlay lg:hidden bg-black fixed z-10 top-0 left-0 w-screen h-screen bg-opacity-80')}>
             </div>
-        </>
+        </aside>
 }
 

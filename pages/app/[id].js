@@ -1,22 +1,27 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import Header from '../components/Header';
-import Toolbar from '../components/Toolbar';
-import Sidebar from '../components/Sidebar';
-import { AppDataContext } from '../contexts';
+import Header from '../../components/Header';
+import Toolbar from '../../components/Toolbar';
+import Sidebar from '../../components/Sidebar';
+import { AppDataContext } from '../../contexts';
 import ChordSheetJS from 'chordsheetjs';
 import Video from 'react-player';
-import { AsyncButton, Button } from '../components/Buttons';
-import Spinner from '../components/Spinner';
+import { AsyncButton, Button } from '../../components/Buttons';
+import Spinner from '../../components/Spinner';
 import { Chord } from 'chordsheetjs';
-import { ChordProFormatter } from 'chordsheetjs';
-import { TextFormatter } from 'chordsheetjs';
 
 const EDIT_MODE = {
     'IDLE': 'IDLE',
     'ACTIVE': 'ACTIVE',
     'SUCCESS': 'SUCCESS',
     'SAVING': 'SAVING'
+}
+
+const ALERTS = {
+    ERROR_PARSING_CHORD_SHEET: {
+        active: false,
+        message: "Error parsing your Chord Sheet. Please use supported ChordPro format."
+    }
 }
 
 export default function Song() {
@@ -28,6 +33,7 @@ export default function Song() {
     const [editMode, setEditMode] = React.useState(EDIT_MODE.IDLE);
     const [currentTranpose, setCurrentTranspose] = React.useState(0);
     const parser = new ChordSheetJS.ChordProParser();
+    const [alerts, setAlerts] = React.useState(ALERTS);
 
     function toggleSidebar(event) {
         event && event.preventDefault();
@@ -43,29 +49,53 @@ export default function Song() {
         }
     }
 
+    function toggleAlert(name, active) {
+        setAlerts({
+            ...alerts,
+            [name]: {
+                ...ALERTS[name],
+                active
+            }
+        })
+    }
+
     React.useEffect(() => {
         if (!router || appDataContext.loadingAppData) return;
         const { id } = router.query;
         if (!id) return;
 
         const currentSong = appDataContext.allSongs[id];
-        let chordSheetJsSong;
+        let chordSheetJsSong, currentSongWithChordSheetJS;
 
         try {
-            chordSheetJsSong = currentSong ? parser.parse(currentSong['Chord Sheet']) : null;
-        } catch (error) {
-            console.error("Error parsing the chords. Please fix it!", error);
-            chordSheetJsSong = null;
-        } finally {
-            const currentSongWithChordSheetJS = {
-                ...currentSong,
-                'Chord Sheet JS Song': {
-                    _original: chordSheetJsSong,
-                    artist: chordSheetJsSong ? chordSheetJsSong.metadata?.artist : '',
-                    key: chordSheetJsSong ? chordSheetJsSong.metadata?.key : '',
-                    paragraphs: chordSheetJsSong ? JSON.parse(JSON.stringify(chordSheetJsSong.paragraphs)) : []
+
+            if (currentSong['Chord Sheet'] === '') {
+                currentSongWithChordSheetJS = {
+                    ...currentSong,
+                    'Chord Sheet JS Song': null
+                }
+            } else {
+                chordSheetJsSong = currentSong ? parser.parse(currentSong['Chord Sheet']) : null;
+                currentSongWithChordSheetJS = {
+                    ...currentSong,
+                    'Chord Sheet JS Song': {
+                        _original: chordSheetJsSong,
+                        artist: chordSheetJsSong ? chordSheetJsSong.metadata?.artist : '',
+                        key: chordSheetJsSong ? chordSheetJsSong.metadata?.key : '',
+                        paragraphs: chordSheetJsSong ? JSON.parse(JSON.stringify(chordSheetJsSong.paragraphs)) : []
+                    }
                 }
             }
+            toggleAlert('ERROR_PARSING_CHORD_SHEET', false);
+        } catch (error) {
+            console.warn("ERROR_PARSING_CHORD_SHEET", error);
+            currentSongWithChordSheetJS = {
+                ...currentSong,
+                'Chord Sheet JS Song': null
+            }
+
+            toggleAlert('ERROR_PARSING_CHORD_SHEET', true);
+        } finally {
             setSong(currentSongWithChordSheetJS);
             setSidebarState('hidden');
         }
@@ -154,7 +184,7 @@ export default function Song() {
 
     return <>
         {!song ? <>
-            {showSpinner() ? <div className="text-center"><Spinner /></div> : <></>}
+            {showSpinner() ? <div className="w-screen h-screen flex items-center justify-center"><Spinner /></div> : <></>}
         </> :
             <>
                 <Toolbar
@@ -164,6 +194,7 @@ export default function Song() {
                     loading={showSpinner()}
                     currentTranpose={currentTranpose}
                     onTranspose={tranposeSong}
+                    alerts={alerts}
                 />
 
                 <Sidebar visibility={sidebarState} currentSong={song} />
@@ -193,7 +224,12 @@ export default function Song() {
 
                         <div className="mt-6 mx-auto">
                             <div className="text-gray-200 leading-normal text-sm sm:text-base md:text-lg">
-                                <ChordSheetJsSongDisplay chordSheetJsSong={song['Chord Sheet JS Song']} />
+                                {alerts && alerts['ERROR_PARSING_CHORD_SHEET']?.active ?
+                                    <>
+                                        {song['Chord Sheet']}
+                                    </> :
+                                    <ChordSheetJsSongDisplay chordSheetJsSong={song['Chord Sheet JS Song']} />
+                                }
                             </div>
                         </div>
 
@@ -239,7 +275,9 @@ export default function Song() {
 }
 
 function ChordSheetJsSongDisplay({ chordSheetJsSong }) {
-    if (chordSheetJsSong && chordSheetJsSong.paragraphs) {
+    if (!chordSheetJsSong) return <></>;
+
+    if (chordSheetJsSong.paragraphs) {
         console.log("[SongHere] ChordSheetJsSong:", chordSheetJsSong);
         return chordSheetJsSong?.paragraphs?.map((paragraph, index) => {
             return <Paragraph key={`paragarph-${index}`} paragraph={paragraph} />

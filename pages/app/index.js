@@ -11,11 +11,11 @@ export default function Song() {
         if (!router || appData.loadingAppData) return;
 
         const firstId = Object.keys(appData.allSongs)[0];
-        router.push(`/${firstId}`);
+        router.push(`/app/${firstId}`);
         console.log("firstSong:", appData.allSongs[firstId]);
     }, [router, appData])
 
-    return <>
+    return <div className="w-screen h-screen flex items-center justify-center">
         <Spinner />
-    </>
+    </div>
 }
