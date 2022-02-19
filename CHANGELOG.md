@@ -11,7 +11,7 @@
 - ⛔ Not supported. User can only create songs via AirTable.
 
 ## Read songs
-- ✅ List all songs, song groups and schedules from AirTable 
+- ✅ List all songs, song groups and performances from AirTable 
 - ✅ Format a ChordPro-formatted song
 - ✅ Search a song by Title
 - ✅ Play the song's attached audio
@@ -19,13 +19,15 @@
 - ✅ Open the song in new tab
 - Cache songs to IndexDB to improve speed
 - Parse song's meta information
+- Slide song in performances
+- First song to be opened is the last song closed
 
 ## Update songs
 - ✅ Change a song in ChordPro format
 - ✅ Save the changed song in AirTable
 - ✅ Transpose a song
 - Save the transosed song in AirTable
-- Chaneg and save song's meta information
+- Change and save song's meta information
 
 ## Delete songs
 - ⛔ Not supported. User can only delete songs via AirTable.
@@ -41,3 +43,8 @@
 
 ## Publishable
 - All keys are stored in server's environment variables
+
+## Version 2.0
+- User can load ChordPro songs and manage them privately
+- User can share with others via publishing on the Internet (paid version)
+- User can clone other's songs into their repertoire

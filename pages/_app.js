@@ -16,11 +16,11 @@ const base = new Airtable({ apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY }).
 export default function MyApp({ Component, pageProps }) {
     const [allSongs, setAllSongs] = React.useState({});
     const [songGroups, setSongGroups] = React.useState(null);
-    const [schedules, setSchedules] = React.useState(null);
+    const [performances, setPerformances] = React.useState(null);
     const [loadingAppData, setLoadingAppData] = React.useState(true);
 
     const SongListTable = base('Song List');
-    const SchedulesTable = base('Schedule');
+    const PerformancesTable = base('Performances');
 
     React.useEffect(function onLoad() {
 
@@ -60,31 +60,31 @@ export default function MyApp({ Component, pageProps }) {
             setAllSongs(allSongs);
             setSongGroups(groups);
 
-            /** Get Schedules */
-            SchedulesTable.select({
+            /** Get Performances */
+            PerformancesTable.select({
                 view: "All",
                 fields: ['Datetime', 'Song 1', 'Song 2', 'Song 3']
             }).all().then(function (records) {
-                const schedules = []
+                const performances = []
 
                 records.forEach(function (record) {
 
-                    const scheduleDatetime = record.get('Datetime') || null;
-                    const formattedDatetime = scheduleDatetime ? format(new Date(scheduleDatetime), 'iii dd MMM hh:mm b') : null;
+                    const performanceDatetime = record.get('Datetime') || null;
+                    const formattedDatetime = performanceDatetime ? format(new Date(performanceDatetime), 'iii dd MMM hh:mm b') : null;
 
-                    if (scheduleDatetime && isAfter(new Date(scheduleDatetime), endOfYesterday())) {
-                        schedules.push({
+                    if (performanceDatetime && isAfter(new Date(performanceDatetime), endOfYesterday())) {
+                        performances.push({
                             id: record.id,
                             'Datetime': record.get('Datetime') || null,
                             'Formatted Datetime': formattedDatetime || null,
                             'Song 1': record.get('Song 1') ? allSongs[record.get('Song 1')[0]] : null,
                             'Song 2': record.get('Song 2') ? allSongs[record.get('Song 2')[0]] : null,
-                            'Song 3': record.get('Song 3') ? allSongs[record.get('Song 3')[0]] : null
+                            'Song 3': record.get('Song 3') ? allSongs[record.get('Song 3')[0]] : null,
                         })
                     }
                 });
 
-                setSchedules(schedules);
+                setPerformances(performances);
                 setLoadingAppData(false);
             })
         });
@@ -97,7 +97,7 @@ export default function MyApp({ Component, pageProps }) {
             console.log('[SongHere] App data Colour:', {
                 allSongs,
                 songGroups,
-                schedules,
+                performances,
                 loadingAppData
             })
         }
@@ -147,7 +147,7 @@ export default function MyApp({ Component, pageProps }) {
         <AppDataContext.Provider value={{
             allSongs,
             songGroups,
-            schedules,
+            performances,
             loadingAppData,
             updateSong
         }}>

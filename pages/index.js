@@ -20,7 +20,7 @@ export default function Home() {
                 list={[
                     "View songs, chords, lyrics from personal AirTable base",
                     "View songs organised in groups from personal AirTable base",
-                    "View schedules of performances from personal AirTable base",
+                    "View performances of performances from personal AirTable base",
                     "Attach and view a YouTube video of the song",
                     "Search songs by title across multiple groups",
                     "Use on both Desktop and Mobile devices",

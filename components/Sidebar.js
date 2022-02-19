@@ -29,7 +29,7 @@ export default function Sidebar({ visibility, currentSong }) {
     const searchTerm = React.createRef('');
     const [activeLevel, setActiveLevel] = React.useState(1);
 
-    const activeSchedule = React.useRef();
+    const activePerformance = React.useRef();
     const activeGroupName = React.useRef();
     const [level1Title, setLevel1Title] = React.useState('');
     const [songs, setSongs] = React.useState({});
@@ -55,12 +55,12 @@ export default function Sidebar({ visibility, currentSong }) {
         let songs = {};
         let title = '';
 
-        if (activeSchedule.current) {
-            const schedule = activeSchedule.current;
+        if (activePerformance.current) {
+            const performance = activePerformance.current;
 
-            const song1 = schedule['Song 1'];
-            const song2 = schedule['Song 2'];
-            const song3 = schedule['Song 3'];
+            const song1 = performance['Song 1'];
+            const song2 = performance['Song 2'];
+            const song3 = performance['Song 3'];
 
             if (song1) {
                 songs[song1['id']] = song1;
@@ -72,7 +72,7 @@ export default function Sidebar({ visibility, currentSong }) {
                 songs[song3['id']] = song3;
             }
 
-            title = schedule['Formatted Datetime'];
+            title = performance['Formatted Datetime'];
         } else {
             if (activeGroupName.current) {
                 Object.keys(appData.allSongs).map(id => {
@@ -100,19 +100,20 @@ export default function Sidebar({ visibility, currentSong }) {
 
         console.log(`[SongHere] Song list "${title}":`, songs);
 
-        if (activeSchedule.current) {
-            console.log(`[SongHere] Schedule:`, activeSchedule.current);
+        if (activePerformance.current) {
+            console.log(`[SongHere] Performance:`, activePerformance.current);
         }
 
         setSongs(songs);
         setLevel1Title(title);
-    }, [appData, activeGroupName.current, activeSchedule.current])
+    }, [appData, activeGroupName.current, activePerformance.current])
 
     React.useEffect(() => {
         if (router) {
-            const matchedSchedules = appData?.schedules?.filter(schedule => schedule.id === router.query?.scheduleId);
-            activeSchedule.current = matchedSchedules ? matchedSchedules[0] : undefined;
-            console.log('currentSchedule', activeSchedule.current);
+            const matchedPerformances = appData?.performances?.filter(performance => performance.id === router.query?.performanceId);
+            activePerformance.current = matchedPerformances ? matchedPerformances[0] : undefined;
+            
+            console.log("=== Sdiebar (router, appData): ===", router, appData);
         }
     }, [router, appData])
 
@@ -122,16 +123,16 @@ export default function Sidebar({ visibility, currentSong }) {
             setActiveLevel(1);
             searchTerm.current.value = '';
             activeGroupName.current = groupName;
-            activeSchedule.current = null;
+            activePerformance.current = null;
         }
     }
 
-    function selectSchedule(schedule) {
+    function selectPerformance(performance) {
         return event => {
             event && event.preventDefault();
             setActiveLevel(1);
             searchTerm.current.value = '';
-            activeSchedule.current = schedule;
+            activePerformance.current = performance;
             activeGroupName.current = null;
         }
     }
@@ -150,7 +151,7 @@ export default function Sidebar({ visibility, currentSong }) {
         if (appData.isLoadingAppData) return;
 
         activeGroupName.current = null; // reset to no group
-        activeSchedule.current = null; //reset to no schedule
+        activePerformance.current = null; //reset to no performance
         setLevel1Title('All Songs');
 
         if (term === '') {
@@ -174,7 +175,7 @@ export default function Sidebar({ visibility, currentSong }) {
 
                     <div className="sidebar__inner">
                         <button className="block w-full select-none" onClick={selectGroup(null)}>
-                            <div className={`pl-4 w-full block text-left ${!activeGroupName.current && !activeSchedule.current ? 'bg-gray-800' : ''} duration-200 transition ease-in-out cursor-default`}>
+                            <div className={`pl-4 w-full block text-left ${!activeGroupName.current && !activePerformance.current ? 'bg-gray-800' : ''} duration-200 transition ease-in-out cursor-default`}>
                                 <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                     <span className="text-primary-500 fill-current">
                                         <FolderIcon />
@@ -197,22 +198,22 @@ export default function Sidebar({ visibility, currentSong }) {
                             </button>
                         })}
 
-                        {appData?.schedules ? <>
+                        {appData?.performances ? <>
                             <div className="mt-12 mb-4 text-xs text-white tracking-wider uppercase pl-4">Coming Up</div>
-                            {appData?.schedules.map((schedule, index) => {
+                            {appData?.performances.map((performance, index) => {
                                 if (index < 6) {
-                                    return <button className="block w-full select-none" key={`schedule-${schedule.id}`} onClick={selectSchedule(schedule)}>
-                                        <div className={`pl-4 w-full block text-left ${schedule === activeSchedule.current ? 'bg-gray-800' : ''} active:opacity-80 duration-200 transition ease-in-out cursor-default`}>
+                                    return <button className="block w-full select-none" key={`performance-${performance.id}`} onClick={selectPerformance(performance)}>
+                                        <div className={`pl-4 w-full block text-left ${performance === activePerformance.current ? 'bg-gray-800' : ''} active:opacity-80 duration-200 transition ease-in-out cursor-default`}>
                                             <div className="py-2 border-b border-gray-700 border-opacity-50 flex items-center text-white">
                                                 <span className="text-primary-500 fill-current">
                                                     <CalendarIcon />
                                                 </span>
-                                                <h3 className="text-lg text-white ml-4 font-light truncate">{schedule['Formatted Datetime']}</h3>
+                                                <h3 className="text-lg text-white ml-4 font-light truncate">{performance['Formatted Datetime']}</h3>
                                             </div>
                                         </div>
                                     </button>
                                 } else {
-                                    return <div key={`schedule-${schedule.id}`} />
+                                    return <div key={`performance-${performance.id}`} />
                                 }
                             })}</> : <></>}
                     </div>
@@ -241,8 +242,8 @@ export default function Sidebar({ visibility, currentSong }) {
 
                                 let songHref;
 
-                                if (activeSchedule.current) {
-                                    songHref = `/app/${id}?scheduleId=${activeSchedule.current.id}`
+                                if (activePerformance.current) {
+                                    songHref = `/app/${id}?performanceId=${activePerformance.current.id}`
                                 } else {
                                     songHref = `/app/${id}`;
                                 }
